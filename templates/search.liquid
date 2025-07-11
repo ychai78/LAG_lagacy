@@ -1,0 +1,44 @@
+{% if search.performed %}
+  {% paginate search.results by 20 %}
+    {% assign searchTerms = search.terms %}
+    {% assign search_results = 0 %}
+    <div class="container-grid">
+      <div class="search-bar">
+        {% render 'search-bar', show_close_button: false %}
+      </div>
+
+      {% if search.results_count > 0 %}
+        <h1 class="flex justify-center my-8 text-xl md:my-12 search-header__title center">
+          Your search for "{{ searchTerms }}" revealed the following:
+        </h1>
+        
+        <div class="grid grid-cols-2 gap-2 products-grid lg:grid-cols-3 lg:gap-4 lg:gap-y-8 xl:grid-cols-4">
+          {% for product in search.results %}
+            {%- comment %}<locksmith:ebbf>{% endcomment -%}
+              {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: search, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+            {%- comment %}</locksmith:ebbf>{% endcomment -%}
+            {% unless product.tags contains 'coming soon' %}
+              {% assign search_results = search_results | plus: 1 %}
+              {% render 'card-product-3', card_product: product %}
+            {% endunless %}
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="flex flex-col items-center justify-center my-8 text-center">
+          <h2 class="mb-4 text-xl">Uh-oh! We couldn't find any information on "{{ searchTerms }}".</h2>
+          <h3 class="text-lg">Please try a different product name or number</h3>
+        </div>
+      {% endif %}
+    </div>
+
+    {% if paginate.pages > 1 %}
+      <div class="padding">
+        {% render 'pagination-page' %}
+      </div>
+    {% endif %}
+  {% endpaginate %}
+{% else %}
+  <header class="page-header">
+    {% render 'search-bar' %}
+  </header>
+{% endif %}

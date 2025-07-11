@@ -1,0 +1,166 @@
+{%- comment %}<locksmith:bace>{% endcomment -%}
+  {%- include 'locksmith' -%}
+{%- comment %}</locksmith:bace>{% endcomment -%}
+
+<!doctype html>
+<html class="no-js"  lang="{{ request.locale.iso_code }}">
+	<head>
+
+  {{ locksmith_initializations }}
+  {% include 'stamped-rewards-init' %}
+
+
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+
+		<!-- Basic page needs ================================================== -->
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		
+		<link rel="dns-prefetch" href="https://cdn.shopify.com">
+		<!-- Title and description ================================================== -->
+		{% render 'page-title-description' %}
+
+		<!-- Product meta ================================================== -->
+		{%- render 'meta_scripts' -%}
+		{%- render 'fb-open-graph-tags' -%}
+
+		<!-- Helpers ================================================== -->
+		{% if template contains 'index' %}
+			{% comment %}<!-- Canonical tag for the homepage -->{% endcomment %}
+			<link rel="canonical" href="{{ shop.url }}">
+		{% elsif template contains 'collection' %}
+			{% comment %}<!-- Canonical tag for collection pages -->{% endcomment %}
+			<link rel="canonical" href="{{ collection.url }}">
+		{% elsif template contains 'product' %}
+			{% comment %}<!-- Canonical tag for product pages -->{% endcomment %}
+			<link rel="canonical" href="{{ shop.url }}/products/{{ product.handle }}">
+		{% endif %}
+		<link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+		<link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+		<!-- Fonts -->
+		{% render 'head_fonts' %}
+
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="{{ 'favicon.png' | asset_url }}" type="image/x-icon">
+
+		<!-- Styles -->
+		{% render 'head_styles' %}
+
+		<!-- Scripts -->
+		{% render 'head_scripts' %}
+
+		<!-- Header hook for plugins ================================================== -->
+		{{ content_for_header }}
+
+{%- if template contains 'loyalty' -%}
+  {%- comment -%} Load only loyalty CSS for loyalty pages {%- endcomment -%}
+  {{ 'loyalty.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+
+      
+	</head>
+
+	{% comment %}
+		Add the page template as a class for easy page or template specific styling.
+	{% endcomment %}
+
+	<body
+		id="{{ page_title | handle }}"
+		class="
+			{%- if customer -%}customer-logged-in {%- endif -%}
+			{%- if template contains 'collection' -%}collection{%- endif -%}
+			{%- if template contains 'page' -%}page{%- endif -%}
+			{%- if template contains 'blog' -%}blog{%- endif -%}
+			{%- if template contains 'cart' -%}cart{%- endif -%}-{{template}}
+		"
+		data-page-handle="{{ template }}"
+	>
+		{% render 'symbols' %}
+
+{% unless template contains 'page' and page.handle == 'loyalty' %}
+<style>
+.stamped-rewards-launcher {
+  display: none !important;
+}
+</style>
+{% endunless %}
+
+      
+		<div class="site">
+			<header id="site-header" class="site__header sticky top-0 lg:static z-[100]" style="height: var(--header-height, auto);">
+				{{ 'header.css' | asset_url | stylesheet_tag }}
+
+              {% unless template == 'page.marketing-resources-home' or template == 'metaobject/display' %}
+                {% section 'announcement-banner' %}
+              {% endunless %}
+			  {% section 'navigation-menu' %}
+              	
+			</header>
+			<main class="site__main" role="main">
+				{{ content_for_layout }}
+			</main>
+        
+
+			<footer class="site__footer">
+				{% render 'footer' %}
+			</footer>
+		</div>
+		{% render 'footer_scripts' %}
+
+		
+
+		<div id="curtain"></div>
+		<div id="drop-curtain"></div>
+
+
+
+		<!-- ADA compliancy Start -->
+		<script>
+			(function (document, tag) {
+				var script = document.createElement(tag);
+				var element = document.getElementsByTagName('body')[0];
+				script.src = 'https://acsbap.com/apps/app/assets/js/acsb.js';
+				script.async = true;
+				script.defer = true;
+				(typeof element === 'undefined' ? document.getElementsByTagName('html')[0] : element).appendChild(script);
+				script.onload = function () {
+					acsbJS.init({
+						statementLink: '',
+						feedbackLink: '',
+						footerHtml: '',
+						hideMobile: false,
+						hideTrigger: false,
+						language: 'en',
+						position: 'right',
+						leadColor: '#146FF8',
+						triggerColor: '#146FF8',
+						triggerRadius: '50%',
+						triggerPositionX: 'right',
+						triggerPositionY: 'bottom',
+						triggerIcon: 'default',
+						triggerSize: 'medium',
+						triggerOffsetX: 20,
+						triggerOffsetY: 20,
+						mobile: {
+							triggerSize: 'small',
+							triggerPositionX: 'right',
+							triggerPositionY: 'bottom',
+							triggerOffsetX: 0,
+							triggerOffsetY: 0,
+							triggerRadius: '0',
+						},
+					});
+				};
+			})(document, 'script');
+
+		</script>
+		<!-- ADA compliancy End -->
+
+    <script>function myInit(){ StampedFn.init({ apiKey: 'pubkey-10U93ptXA7unRQxEwF4Xd2I4OB81js', storeUrl: '5127' }); }</script>
+<script async onload="myInit()" type="text/javascript" src="https://cdn1.stamped.io/files/widget.min.js"></script>
+	</body>
+</html>

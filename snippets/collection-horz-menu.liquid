@@ -1,0 +1,117 @@
+{%- liquid
+	if section.index > 2
+		assign loading = 'lazy'
+	else
+		assign loading = 'eager'
+	endif
+-%}
+
+{% if collection.metafields.custom.link_menu_items %}
+	{% assign menu_items = collection.metafields.custom.link_menu_items.value %}
+{% endif %}
+
+{% if links %}
+	{% comment %} This section will display the collection horz menu on the mobile sub-menu scroll {% endcomment %}
+	{% assign menu_items = shop.metaobjects.link_menu_item.values %}
+ 
+	<div class="flex max-w-full gap-2 py-4 collection-quicklink align-center">
+		<div class="max-w-full w-[100vw]">
+			<div class="overflow-x-auto grid grid-flow-col auto-cols-[5rem] gap-4 no-scrollbar mx-4">
+				{% for menu_item in menu_items %}
+                  
+					{%- liquid
+						assign title = menu_item.link_title
+						assign image = menu_item.link_image
+
+						assign url = ''
+						if menu_item.link_url
+							assign url = menu_item.link_url.value.url
+						elsif menu_item.link_collection
+							assign url = menu_item.link_collection.value.url
+						endif
+
+						assign url = url | remove: 'https://www.lagirlusa.com'
+					-%}
+               
+					{% for link in links %}
+                     
+						{% if link.url == url %}
+							<div class="inline-block">
+								<a href="{{ url }}" class="flex flex-col items-center justify-center gap-2 text-center cursor-pointer">
+									<div class="block">
+										{% if image %}
+											{%- render 'responsive-image',
+												image: menu_item.link_image.value,
+												sizes: '25vw',
+												width: 80,
+												alt: title
+											-%}
+
+										{% else %}
+											{{ 'product-1' | placeholder_svg_tag }}
+										{% endif %}
+									</div>
+									<div class="text-xs font-medium text-balance">{{- title -}}</div>
+								</a>
+							</div>
+						{% endif %}
+					{% endfor %}
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+
+{% else %}
+  {% if collection.metafields.custom.link_menu_items %}
+  {% comment %} This section will display the collection horz menu on collection pages {% endcomment %}
+	<div class="hidden md:flex flex max-w-full gap-2 py-2 collection-quicklink align-center">
+		<div class="max-w-full">
+			{% capture slides_content %}
+				{% for menu_item in menu_items %}
+				{%- liquid
+					assign title = menu_item.link_title
+					assign image = menu_item.link_image
+
+					assign url = ''
+					if menu_item.link_url
+					assign url = menu_item.link_url.value.url
+					elsif menu_item.link_collection
+					assign url = menu_item.link_collection.value.url
+					endif
+				-%}
+
+				<div class="inline-block">
+					<a href="{{ url }}" class="flex flex-col items-center gap-2 text-center cursor-pointer">
+					<div class="block size-24 md:size-40">
+						{% if image %}
+						{{
+							image 
+							| image_url: width: 200
+							| image_tag: alt: title, width: 200, height: 200, loading: loading, fetchpriority: fetchpriority
+						}}
+
+                          
+						{% else %}
+						{{ 'product-1' | placeholder_svg_tag }}
+						{% endif %}
+					</div>
+					<div class="text-sm font-medium text-balance">{{- title -}}</div>
+					</a>
+				</div>
+				{% endfor %}
+			{% endcapture %}
+			{% render 'scroll-slider',
+				slides: slides_content,
+				id: 'collection-quicklink',
+				style: 'solid',
+				class: 'mb-2'
+			%}
+		</div>
+	</div>
+    {% endif %}
+{% endif %}
+<style>
+  #collection-quicklink button {
+    margin-top: -30px;
+}
+</style>

@@ -1,0 +1,54 @@
+{% assign article_title_split = article.title | split: '- ' %}
+{% assign article_title = article_title_split[0] | append: ' - ' | append: article_title_split[1] %}
+
+<div class="container-grid">
+  <div class="py-5 lg:py-8">
+    <div class="flex gap-3">
+      <a href="{{ blog.url}}"
+        ><span class="inline-block text-xs font-bold tracking-wider uppercase">
+          {{ blog.title | split: '|' | first }}
+        </span></a
+      >
+    </div>
+    <h2 class="font-semibold leading-snug tracking-tight mt-5 mb-0">
+      <a href="{{ article.url }}"><span>
+          {{ article_title_split[0] }}
+        </span></a
+      >
+    </h2>
+   <span class="inline-block text-xs font-bold tracking-wider uppercase text-pink-600">
+        {{ article_title_split[1] }}
+      </span>
+  </div>
+  {% render 'image', images: article.image, class: 'lazyload display-img block' %}
+
+  {% if article.tags.size > 0 %}
+    <div class="flex flex-col mt-6">
+      <h3 class="font-bold mb-6 font-display left">Featured Products</h3>
+
+      <ul
+        id="Slider-{{ section.id }}"
+        class="grid gap-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        role="list"
+        aria-label="Slider"
+      >
+        {% for tag in article.tags %}
+          {% assign product = all_products[{{tag}}] %}
+
+          <li
+            id="Slide-{{ section.id }}-{{ forloop.index }}"
+            class="grid__item slider__slide"
+          >
+            {% render 'card-product-3',
+              card_product: product,
+              show_rating: false,
+              show_swatch: false,
+              show_cta: false,
+              show_rating: false
+            %}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  {% endif %}
+</div>

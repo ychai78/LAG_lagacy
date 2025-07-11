@@ -1,0 +1,271 @@
+{{ 'cart.css' | asset_url | stylesheet_tag }}
+<script defer src="{{ 'cart.js' | asset_url }}"></script>
+  
+{% comment %}
+ Use CHECKOUT NOTICE to write a notice onto the checkout page.
+Thank you for your order. Please be advised that our office will be closed from 12/22/2023 to 1/1/2024 in observance of the holidays. Any orders placed after 9:30 AM PST on Thursday, December 21, 2023, will be processed upon our return. Credit cards will be charged for orders made during the closure.{% endcomment %}
+
+{% assign CHECKOUT_NOTICE = 'Thank you for your order. Please be advised that our office will be closed from 12/22/2023 to 1/1/2024 in observance of the holidays. Any orders placed after 9:30 AM PST on Thursday, December 21, 2023, will be processed upon our return. Credit cards will be charged for orders made during the closure.'%}
+
+{% assign timer_start_date = "2023/12/20 09:00" | remove: "/"  | remove: ":" | remove: " " %}
+{% assign timer_end_date   = "2024/01/01 23:59" | remove: "/"  | remove: ":" | remove: " " %}
+{% assign current_date = 'now' |  date: "%Y/%m/%d %H:%M" | remove: "/"  | remove: ":" | remove: " "  %}{% comment %} <!-- 2019/12/25 13:17 -->{% endcomment %}
+
+{% assign within_release_date = false %}
+{% if current_date >= timer_start_date and current_date <= timer_end_date %}
+{% assign within_release_date = true %}
+{% endif %}
+
+{%- liquid   
+  assign purchasable = true
+  assign freeShipping = false
+  assign free_shipping_price = 3500
+  assign shippingCost = 1000    
+   
+  for item in cart.items
+    if item.vendor == 'NotForSale'
+       assign purchasable = false
+      break
+    endif
+  endfor
+    
+  if cart.original_total_price >= free_shipping_price
+     assign shippingCost = 0
+     assign freeShipping = true
+  endif
+-%}
+{% assign total_price = cart.original_total_price %}
+{% assign free_shipping_price = 3500 %}
+{% assign progress_percentage = total_price | times: 100 | divided_by: free_shipping_price %}
+
+     
+<script>if (typeof Shopify === "undefined") var Shopify = {}; Shopify.cart = {{ cart | json }};</script> 
+
+
+{% if cart.item_count < 1 0 %}  
+<div class="cart-container">
+  <div class="cart-details">
+    <div class="cart-header empty-cart">
+      <div class="cart-header__title-container">
+        <h3 class="cart-header__title">
+          <span>Your Bag is empty</span>
+        </h3>
+      </div>
+
+      <div class="cart-header__announcement-message-container">
+        <div class="cart-header__announcement-message">
+          <div class="cart-callout__wrapper">
+            <h4 class="header___cart-header__announcement-message">
+              Once you add something to your bag, it will appear here.
+            </h4>
+          </div>
+        </div>
+      </div>
+      <a class="btn -left" href="{{ shop.url }}">Continue Shopping</a>
+    </div>
+  </div>
+</div>
+
+{% endif %}
+
+              
+ <div class="container-grid">
+
+   
+  <section class="bg-white py-8 antialiased md:py-16">
+    <div class="mx-auto max-w-screen-xl ">
+      <h2 class="text-xl font-semibold text-gray-900 sm:text-2xl">Shopping Bag <span class="cart-total-quantity">({{ cart.item_count }} {{ cart.item_count | pluralize: 'Item', 'Items' }})</span></h2>
+      <div class="cart-header p-4 space-y-4 rounded-lg border border-gray-200  shadow-sm sm:p-6 my-4">
+        <h4 class="cart-header__announcement-message">
+          {% if cart.original_total_price < free_shipping_price %}
+            Add <span class="free-shipping">{{ free_shipping_price | minus: cart.original_total_price | money }}</span> more for free shipping.
+            {% else %}You qualify for free shipping!
+            {% endif %}
+        </h4>
+        <div class="cart-header__progress-bar-counter w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+          {% if progress_percentage > 100 %} {% assign progress_percentage == 100 %} {% endif %}
+          <div class="cart-header__progress-bar bg-pink-600 h-2.5 rounded-full" style="width: {{ progress_percentage }}%"></div>
+        </div>
+      </div>  
+      <div class="mt-6 sm:mt-8 md:gap-6 lg:flex lg:items-start xl:gap-8">
+        <form action="/cart" method="post" novalidate>
+        <div class="mx-auto w-full flex-none lg:max-w-2xl xl:max-w-4xl">
+          <div class="space-y-6">
+            
+            {% for item in cart.items %}
+            <div id="cart-item-card-{{ item.variant.id }}" class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm md:p-6">
+              
+              <div class="space-y-4 flex items-center justify-between gap-4 space-y-0">
+                   
+          
+                <a href="{{ item.url  }}" class="line-item__image-wrapper shrink-0">
+                  <img class="line-item__thumb-image h-20 w-20" src="{{ item | img_url: 'medium' }}" alt="{{ item.title | escape }}">                  
+                </a>
+                  <div class="w-full min-w-0 flex-1 space-y-4 md:max-w-md">
+                  
+                  <div class="flex flex-col gap-4">
+                  <a href="{{ item.url }}" class="line-item__title text-base font-medium text-gray-900 hover:underline"><span class="cart-line-item-name"> {{item.product.title}}</span></a>
+                  <div class="flex items-center gap-4">
+
+                      
+                          {%- if item.product.has_only_default_variant == false -%}
+                            {%- for option in item.options_with_values -%}
+                              {% assign hexCode = item.variant.metafields.custom.hex_code.value %}	
+                              {% assign hexImage = item.variant.metafields.custom.hex_image.value %}
+
+
+                              
+                                {% unless option.name == "Title" %} 
+                                 <label class="product-tile__swatch {% if position == 1 %}active{% endif %}"
+            
+                                    {% if hexCode %}
+                                      data-hex-code="{{ hexCode }}"
+                                      style="--swatch-color: {{ hexCode }};"
+                                     
+                                    {% elsif hexImage %}
+                                      data-hex-image="{{ hexImage | image_url: width: 30 }}"
+                                      style="--swatch-bkg: url('{{ hexImage | image_url: width: 30 }}');"
+                                    {% endif %}
+                                    >
+                                    
+                                  </label>
+                                  {% endunless %}
+                                <span class="block text-[12px] font-medium uppercase tracking-[.06em]">{{ option.value }}</span>
+                              
+                            {%- endfor -%}
+                          {%- endif -%}
+                      
+                 </div>
+                  <div class="flex items-center gap-4">
+                    <div class="number-stepper flex border font-sans text-[.88rem] font-medium leading-none">
+                        <button class="decrement-qty z-10 flex w-8 items-center justify-center" aria-label="Decrement quantity" data-variant-id="{{ item.variant.id }}">
+                            <svg class="flex-shrink-0 p-1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path></svg>
+                        </button>
+                        <input type="number" readonly="readonly" tabindex="-1" aria-label="quantity" 
+                            class="quantity-input w-8 text-center focus:outline-none" value="{{ item.quantity }}" min="1" data-variant-id="{{ item.variant.id }}">
+                        <button class="increment-qty z-10 flex w-8 items-center justify-center" aria-label="Increment quantity" data-variant-id="{{ item.variant.id }}">
+                            <svg class="flex-shrink-0 p-1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+                        </button>
+                    </div>
+                    <button type="button" aria-label="remove from cart" class="block underline">
+                        <a href="{{ item.url_to_remove }}" class="btn-remove-item line-item-remove-button" data-variant-id="{{ item.variant.id }}">Remove</a>
+                    </button>
+                  </div>
+                  </div>
+                </div>
+                <label for="counter-input" class="sr-only">Choose quantity:</label>
+                <div class="flex items-center justify-between md:justify-end">
+                  
+                  <div class="text-end md:w-32">
+                    <p class="text-base font-bold text-gray-900" id="line-item-price-{{ item.variant.id }}">
+                       {% unless item.vendor == 'NotForSale' %}{{ item.final_line_price | money }} {% endunless %}</p>
+                      {% if item.quantity > 1 %}
+                      <p class="font-sans text-[.8rem] font-medium"  id="line-item-unit-price-{{ item.variant.id }}">
+                        {{ item.quantity }} @ {{ item.final_price | money }}
+                      </p>
+                      {% endif %}
+                  </div>
+                </div>
+  
+
+              </div>
+            </div>
+            {% endfor %}
+            
+            
+            
+          </div>
+ 
+        </div>
+        </form>
+  
+        <div class="mx-auto mt-6 max-w-4xl flex-1 space-y-6 lg:mt-0 lg:w-full">
+          <div class="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
+            <p class="text-xl font-semibold text-gray-900">Order summary</p>
+  
+            <div class="space-y-4">
+              <div class="space-y-2">
+                <dl class="flex items-center justify-between gap-4">
+                  <dt class="text-base font-normal text-gray-900">Subtotal <span class="cart-total-quantity">({{ cart.item_count }} {{ cart.item_count | pluralize: 'Item', 'Items' }})</span></dt> 
+                  <dd class="cart-summary-product-value text-base font-medium text-gray-900">{{ cart.original_total_price | money }}</dd>
+                </dl>
+  
+                <dl class="flex items-center justify-between gap-4">
+                  <dt class="relative flex items-center justify-between gap-2 text-base font-normal text-gray-900">Shipping
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="w-4" id="shipping-info-icon" onclick="showTooltip('shipping-tooltip')">
+                    <path d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm.7 13H6.8v-2h1.9v2zm2.6-7.1c0 1.8-1.3 2.6-2.8 2.8l-.1 1.1H7.3L7 7.5l.1-.1c1.8-.1 2.6-.6 2.6-1.6 0-.8-.6-1.3-1.6-1.3-.9 0-1.6.4-2.3 1.1L4.7 4.5c.8-.9 1.9-1.6 3.4-1.6 1.9.1 3.2 1.2 3.2 3z"></path>
+                    </svg>
+                    <div class="cart-tooltip-container" id="shipping-tooltip">
+                      To qualify for free shipping, your total before tax and after all discounts must be $35 or more.
+                    </div>
+                  </dt>
+                  
+                  <dd class="text-base font-medium text-green-600">
+                    <span class="cart-summary-shipping-value">
+                      {% if freeShipping %}FREE
+                      {% else %}{{ shippingCost | money }}
+                      {% endif %}
+                    </span>
+                  </dd>
+                </dl>
+  
+                <dl class="flex items-center justify-between gap-4">
+                  <dt class="relative flex items-center justify-between gap-2 text-base font-normal text-gray-900">Estimated tax
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" class="w-4" id="tax-info-icon" onclick="showTooltip('tax-tooltip')">
+                    <path d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm.7 13H6.8v-2h1.9v2zm2.6-7.1c0 1.8-1.3 2.6-2.8 2.8l-.1 1.1H7.3L7 7.5l.1-.1c1.8-.1 2.6-.6 2.6-1.6 0-.8-.6-1.3-1.6-1.3-.9 0-1.6.4-2.3 1.1L4.7 4.5c.8-.9 1.9-1.6 3.4-1.6 1.9.1 3.2 1.2 3.2 3z"></path>
+                    </svg>
+                    <div class="cart-tooltip-container" id="tax-tooltip">
+                      Final Tax depends on your delivery method.
+                    </div>
+                  </dt>  
+                 
+                  <dd class="text-base font-medium text-gray-900">Calculated at checkout</dd>
+                </dl>
+  
+              </div>
+  
+              <dl class="flex items-center justify-between gap-4 border-t border-gray-200 pt-2">
+                <dt class="text-base font-bold text-gray-900">Estimated Total</dt>
+                <dd class="text-base font-bold text-gray-900">
+                   <span class="cart-summary-price-total-value"><strong>{{ cart.original_total_price  | plus: shippingCost | money}}</strong></span>
+                </dd>
+              </dl>
+            </div>
+  
+           
+            {% if purchasable %}
+            <div class="cart-page__checkout-action">
+              <input type="submit" name="checkout" 
+                class="bg-primary-700 focus:ring-primary-300 daisybtn daisybtn-accent flex w-full items-center justify-center rounded-lg px-5 py-2.5 font-sans text-sm font-bold font-medium uppercase text-white hover:bg-pink-600 focus:outline-none focus:ring-4" 
+                value="Checkout"  id="checkoutBtn" >
+              {%- if additional_checkout_buttons -%}
+              <div class="cart__dynamic-checkout-buttons additional-checkout-buttons mt-4 ">
+                {{ content_for_additional_checkout_buttons }}
+              </div>
+              {%- endif -%}
+            </div>
+            {%- endif -%}
+
+
+
+            
+          
+          </div>
+  
+          <div class="space-y-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm sm:p-6">
+            <div class="space-y-4">
+              Please note, L.A. Girl only ships to the cardholder’s authorized billing address.
+            </div>
+            <div class="space-y-4">
+              <strong>Disclaimer:</strong> Due to individual user's monitor settings, calibrations and lighting sources, the colors that appear on your screen may not be an exact representation of the actual product. We strive to show the colors as accurately as possible, but screen images are intended as a guide only.              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+
+
+

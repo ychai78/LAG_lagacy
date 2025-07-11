@@ -1,0 +1,135 @@
+{% comment %}
+
+  This template will be automatically generated for you if the file doesn't exist,
+  but where's the fun in having no control? Define your layout below.
+
+  The 'layout settings.customer_layout' line is inserted at the top of every customer account template.
+  Your theme's settings determine to use the 'default' or 'theme' customer templates.
+  More info:
+    - http://www.tetchi.ca/shopify-theme-from-scratch-part-11/
+
+  Template note:
+    - All IDs on this template are required to make the form(s) submit properly
+
+  For all available customer liquid tags:
+    - http://docs.shopify.com/themes/liquid-variables/customer
+
+{% endcomment %}
+{% if customer %}
+
+<div class="account-page container-grid mt-8">
+   <div class="grid grid-cols-1 gap-8 lg:grid-cols-10">
+      <div class="flex flex-col lg:col-span-2">
+         {% render 'customer_account_side_menu' %}
+
+       
+      </div>
+      <div class="flex flex-col lg:col-span-8">
+         
+          <div class="dashboard long-box-shadow">
+            <div class="flex justify-between">
+              
+                <h2 class="underline">My Account Dashboard2</h2>
+              
+                
+              
+                <a href="/account/logout" 
+                  class="daisybtn daisybtn-outline daisybtn-accent h-8 min-h-8 font-sans font-bold text-xs md:text-sm">Log Out</a>
+              
+            </div>
+          
+            <div class="flex flex-col">
+                 <h4 class="my-4">MY INFORMATION</h4>
+                <div class="flex gap-8">
+                  <div class="col-1 main-set">
+                    <div class="col-1">
+                            {{ customer.first_name  | capitalize }} {{ customer.last_name  | capitalize }}<br>
+                          {{ customer.email }}<br>
+                          
+                         </div>
+                    <div class="col-2">
+                           <a href="/pages/edit-account" class="underline">Update Name</a><br>
+                           <a href="/pages/edit-account" class="underline">Update Email</a><br>
+                           <a href="/pages/edit-account" class="underline">Update Password</a>
+                         
+                         </div>
+                  </div>
+                  <div class="col-2 main-set">
+                         <div class="col-1">
+                           <a href="/account/addresses" class="underline">Address Book
+                           {% if customer.addresses_count >1 %} ({{ customer.addresses_count}}){% endif%}</a><br>
+                             {% if customer.default_address != nil %}
+                                  <address>
+                                    {{ customer.default_address.address1 }}<br>
+                    
+                                    {% if customer.default_address.address2 != "" %}
+                                      {{ customer.default_address.address2 }}<br>
+                                    {% endif %}
+                    
+                                    {% if customer.default_address.city != "" %}
+                                      {{ customer.default_address.city }}
+                                    {% endif %}
+                    
+                                    {% if customer.default_address.province_code != "" %}
+                                      {{ customer.default_address.province_code | upcase }},
+                                    {% endif %}
+                    
+                                    {% if customer.default_address.zip != "" %}
+                                      {{ customer.default_address.zip | upcase }}<br>
+                                    {% endif %}
+                    
+                                    {% if customer.default_address.country != "" %}
+                                      {{ customer.default_address.country }}<br>
+                                    {% endif %}
+                    
+                                    {% if customer.default_address.phone != "" %}
+                                      {{ customer.default_address.phone }}<br>
+                                    {% endif %}
+                                     <a href="/account/addresses" class="underline">Update</a>
+                                  </address>
+                        {%else%} You have not set a default address.<br>
+                        {% endif %}
+                           
+                         </div>
+                        <div class="col-2">
+                          
+                         </div>
+                  </div> 
+          
+          
+              </div>
+            </div> 
+            <div class="grid order-history-grid">
+           
+            <div class="grid-item two-thirds medium-down--one-whole">
+          
+                 <h5>RECENT ORDERS</h5>
+          
+          
+              {% comment %}
+                If we have past orders, loop through each one
+              {% endcomment %}
+             
+          
+                {% render 'customer_order_table' %}   
+          
+            </div>
+          
+          
+          </div>
+          </div>
+
+        
+      </div>
+
+   </div>
+</div>
+
+
+  
+    {%else%}
+  <script>
+    window.location = "/account/login";
+    </script>
+{% endif %}
+  

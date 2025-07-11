@@ -1,0 +1,123 @@
+{%- capture sizes -%} (max-width:767px) 50vw, (max-width: 1023px) 50vw, (max-width: 1279px) 33vw, 25vw {%- endcapture -%}
+
+{%- assign should_eager_load = eager_load | default: false -%}
+{%- if eager_load_index and eager_load_threshold -%}
+	{%- if eager_load_index <= eager_load_threshold -%}
+		{%- assign should_eager_load = true -%}
+	{%- else -%}
+		{%- assign should_eager_load = false -%}
+	{%- endif -%}
+{%- endif -%}
+
+{%- liquid
+  assign current_variant = card_product.selected_or_first_available_variant
+  assign on_sale = false
+  if current_variant.compare_at_price > current_variant.price
+    assign on_sale = true
+    assign discount_percentage = current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round
+  endif
+-%}
+
+<div
+	class="rounded-2xl relative flex flex-col w-full mx-auto cards__item card"
+	itemscope
+	itemtype="http://schema.org/Product"
+	data-transition-enabled="true"
+	data-scroll-transition="fade"
+>
+	<div class="card__media group relative mb-2.5">
+		<a
+			class="block relative"
+			href="{{ card_product.url }}"
+			aria-label="{{ card_product.title }}"
+		>
+    <div class="media-wrapper relative">
+      {% if on_sale and discount_percentage > 0 %}
+        <span class="absolute top-2 left-2 z-10 bg-pink-700 block max-w-fit text-center text-white text-sm font-bold uppercase px-2 py-1 max-h-[25px] rounded-[2px]">{{ discount_percentage }}%</span>
+      {% endif %}
+      {%- assign image_media = card_product.media | where: 'media_type', 'image' -%}
+      {%- if image_media.size > 0 -%}
+        {%- for media in image_media limit: 2 -%}
+          <div class="{% if forloop.last %}absolute inset-0{% endif %}">
+            {%- if forloop.first -%}
+              {%- assign image_class = 'rounded-2xl card__image mx-auto mb-[10px] w-full object-contain object-center transition-opacity duration-300 ease-in group-hover:opacity-0' -%}
+            {%- else -%}
+              {%- assign image_class = 'rounded-2xl card__image-hover mx-auto mb-[10px] w-full object-contain object-center opacity-0 transition-opacity duration-300 ease-in group-hover:opacity-100' -%}
+            {%- endif -%}
+            {%
+              render 'responsive-image',
+              image: media.image,
+              sizes: sizes,
+              class: image_class,
+              width: 1400,
+              alt: media.alt | default: card_product.title,
+              eager_load: should_eager_load
+            %}
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        <div>
+          {{ 'product-1' | placeholder_svg_tag: 'rounded-2xl card__image mx-auto mb-[10px] w-full object-contain object-center' }}
+        </div>
+      {%- endif -%}
+    </div>
+  </a>
+	</div>
+
+	<div class="flex flex-col gap-2 px-4 py-4 card__information grow">
+		<div
+			class="flex flex-wrap items-center justify-between mb-2 card__review-badge justify"
+		>
+			<div class="flex items-center gap-4 text-sm card__review-badge">
+				{% if card_product.tags contains 'new' %}
+					<div class="card__badges">
+						<span
+							class="card__badges--new pointer-events-none h-4 rounded-[2px] bg-pink-500 brightness-121 px-[6px] py-1 text-[10px] font-bold uppercase text-white md:text-xs"
+						>
+							New
+						</span>
+					</div>
+				{% endif %}
+				{% render 'bv-inline-ratings', product: card_product %}
+			</div>
+		</div>
+
+		<a class="font-medium no-underline min-h-[3rem]" href="{{ card_product.url }}">
+			<div class="card__title body-sm mb-[2px] font-medium">
+				{{ card_product.title }}
+			</div>
+		</a>
+		{% comment %}
+			<p class="card__description mb-[6px] text-xs" itemprop="description">
+				Effortless light coverage skin tint
+			</p>
+		{% endcomment %}
+		{% if show_price == null %}
+            <div class="card__price body-xs mb-2.5 font-normal" data-price-wrapper>
+              <span class="block h-8">
+                {% if current_variant.compare_at_price > current_variant.price %}
+                  <span class="text-red-600" data-product-price>{{ current_variant.price | money }}</span>
+                  <span class="ml-1 text-base text-gray-500 line-through" data-compare-price>{{ current_variant.compare_at_price | money }}</span>
+                {% else %}
+                  <span data-product-price>{{ current_variant.price | money }}</span>
+                {% endif %}
+              </span>
+            </div>
+		{% endif %}
+		{% if show_swatch == null %}
+			{%- render 'card-product-swatches-2', variant: variant, product: card_product -%}
+		{% endif %}
+		<span
+			class="inline-block ml-1 quickbuy-variant-title body-xs text-grey-5C"
+		></span>
+		{% if show_cta == null %}
+			{%- render 'card-product-cta-btn',
+				product: card_product,
+				image: variant.image,
+				sku: variant.sku,
+				variant: variant,
+				position: media_position
+			-%}
+		{% endif %}
+	</div>
+</div>

@@ -1,0 +1,17 @@
+{% if paginate.next %}
+  <a id="NextPageLink" href="{{ paginate.next.url }}" style="display: none;"></a>
+{% endif %}
+
+<div id="LoadingSpinner" class="flex flex-col justify-center w-full text-center">
+  <button
+    class="section-menu__item daisybtn daisybtn-outline daisybtn-accent font-bold uppercase text-white p-2 text-xs md:text-sm h-10 min-h-10 "
+    data-submit-button-text="load more"
+  >
+    <span class="submit-btn-txt">load more</span>
+  </button>
+  <div class="flex w-full justify-center py-4">
+    <div class="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-pink-500"></div>
+  </div>
+</div>
+<div id="Pagination"></div>
+<div id="Sentinel" style="height: 1px;"></div>

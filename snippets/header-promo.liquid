@@ -1,0 +1,73 @@
+<div class="container responsive-container">
+      <p>         
+         
+ {%comment%}
+          TODAY ONLY! ENTER CODE <span style="font-weight: 800;">CYBERMONDAY40</span> AT CHECKOUT TO RECEIVE 40% OFF YOUR PURCHASE!
+        
+        
+             {{ settings.header_top_text | split: '|' | first }}                   
+          {% if settings.header_top_link_text != blank %}
+            <a href="{{ settings.header_top_link }}" class="link">{{ settings.header_top_link_text | split: '|' | first }}</a>
+   
+          {% endif %}
+       
+ {%endcomment%}     
+
+
+       NOW AVAILABLE AT <span style="font-weight: 800;">ULTA.COM</span>!
+         <a href="http://www.ulta.com/brand/la-girl" class="link" target="_blank">CLICK TO START SHOPPING</a>
+       
+ 
+      
+
+ 
+        <button id="search-close-banner" aria-expanded="false" role="button" type="button" class="icon svg-item close-banner">
+        <span class="screen-reader-text">icon-x</span>
+        <svg aria-hidden="true" title="icon-x">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-x"></use>
+        </svg>
+      </button>
+        </p>
+      </div>
+
+ <script>
+      if (jQuery.cookie('headerTop') == 'closed') {
+        jQuery('.header-top').remove();
+      }
+   else {
+     
+     $('.cbp-spmenu-vertical').css("top",95);
+
+          jQuery('.header-top button.close-banner').bind('click',function(){
+            var date = new Date();
+            var minutes = 30;
+            date.setTime(date.getTime() + (minutes * 60 * 1000));
+
+            jQuery('.header-top').remove();
+            $('.cbp-spmenu-vertical').css("top",60);
+            jQuery.cookie('headerTop', 'closed', {expires:date, path:'/'});
+          });
+        
+        }  
+  </script>
+
+ <script>
+      if (jQuery.cookie('headerTop') == 'closed') {
+        jQuery('.header-top-mobile').remove();
+      }
+   else {
+     
+     $('.cbp-spmenu-vertical').css("top",95);
+
+          jQuery('.header-top-mobile button.close-banner').bind('click',function(){
+            var date = new Date();
+            var minutes = 30;
+            date.setTime(date.getTime() + (minutes * 60 * 1000));
+
+            jQuery('.header-top-mobile').remove();
+            $('.cbp-spmenu-vertical').css("top",60);
+            jQuery.cookie('headerTop', 'closed', {expires:date, path:'/'});
+          });
+        
+        }  
+  </script>

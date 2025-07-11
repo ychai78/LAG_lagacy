@@ -1,0 +1,120 @@
+div#CollectionProducts .cards__item::before {
+    inline-size: var(--line-thickness);
+    block-size: 200vh;
+    inset-block-start: 0;
+    inset-inline-start: calc((var(--line-offset)* -1) - var(--line-thickness));
+}
+div#CollectionProducts .cards__item::after {
+    inline-size: 100vw;
+    block-size: var(--line-thickness);
+    inset-inline-start: 0;
+    inset-block-start: calc((var(--line-offset)* -1) - var(--line-thickness));
+}
+
+div#CollectionProducts .cards__item::before, div#CollectionProducts .cards__item::after {
+    content: '';
+    position: absolute;
+    background-color: var(--line-color);
+    z-index: 1;
+}
+div#CollectionProducts {
+    overflow: hidden;
+    --gap: 1rem;
+    --line-offset: calc(var(--gap) / 2);
+    --line-thickness: 2px;
+    --line-color: #f4f4f4;
+    gap: var(--gap);
+}
+div#CollectionProducts .card {
+    overflow: visible;
+}
+.section-menu {
+	margin: 0;
+	display: flex;
+	margin: 1rem 0;
+}
+.section-menu__wrapper {
+	padding: 1rem;
+}
+
+
+.current-category-display-name {
+	font-size: var(--fs-700);
+	font-weight: 600;
+	letter-spacing: var(--ls-h3);
+	margin-bottom: 0;
+}
+.current-category-display-name span span {
+	letter-spacing: var(--ls-overline);
+	font-size: var(--step--1);
+}
+
+.quicklinks__nav-menu > * {
+	scroll-snap-align: start;
+	flex: 0 0 auto;
+}
+
+.quicklinks__nav-menu:active {
+	cursor: grabbing;
+}
+.quicklinks__nav-menu::-webkit-scrollbar {
+	display: none;
+}
+
+.quicklinks__nav-menu::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+.quicklinks__nav-menu::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 5px;
+}
+.quicklinks__nav-menu::-webkit-scrollbar {
+	height: 10px;
+}
+
+
+    section#collection-header {
+      display: grid;
+      grid-template-areas: "stack";
+  }
+    section#collection-header >* {
+      grid-area: stack;
+  }
+
+  section#collection-header img {
+      place-self: center;
+  }
+    .collection-header-responsive-height {
+      height: clamp(130px, 10vw, 250px);
+  }
+    .category-title {
+      place-self: center;
+      font-size: clamp(2.5rem, 5vw, 5rem);
+      text-align: center;
+      line-height: 1;
+      margin: 0;
+  }
+
+@media only screen and (min-width: 768px) {
+.sortByOptions {
+	display: flex;
+	z-index: 5;
+	position: relative;
+}
+}
+#sortButton {
+display: flex;
+    flex-wrap: nowrap;
+    background: #fff;
+    border: none;
+    box-shadow: none;
+    font-weight: 700;
+}
+#sortButton:hover {
+	background: white;
+}
+
+.collection_product__image_promo {
+	margin-top: 1.5rem;
+}
+

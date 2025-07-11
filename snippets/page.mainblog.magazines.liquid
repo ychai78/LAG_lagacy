@@ -1,0 +1,56 @@
+<div class="events_listing magazine">
+  <span class="news-category">MAGAZINE</span>
+	<h1 class="entry-title">
+          <a href="{{article.url}}">
+          
+      
+        	{% comment %}
+			Grab tagline if exist, if not grab title
+			{% endcomment %}
+        	{% if article.metafields.c_f.blog_tagline  %}
+              {% assign tagline =  article.metafields.c_f.blog_tagline  %}
+              {{tagline}}
+        	{% else %} 
+              {% assign magazine_title = article.title | split:'-' | first %}
+              Featured on {{magazine_title}}
+           {% endif %}
+       
+      
+        
+       
+      
+      
+      </a>
+      </h1>
+      
+   
+      <div class="post-date">{{ article.published_at | date: '%m/%d/%y' }}</div>
+	 <div class="entry-content">
+
+		<img data-original="{{ article.image.src | img_url: 'large' }}" class="bg lazy" alt="{{ article_title  }}">
+  
+         <a class="post-shop-now"><strong>SHOP PRODUCTS FEATURED ON MAGAZINE</strong></a>
+  		 <section class ="post-products-used" style="display:none">
+              {% for tag in article.tags %}
+              {% for product in collections.all.products %} 
+                  {%- comment %}<locksmith:1dbd>{% endcomment -%}
+                    {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: collections.all, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+                  {%- comment %}</locksmith:1dbd>{% endcomment -%} 
+                  {% if product.handle contains {{tag}} %}
+            <div class="products-grid col-xs-3  col-md-3  shop-this-look-grid">
+              {% include 'product-grid-item_verticle' %}
+            </div>
+                  {% endif %}
+              {% endfor %}
+            {% endfor %}
+       </section>
+       
+    
+      
+  	</div>
+ 	</div>
+
+
+
+
+

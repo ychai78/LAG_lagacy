@@ -1,0 +1,205 @@
+{{ 'collections.css' | asset_url | stylesheet_tag }}
+
+{% comment %}
+Check if the '?coming-soon' parameter is present in the URL query string. If so, hide elements.
+{% endcomment %}
+{% capture finalurl %}{% render 'url-parser' %}{% endcapture %}
+{% if finalurl contains '?coming-soon' %}
+<style>
+  quickbuy-variant.variant-carousel, 
+  .quickbuy-variant-title, 
+  .js_AddToCart, 
+  .card__price {
+    display: none;
+  }
+  .collection-main .collection-quicklink {
+    display: none;
+  }
+</style>
+{% endif %}
+
+
+{% if collection.metafields.custom.custom_code.value %}
+  {{ collection.metafields.custom.custom_code.value }}
+{% endif %}
+
+{% assign product_per_page = 20 %}
+{% capture category_title %}
+  {% render 'collection titles' %}
+{% endcapture %}
+
+{% assign product_count = 0 %}
+{% for product in collection.products %}
+	{% unless product.tags contains 'coming soon' %}
+		{% assign product_count = product_count | plus: 1 %}
+	{% endunless %}
+    {% if finalurl contains '?coming-soon' %}
+      {% assign product_count = product_count | plus: 1 %}
+    {% endif %}
+{% endfor %}
+
+{% assign collection_list = collection.metafields.c_f.collection_type %}
+{% assign collection_linklist = linklists[collection_list].links %}
+{% assign category_title = category_title | strip | escape %}
+
+{% if collection.metafields.custom.background_image.value %}
+  	{% assign background_image = collection.metafields.custom.background_image.value %}
+<style>
+  .collection-main {
+    background-image: url("{{ background_image| image_url: width: 1600}}");
+    background-size: cover;
+    background-position: center;
+    backdrop-filter: blur(220px);
+}
+  div#CollectionProducts {
+    --line-color: transparent;
+    background-color: rgb(255 255 255 / 30%);
+    backdrop-filter: blur(10px);
+}
+</style>
+
+{% endif %}
+{% if collection.metafields.custom.background_color.value %}
+  	{% assign background_color = collection.metafields.custom.background_color.value  %}
+<style>
+  .collection-main {
+    background-color:{{background_color}};
+}
+</style>
+
+{% endif %}
+
+<div class="container-grid collection-main">
+	<div class="hidden mt-4 md:block">
+		{% render 'breadcrumb', class: 'flex' %}
+	</div>
+
+	<h1 class="my-4 uppercase" data-title="{{collection.title}}">{{ category_title }}</h1>
+
+	{% render 'collection-horz-menu', collection_linklist: collection_linklist %}
+
+	{% render 'collection-promo-banner' %}
+
+	<div class="sort-container my-4 border full-width">
+		<div class="container-grid">
+			<div class="flex items-center justify-between">
+				<span class="lowercase text-md search-results-count-container tracking-overline">
+					{{ product_count }}
+					{{ product_count | pluralize: 'item', 'items' }}
+				</span>
+				<div class="flex justify-end py-2 sortByOptions">
+					{%- render 'sort' -%}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	 {% paginate collection.products by product_per_page %}
+		<div
+			id="CollectionProducts"
+			class="grid grid-cols-2 gap-2 products-grid lg:grid-cols-3 lg:gap-4 lg:gap-y-8 xl:grid-cols-4"
+		>
+			{% if collection.products.size > 0 %}
+				{% assign eager_load_threshold = 6 %}
+				{% assign product_index = 0 %}
+	
+              {% if finalurl contains '?coming-soon' %}
+                {% comment %}this section is used when url contains ?coming-soon.  Displays all coming soon products {% endcomment %}
+                    {% for product in collection.products %}
+    					{% if product.tags contains 'new' %}
+    						
+    							{% assign product_index = product_index | plus: 1 %}
+    							{% render 'card-product-3',
+    								card_product: product,
+    								eager_load: true,
+    								eager_load_index: product_index,
+    								eager_load_threshold: eager_load_threshold
+    							%}
+    					
+    					{% endif %}
+    				{% endfor %}
+    
+    				{% comment %} Display non-new products {% endcomment %}
+    				{% for product in collection.products %}
+    					{% unless product.tags contains 'new' %}
+    						{% assign product_index = product_index | plus: 1 %}
+    						{% render 'card-product-3',
+    							card_product: product,
+    							eager_load: true,
+    							eager_load_index: product_index,
+    							eager_load_threshold: eager_load_threshold
+    						%}
+    					{% endunless %}
+    				{% endfor %}
+
+
+
+
+
+
+                
+                {% else %}
+                {% comment %}this section is used when url DOES NOT contains ?coming-soon. Displays a regular collection page{% endcomment %}
+				{% comment %} Display new products first {% endcomment %}
+				{% for product in collection.products %}
+					{% if product.tags contains 'new' %}
+						{% unless product.tags contains 'coming soon' %}
+							{% assign product_index = product_index | plus: 1 %}
+							{% render 'card-product-3',
+								card_product: product,
+								eager_load: true,
+								eager_load_index: product_index,
+								eager_load_threshold: eager_load_threshold
+							%}
+						{% endunless %}
+					{% endif %}
+				{% endfor %}
+
+				{% comment %} Display non-new products {% endcomment %}
+				{% for product in collection.products %}
+					{% unless product.tags contains 'new' or product.tags contains 'coming soon' %}
+						{% assign product_index = product_index | plus: 1 %}
+						{% render 'card-product-3',
+							card_product: product,
+							eager_load: true,
+							eager_load_index: product_index,
+							eager_load_threshold: eager_load_threshold
+						%}
+					{% endunless %}
+				{% endfor %}
+
+                {% endif %}
+
+              
+			{% endif %}
+		</div>
+
+		<div id="Pagination">
+			{% render 'pagination', paginate: paginate, anchor: '' %}
+		</div>
+  {% endpaginate %}
+
+	{% render 'collection-description' %}
+</div>
+
+<style>
+  .card__badges {
+  display: flex;
+  text-size:2em ;
+  min-width: fit-content;
+  white-space: nowrap;
+  font-weight:900;
+    transform: skew(-12deg);
+    justify-content: center;    /* Horizontal center */
+  align-items: center; 
+  /* font-style: italic; */
+}
+  .card__badges--new{
+    line-height: 1.5;
+    /* min-height:1.8em; */
+    height:2em;
+    display: inline-block;  
+    text-align: center;    
+  }
+
+</style>

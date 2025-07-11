@@ -1,0 +1,53 @@
+{{ 'slide-carousel-system.css' | asset_url | stylesheet_tag }}
+{% comment %}
+  <script defer src="{{ 'slide-carousel-system.js' | asset_url }}"></script>
+  Carousel will be initialized for elements with the class slide-carousel-system during the DOMContentLoaded event and use their id as the carousel identifier.
+{% endcomment %}
+
+{% comment %}
+if this works, then remove  ella.trendingSlider();
+{% endcomment %}
+<style>
+section#home-instagram-gallery {
+    background: #eb008b30;
+    padding: 4rem 0 2rem;
+}
+  
+</style>
+
+<section class="widget-trending-product" id="trend-carousel">
+    <div class="text-center px-8">
+      <h3 class="text-5xl font-bold mb-2 font-display">NOW TRENDING</h3>
+  
+      </div>
+
+  <div class="slide-carousel-system md:pl-[72px]" id="trends1">
+    <div class="slide-carousel-system__wrapper slide-carousel-system__wrapper--fluid" role="list">
+      {% for product in collections['whats-new'].products limit: 25 %}
+        {%- comment %}<locksmith:c83f>{% endcomment -%}
+          {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: collections.whats-new, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+        {%- comment %}</locksmith:c83f>{% endcomment -%}
+        {% unless product.tags contains 'coming soon' %}
+          {% if product.available %}
+            {% include 'product-grid-item-carousel' %}
+          {% endif %}
+        {% endunless %}
+      {% endfor %}
+    </div>
+    <div
+      class="slide-carousel-system__scroll-bar-wrapper"
+      role="scrollbar"
+      tabindex="0"
+      aria-controls="slide-carousel-system__scroll-bar-track"
+      aria-orientation="horizontal"
+      aria-valuemin="0"
+      aria-valuenow="0"
+      aria-hidden="false"
+    >
+      <div class="slide-carousel-system__scrollbar">
+        <div class="slide-carousel-system__scrollbar-track"></div>
+        <div class="slide-carousel-system__scrollbar-thumb" data-cursor=""></div>
+      </div>
+    </div>
+  </div>
+</section>

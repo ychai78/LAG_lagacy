@@ -1,0 +1,784 @@
+
+<div class="main-wrapper row store-listing-page">
+
+    
+  {% if page.metafields.custom.experience_page_images.value %}
+    {% assign item = page.metafields.custom.experience_page_images.value %}
+
+    {% for images in item %}
+    <div class="experience-block block{{ forloop.index }}">
+    <picture class="image-grid unselectable">
+      <source 
+        type="image/jpg" 
+        srcset="{{images | img_url: '2048x'}}"
+        sizes="100vw" width="auto" height="auto" data-aspectratio="NaN">
+     <img alt="{{ page_title}} - {{ forloop.index }}" src="{{ images | img_url: '2048x' }}"/>
+    </picture>
+  </div>
+   {% endfor %}
+ 
+    {% endif %}
+
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBmBGiSaVS6gzQJaI-PN_xoQnVP5aiCdXM&libraries=places,geometry"></script>
+
+
+<div class="flex flex-col min-h-50vh md:!flex-row mt-4">
+  <!-- Map container -->
+  <div class="w-full md:w-2/3 map-container order-1 md:order-1">
+    <div id="map" class="w-full h-full"></div>
+  </div>
+  <!-- Store list and search container -->
+ <div class="w-full md:w-1/3 p-4 order-2 md:order-2 overflow-y-auto min-h-max">
+   
+    <div id="storeCount" class="text-xl font-bold mb-4"></div>
+
+    <form class="mb-4">   
+      <div class="relative">
+        <input type="text" id="searchInput" placeholder="Address, City ... " class="w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" required />
+       <button type="submit" class="absolute right-2.5 bottom-2.5 bg-gray-500 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 text-white font-medium rounded-lg text-sm px-4 py-1">Search</button>      </div>
+    </form>
+
+    <ul id="storeList" class="space-y-4"></ul>
+
+    <div class="pagination flex justify-between mt-4" id="pagination">
+      <button id="prevButton" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-l">
+        Previous
+      </button>
+      <button id="nextButton" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-r">
+        Next
+      </button>
+    </div>
+  </div>
+</div>
+
+  
+<div class="rte">{{ page.content | split: '[lang2]' | first }}</div>
+
+<script>
+// Global variables
+// Global variables
+let source = 'https://cdn.shopify.com/s/files/1/0944/0398/files/cvs-halloween-list2.json?v=1724972826'
+let map;
+let markers = [];
+let stores = [];
+let storesInView = [];
+let infoWindow;
+let currentPage = 1;
+const storesPerPage = 5;
+const defaultCenter = { lat: 34.0522, lng: -118.2437 }; // Los Angeles
+const searchRadius = 16186.9; // 20 miles in meters
+let isFirstLoad = true;
+const initialZoom = 12;
+const minZoom = 3; 
+
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+function toTitleCase(str) {
+    return str.toLowerCase().split(' ').map(word => {
+        // Check if the word is a 2 or 3 letter abbreviation
+        if (word.length <= 3 && word === word.toUpperCase()) {
+            return word;
+        }
+        return word.charAt(0).toUpperCase() + word.slice(1);
+    }).join(' ');
+}
+
+function formatAddress(address) {
+    return address.split(' ').map(word => {
+        // Keep 2 or 3 letter abbreviations capitalized
+        if (word.length <= 3 && word === word.toUpperCase()) {
+            return word;
+        }
+        return toTitleCase(word);
+    }).join(' ');
+}
+
+async function initMap() {
+    console.log("Initializing map...");
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: defaultCenter,
+        zoom: initialZoom,
+        minZoom: minZoom
+    });
+
+    infoWindow = new google.maps.InfoWindow();
+
+    const input = document.getElementById('searchInput');
+    const searchBox = new google.maps.places.SearchBox(input);
+
+    map.addListener('bounds_changed', function() {
+        searchBox.setBounds(map.getBounds());
+    });
+
+    const debouncedUpdateStoresInView = debounce(updateStoresInView, 300);
+    map.addListener('idle', function() {
+        if (!isFirstLoad) {
+            debouncedUpdateStoresInView();
+        }
+    });
+
+    searchBox.addListener('places_changed', function() {
+        const places = searchBox.getPlaces();
+        if (places.length == 0) return;
+
+        const bounds = new google.maps.LatLngBounds();
+        places.forEach(function(place) {
+            if (!place.geometry) return;
+
+            if (place.geometry.viewport) {
+                bounds.union(place.geometry.viewport);
+            } else {
+                bounds.extend(place.geometry.location);
+            }
+        });
+        map.fitBounds(bounds);
+
+        findNearbyStores(places[0].geometry.location);
+    });
+
+    await loadStores();
+
+    // Try to get user's location
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const userLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                map.setCenter(userLocation);
+                findNearbyStores(userLocation);
+            },
+            () => {
+                // Error getting location or permission denied
+                console.log("Geolocation failed. Using default location.");
+                findNearbyStores(defaultCenter);
+            }
+        );
+    } else {
+        // Browser doesn't support geolocation
+        console.log("Geolocation not supported. Using default location.");
+        findNearbyStores(defaultCenter);
+    }
+
+    isFirstLoad = false;
+
+    // Add event listeners for pagination buttons
+    document.getElementById('prevButton').addEventListener('click', () => changePage(-1));
+    document.getElementById('nextButton').addEventListener('click', () => changePage(1));
+}
+
+async function loadStores() {
+    console.log("Loading stores...");
+    try {
+        const response = await fetch(source);
+        const data = await response.json();
+        stores = data.map(store => ({
+            name: store.name,
+            address: formatAddress(store.Address),
+            city: toTitleCase(store.City),
+            state: store.State,
+            zip: store.Zip,
+            lat: store.latitude,
+            lng: store.longitude,
+            product: Array.isArray(store.SKU_NBR) ? store.SKU_NBR.join(', ') : store.SKU_NBR.toString()
+        }));
+        console.log("Stores loaded:", stores);
+    } catch (error) {
+        console.error("Error loading stores:", error);
+    }
+}
+
+function findNearbyStores(location) {
+    console.log("Finding nearby stores...");
+    storesInView = stores.map(store => {
+        const distance = google.maps.geometry.spherical.computeDistanceBetween(
+            location,
+            new google.maps.LatLng(store.lat, store.lng)
+        );
+        return {...store, distance};
+    }).filter(store => store.distance <= searchRadius)
+      .sort((a, b) => a.distance - b.distance);
+
+    currentPage = 1; // Reset to first page when searching
+    updateStoreList(storesInView);
+    updateMap(storesInView);
+
+    if (storesInView.length < 3) {
+        zoomOutUntilStoresVisible(location);
+    }
+}
+
+function zoomOutUntilStoresVisible(location) {
+    let currentZoom = map.getZoom();
+    let visibleStores = [];
+
+    const zoomOutInterval = setInterval(() => {
+        currentZoom--;
+        map.setZoom(currentZoom);
+
+        const bounds = map.getBounds();
+        visibleStores = stores.filter(store => 
+            bounds.contains(new google.maps.LatLng(store.lat, store.lng))
+        );
+
+        if (visibleStores.length >= 3 || currentZoom <= minZoom) {
+            clearInterval(zoomOutInterval);
+            storesInView = visibleStores;
+            updateStoreList(visibleStores);
+            updateMap(visibleStores);
+        }
+    }, 200);
+}
+
+function updateStoresInView() {
+    const bounds = map.getBounds();
+    if (!bounds) return;
+
+    const center = map.getCenter();
+    storesInView = stores.filter(store => 
+        bounds.contains(new google.maps.LatLng(store.lat, store.lng))
+    ).map(store => {
+        const distance = google.maps.geometry.spherical.computeDistanceBetween(
+            center,
+            new google.maps.LatLng(store.lat, store.lng)
+        );
+        return {...store, distance};
+    }).sort((a, b) => a.distance - b.distance);
+
+    currentPage = 1; // Reset to first page when view changes
+    updateStoreList(storesInView);
+    updateMap(storesInView);
+}
+
+function updateStoreList(storeList = storesInView) {
+    console.log("Updating store list...");
+    const listElement = document.getElementById('storeList');
+    listElement.innerHTML = '';
+
+    const startIndex = (currentPage - 1) * storesPerPage;
+    const endIndex = startIndex + storesPerPage;
+    const paginatedStores = storeList.slice(startIndex, endIndex);
+
+    paginatedStores.forEach((store, index) => {
+        const li = document.createElement('li');
+        li.className = 'store-item';
+
+        // Format the product list
+        let productHtml = '';
+        const products = store.product.split(',').map(p => p.trim());
+        if (products.length > 0) {
+            productHtml = `
+                <div class="store-product pl-12">Products available:
+                    <ul class="product-list mb-0">
+                        ${products.map(p => `<li data-product="${p}">${p}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        } else {
+            productHtml = `<div class="store-product pl-12">Product available: ${store.product}</div>`;
+        }
+
+        li.innerHTML = `
+            <div class="store-name cursor-pointer"><span class="store-number">${startIndex + index + 1}</span> ${store.name}  <div class="store-distance inline text-gray-600 lowercase ml-2">${store.distance ? (store.distance / 1609.34).toFixed(2) + ' miles' : 'N/A'}</div></div>
+            <div class="store-address text-gray-700 mb-2 pl-12">${store.address}<br>${store.city}, ${store.state} ${store.zip}</div>
+            ${productHtml}
+        `;
+        li.querySelector('.store-name').addEventListener('click', () => {
+            map.setCenter({lat: store.lat, lng: store.lng});
+            map.setZoom(15);
+            const marker = markers.find(m => m.getPosition().equals(new google.maps.LatLng(store.lat, store.lng)));
+            if (marker) {
+                google.maps.event.trigger(marker, 'click');
+            }
+        });
+        listElement.appendChild(li);
+    });
+
+    document.getElementById('storeCount').textContent = `${storeList.length} STORES`;
+    updatePaginationButtons(storeList.length);
+}
+
+function updatePaginationButtons(totalStores) {
+    const totalPages = Math.ceil(totalStores / storesPerPage);
+    const prevButton = document.getElementById('prevButton');
+    const nextButton = document.getElementById('nextButton');
+
+    prevButton.disabled = currentPage === 1;
+    nextButton.disabled = currentPage === totalPages;
+}
+
+function changePage(direction) {
+    const totalStores = storesInView.length;
+    const totalPages = Math.ceil(totalStores / storesPerPage);
+
+    currentPage += direction;
+
+    if (currentPage < 1) currentPage = 1;
+    if (currentPage > totalPages) currentPage = totalPages;
+
+    updateStoreList(storesInView);
+}
+
+function updateMap(storeList = storesInView) {
+    console.log("Updating map...");
+    // Clear existing markers
+    markers.forEach(marker => marker.setMap(null));
+    markers = [];
+
+    // Add new markers
+    storeList.forEach((store, index) => {
+        const marker = new google.maps.Marker({
+            position: {lat: store.lat, lng: store.lng},
+            map: map,
+            label: (index + 1).toString()
+        });
+
+        marker.addListener('click', () => {
+            const products = store.product.split(',').map(p => p.trim());
+            let productHtml = products.length > 0
+                ? `<ul class="product-list">${products.map(p => `<li>${p}</li>`).join('')}</ul>`
+                : store.product;
+
+            let content = `
+                <div class="marker">
+                    <h3>${store.name}</h3>
+                    <p class="marker-address">${store.address}<br>${store.city}, ${store.state} ${store.zip}</p>
+                    <p class="marker-distance">Distance: ${store.distance ? (store.distance / 1609.34).toFixed(2) + ' miles' : 'N/A'}</p>
+                    <p class="marker-products">Product${products.length > 1 ? 's' : ''} available:</p>
+                    ${productHtml}
+                </div>
+            `;
+            infoWindow.setContent(content);
+            infoWindow.open(map, marker);
+        });
+
+        markers.push(marker);
+    });
+}
+
+window.onload = initMap;
+</script>
+
+
+
+  
+</div>
+  <style>
+
+   .product-list li[ data-product="Celestial Soiree Collection"] {
+    color: #5150a5;font-weight: 700;
+}
+      .product-list li[  data-product="Witchy Glam Collection"] {
+ color: #57934f;font-weight: 700;
+}
+  
+   body#\32 024-cvs-halloween-promo-store-list .main-content.site-wrap {
+	padding: 0 0;
+}
+body#\32 024-cvs-halloween-promo-store-list .store-listing-page {
+	padding-left: 0;
+	padding-right: 0;
+}
+body#\32 024-cvs-halloween-promo-store-list .main-wrapper, body#\32 024-cvs-halloween-promo-store-list .site-wrap {
+	max-width: 1600px !important;
+}
+body#\32 024-cvs-halloween-promo-store-list .store-name:before{
+	display:none;
+}
+      body#\32 024-cvs-halloween-promo-store-list .site-wrap.nav-menu {
+    max-width: 1200px !important;
+}
+
+#map {
+	flex-grow: 1;
+}
+#map {
+	height: 50vh;
+	/* Default height for small screens */
+}
+@media (min-width: 768px) {
+	#map {
+		height: 800px !important;
+		/* Fixed height for medium screens and larger */
+		min-height: 800px !important;
+	}
+}
+/* Ensure the map container doesn't collapse */
+.map-container {
+	min-height: 50vh;
+}
+@media (min-width: 768px) {
+	.map-container {
+		min-height: 800px;
+	}
+}
+.gm-style-iw-d .product-list {
+	margin-bottom: 0;
+}
+.marker ul.product-list li {
+	font-weight: 500;
+}
+.marker-address {
+	margin-top: .5rem;
+}
+.marker h3 {
+	font-weight: 600;
+}
+
+.search-box {
+	display: flex;
+	margin-bottom: 20px;
+}
+#searchInput {
+	flex-grow: 1;
+	padding: 10px;
+	font-size: 16px;
+	border: 1px solid #ccc;
+}
+#searchButton {
+	background-color: #e91e63;
+	color: white;
+	border: none;
+	padding: 10px;
+	cursor: pointer;
+}
+.store-list {
+	list-style-type: none;
+	padding: 0;
+}
+.store-item {
+	margin-bottom: 20px;
+	border-bottom: 1px solid #eee;
+	padding-bottom: 20px;
+}
+.store-name {
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+.see-more {
+	color: #e91e63;
+	text-decoration: none;
+}
+p.marker-distance {
+	padding: .35rem 0;
+}
+.pagination button {
+	margin: 0 5px;
+	padding: 5px 10px;
+	border: 1px solid #ccc;
+	background-color: #fff;
+	cursor: pointer;
+}
+.pagination button.active {
+	background-color: #e91e63;
+	color: white;
+}
+.pagination button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+.store-number {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	line-height: 20px;
+	text-align: center;
+	background-color: #e91e63;
+	color: white;
+	border-radius: 50%;
+	margin-right: 10px;
+}
+.pagination {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 20px;
+}
+.product-list {
+	list-style-type: none;
+	padding-left: 20px;
+	margin-top: 5px;
+}
+.product-list li:before {
+	content: "- ";
+	margin-left: -20px;
+}
+</style> 
+  <style>
+     .collapse {
+  visibility: collapse;
+}
+.absolute {
+  position: absolute;
+}
+.relative {
+  position: relative;
+}
+.bottom-2\.5 {
+  bottom: 0.625rem;
+}
+.right-2\.5 {
+  right: 0.625rem;
+}
+.order-1 {
+  order: 1;
+}
+.order-2 {
+  order: 2;
+}
+.mb-0 {
+  margin-bottom: 0px;
+}
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+.mb-4 {
+  margin-bottom: 1rem;
+}
+.ml-2 {
+  margin-left: 0.5rem;
+}
+.mt-4 {
+  margin-top: 1rem;
+}
+.block {
+  display: block;
+}
+.inline {
+  display: inline;
+}
+.flex {
+  display: flex;
+}
+.table {
+  display: table;
+}
+
+.h-full {
+  height: 100%;
+}
+.min-h-max {
+  min-height: max-content;
+}
+.w-1\/3 {
+  width: 33.333333%;
+}
+.w-2\/3 {
+  width: 66.666667%;
+}
+.w-full {
+  width: 100%;
+}
+.flex-grow {
+  flex-grow: 1;
+}
+.transform {
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.\!flex-row {
+  flex-direction: row!important;
+}
+.flex-col {
+  flex-direction: column;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.space-y-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+}
+.overflow-y-auto {
+  overflow-y: auto;
+}
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+.rounded-l {
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+.rounded-r {
+  border-top-right-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+.border {
+  border-width: 1px;
+}
+.border-blue-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity));
+}
+.border-gray-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity));
+}
+.bg-gray-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+.bg-gray-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+}
+.bg-gray-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+}
+.bg-gray-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(107 114 128 / var(--tw-bg-opacity));
+}
+.bg-gray-800 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(31 41 55 / var(--tw-bg-opacity));
+}
+.p-4 {
+  padding: 1rem;
+}
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.pl-12 {
+  padding-left: 3rem;
+}
+.ps-10 {
+  padding-inline-start: 2.5rem;
+}
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+.font-bold {
+  font-weight: 700;
+}
+.font-medium {
+  font-weight: 500;
+}
+.lowercase {
+  text-transform: lowercase;
+}
+.text-gray-600 {
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity));
+}
+.text-gray-700 {
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity));
+}
+.text-gray-800 {
+  --tw-text-opacity: 1;
+  color: rgb(31 41 55 / var(--tw-text-opacity));
+}
+.text-gray-900 {
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity));
+}
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+.outline-none {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.ring-4 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-blue-300 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(147 197 253 / var(--tw-ring-opacity));
+}
+.ring-blue-500 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity));
+}
+.filter {
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.transition {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.hover\:bg-gray-300:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+}
+.hover\:bg-gray-800:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(31 41 55 / var(--tw-bg-opacity));
+}
+.focus\:border-blue-500:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(59 130 246 / var(--tw-border-opacity));
+}
+.focus\:outline-none:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.focus\:ring-4:focus {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(4px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.focus\:ring-blue-300:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(147 197 253 / var(--tw-ring-opacity));
+}
+.focus\:ring-blue-500:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity));
+}
+@media (min-width: 768px) {
+  .md\:order-1 {
+    order: 1;
+  }
+  .md\:order-2 {
+    order: 2;
+  }
+  .md\:w-1\/3 {
+    width: 33.333333%;
+  }
+  .md\:w-2\/3 {
+    width: 66.666667%;
+  }
+  .md\:\!flex-row {
+    flex-direction: row!important;
+  }
+}
+
+   </style>    

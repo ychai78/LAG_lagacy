@@ -1,0 +1,24 @@
+
+
+    {%- liquid
+      assign body_font_900 = settings.type_body_font | font_modify: 'weight', '900'
+      assign body_font_700 = settings.type_body_font | font_modify: 'weight', '700'
+      assign body_font_600 = settings.type_body_font | font_modify: 'weight', '600'
+      assign body_font_400 = settings.type_body_font | font_modify: 'weight', '400'       
+      assign body_font_italic = settings.type_body_font | font_modify: 'style', 'italic'
+      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
+    %}
+ {% style %}
+
+      {{ body_font_900 | font_face: font_display: 'swap' }}
+      {{ body_font_700 | font_face: font_display: 'swap' }}
+      {{ body_font_600 | font_face: font_display: 'swap' }}
+      {{ body_font_400 | font_face: font_display: 'swap' }}   
+      {{ body_font_italic | font_face: font_display: 'swap' }}
+      {{ body_font_bold_italic | font_face: font_display: 'swap' }}
+
+
+   {% endstyle %}
+<link rel="preload" href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900&amp;display=swap" as="style">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jost:100,200,300,400,500,600,700,800,900&amp;display=swap">
+

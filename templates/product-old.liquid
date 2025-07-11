@@ -1,0 +1,106 @@
+<!-- Add Swiper.js CSS -->
+{{ 'swiper.min.css' | asset_url | stylesheet_tag }}
+<!-- Add Swiper.js JavaScript -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
+
+<!-- Add GLightbox CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
+
+<!-- Add GLightbox JavaScript -->
+<script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js" defer></script>
+
+{{ 'product.css' | asset_url | stylesheet_tag }}
+{{ 'product-main-slider.css' | asset_url | stylesheet_tag }}
+{{ 'product-thumbs-slider.css' | asset_url | stylesheet_tag }}
+
+{% assign first_variant = product.variants.first %}
+<div class="mx-auto product-main">
+	<div
+		id="hiddenProductId"
+		style="display:none;"
+		data-product-id="{{product.id}}"
+		data-product-purchasable="{% if product.vendor == 'NotForSale' %}no{% else %}yes{% endif %}"
+	></div>
+
+	<div data-anchor="product" id="product_top">
+		<div class="container-grid gap-y-4 lg:grid ">
+			{% render 'breadcrumb' %}
+		</div>
+
+		<div class="PDP_section container-grid gap-y-4">
+			<div
+				class="full-width md:px-8 py-8 flex flex-col items-start w-full mx-auto product-container md:gap-4 md:flex-row"
+				style="min-height: 100vh; "
+			>
+				<div class="flex-auto block w-full product-main-image md:sticky md:top-4 md:w-6/12 lg:w-7/12">
+					{% render 'product-media', product: product, first_variant: first_variant %}
+				</div>
+				<div
+					class="flex-auto w-full px-4 product-info md:px-0 md:w-6/12 lg:w-5/12 lg:pl-8"
+					style="max-width: 100vw;overflow: hidden;"
+				>
+					{% render 'product-info', product: product %}
+
+					{% render 'product-form', product: product %}
+                  
+                  <div class="free-shipping-promo p-4 uppercase font-bold text-sm justify-center items-center flex my-4 bg-pink-50">
+                    <span class="message__icon">
+                      <svg viewBox="0 0 24 24" aria-label="collection_points-info-title" role="img" focusable="false"><path d="M16.122 4a.46.46 0 0 1 .462.458v2.446h3.212a.46.46 0 0 1 .371.186l3.744 5.069c.058.078.09.173.09.271v5.113a.46.46 0 0 1-.461.457l-2.576.001a3.5 3.5 0 0 1-6.92.053H8.956A3.5 3.5 0 0 1 2.036 18L1.46 18a.46.46 0 0 1-.46-.457V12H.393C.177 12 0 11.774 0 11.5s.177-.5.393-.5H1v-1H.348C.156 10 0 9.774 0 9.5S.156 9 .348 9H1V8H.417C.187 8 0 7.774 0 7.5S.188 7 .417 7H1v-.272a2.74 2.74 0 0 1 2.58-2.723L3.747 4ZM5.5 15a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5Zm12 0a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5Zm0 1a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm-12 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm12 1a.5.5 0 1 0 0 1 .5.5 0 0 0 0-1Zm-12 0a.5.5 0 1 0 0 1 .5.5 0 0 0 0-1Zm10.16-9.637V4.915H3.747a1.82 1.82 0 0 0-1.824 1.813V7h3.66c.23 0 .417.226.417.5s-.188.5-.417.5h-3.66v1h2.729c.192 0 .348.226.348.5s-.156.5-.348.5H1.923v1h1.684c.216 0 .393.226.393.5s-.177.5-.393.5H1.923v5.085h.101a3.5 3.5 0 0 1 6.956.035h5.04a3.5 3.5 0 0 1 6.956-.035h2.1V12.58l-3.514-4.761H16.12a.46.46 0 0 1-.46-.456ZM18.674 9c.129 0 .25.07.325.187l1.973 3.12c.085.134.095.31.028.455a.393.393 0 0 1-.352.238h-4.207c-.219 0-.397-.197-.397-.44V9.44c0-.243.178-.44.397-.44h2.233Zm-.206.88h-1.631v2.24h3.048l-1.417-2.24ZM9.925 7c.294 0 .535.242.535.536a.538.538 0 0 1-.535.535l-1.39-.001A.537.537 0 0 1 8 7.537C8 7.242 8.24 7 8.535 7h1.39Z"></path></svg>
+                    </span>
+                    FREE SHIPPING ON ORDERS OVER $35
+                  </div>
+                  
+					{% render 'see-it-in-action2' %}
+					{% render 'product-accordion', product: product %}
+
+					{% render 'product-description-images' %}
+				</div>
+			</div>
+		</div>
+		<div class="product_detail_section mt-4 container-grid overflow-hidden">
+			{% section 'responsive-images-section' %}
+
+			{% if product.metafields.custom.product_additional_promo_images %}
+				<section class="PDP_section grid gap-y-4 full-width">
+					{% assign array_of_images = product.metafields.custom.product_additional_promo_images.value %}
+					{% for images in array_of_images %}
+						{%- capture alt_tag -%}{{ images | split: '/' | last | split: '?' | first | split: '.' | first | replace: '_', ' ' }}{%- endcapture -%}
+
+						{%- render 'responsive-image', image: images, sizes: '100vw', lazyload: true, alt: alt_tag -%}
+					{% endfor %}
+				</section>
+			{% endif %}
+
+			{% if product.metafields.custom.product_additional_content %}
+				<section
+					class="PDP_section grid gap-y-4 full-width">
+					{% assign content = product.metafields.custom.product_additional_content %}
+					{{ content }}
+				</section>
+			{% endif %}
+
+			<section class="PDP_section grid gap-y-4 ">
+				<h2 class="PDP_heading text-[--step-3]">Customers Also Bought</h2>
+
+				<div id="cbb-also-bought-box"></div>
+			</section>
+
+			<section class="PDP_section grid gap-y-4  mb-8">
+				<h2 class="PDP_heading">REVIEWS</h2>
+				{% render 'bv-ratings-reviews' %}
+				{% render 'bv-questions-answers' %}
+			</section>
+		</div>
+	</div>
+</div>
+
+<style></style>
+<script>
+	window.productPageData = {
+	  product: {{ product | json }},
+	  productVariants: {{ product.variants | json }},
+	  productMedia: {{ product.media | json }}
+	};
+</script>
+
+<script src="{{ 'product.js' | asset_url }}" defer></script>

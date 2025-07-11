@@ -1,0 +1,163 @@
+{% assign url = article.url | remove: '/blogs/' %}
+{% assign blog_category = url | split: '/' | first %}
+<div class="container-grid">
+
+{% render 'breadcrumb' %}
+       
+
+
+  <div class="mx-auto flex flex-wrap py-6">
+    <!-- Post Section -->
+
+    <section class="flex w-full flex-col items-center px-3">
+      <article class="my-4 grid lg:grid-cols-2">
+        <div class="flex justify-center items-start p-4 ">
+          {% render 'image',
+            images: article.image,
+            alt_tag: article.title,
+            class: 'lazyload block rounded-lg md:w-[clamp(30vw,100%,40vh)]'
+          %}
+        </div>
+        <div class="flex flex-col justify-start p-4">
+          <a href="/pages/news-events" class="pb-4 text-sm font-bold uppercase text-pink-600">{{ blog_category }}</a>
+          <h2 class="text-3xl font-bold text-balance max-w-[30ch]">{{ article.title }}</h2>
+          <p class="pb-8 text-sm mt-0 text-gray-600">Published on {{ article.published_at | date: '%m/%d/%y' }}</p>
+          {% if article.content %}
+            <div class="article-content pb-3">{{ article.content }}</div>
+          {% endif %}
+          {% section 'multiarticle' %}
+          {% section 'multiple_slide_slider' -%}
+        </div>
+      </article>
+    </section>
+{% comment %}
+    <!-- Sidebar Section -->
+    <aside class="flex w-full  items-center px-3">
+      <div class="my-4 flex w-full flex-col bg-white p-6 shadow-">
+        <p class="pb-5 text-xl font-semibold">See us in the press</p>
+
+        <div class="grid lg:flex gap-8">
+          {% for article in blogs.magazines.articles limit: 3 %}
+            {% assign url = article.url | remove: '/blogs/' %}
+
+            {% assign blog_category = url | split: '/' | first %}
+            {% include 'page.mainblog.magazines_side' %}
+          {% endfor %}
+        </div>
+      </div>
+    </aside>
+    {% endcomment %}
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Check if the page contains the .article-content element
+    const articleContent = document.querySelector('.article-content');
+
+    if (articleContent) {
+      // Find all 'a' tags within .article-content
+      const links = articleContent.querySelectorAll('a');
+
+      // Add the class .link-underline to each 'a' tag
+      links.forEach(function(link) {
+        link.classList.add('link-underline');
+      });
+
+      // Find all 'strong' elements within .article-content
+      const strongElements = articleContent.querySelectorAll('strong');
+
+      // Remove each 'strong' element but keep its contents
+      strongElements.forEach(function(strong) {
+        while (strong.firstChild) {
+          strong.parentNode.insertBefore(strong.firstChild, strong);
+        }
+        strong.parentNode.removeChild(strong);
+      });
+    }
+  });
+
+
+
+
+
+    $(document).ready(function(){
+      $('.bxslider').slick({
+         dots: true,
+         lazyLoad: 'ondemand',
+                infinite: false,
+                slidesToShow: 4,
+                slidesToScroll: 4,rows: 0,
+                nextArrow: '<div class="slick-button-next"></div>',
+                prevArrow: '<div class="slick-button-prev"></div>'
+      });
+
+      $('.blogSlider').slick({
+
+               slidesToShow: 3,
+               slidesToScroll: 1,
+               arrows: false,
+               infinite: false,
+               dots: false,
+               swipeToSlide: true,
+               draggable:true,
+
+                    responsive: [
+
+
+                  {
+                    breakpoint: 768,
+                    settings: {
+                      slidesToShow: 3,
+                      slidesToScroll: 1,
+                      arrows: false,
+                      infinite: false,
+                      dots: false
+
+                    }
+                  }
+
+                ]
+      });
+    });
+
+
+
+
+
+
+    {% if article.metafields.c_f.blog_event_js != null %}
+    {{ article.metafields.c_f.blog_event_js }}
+                {% endif %}
+</script>
+
+<style>
+.article-content p+p {
+    margin-top: 1rem;
+} 
+  iframe.yt-short {
+      width: 100%;
+      height: 100%;
+      aspect-ratio: 9 / 16;
+      margin: 0 1rem;
+      border: none;
+  }
+    iframe.yt-short:after{
+      content: ""; background: transparent; width: 100%; height: 100%; min-height: 1px; position: absolute; top: 0;
+    }
+
+    .blog-video.head-video .post-video img {
+      max-width: 100%;
+  }
+    .blog-video.head-video {
+      border-top: none;
+  }
+    .blog-video.head-video {
+      border-top: none;
+      text-align: center;
+  }
+.blogSlider {
+    margin: 2rem 0;
+}
+
+</style>

@@ -1,0 +1,72 @@
+{% schema %}
+{
+  "name": "Custom Liquid",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "custom_liquid",
+      "label": "Custom Liquid Code",
+      "info": "Enter your custom Liquid code here"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_wrapper",
+      "label": "Use container wrapper",
+      "default": false,
+      "info": "If checked, wraps the custom Liquid in a container with class 'container-grid'"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Liquid"
+    }
+  ]
+}
+{% endschema %}
+
+{% style %}
+.section-{{ section.id }}-padding {
+  padding-top: {{ section.settings.padding_top }}px;
+  padding-bottom: {{ section.settings.padding_bottom }}px;
+}
+{% endstyle %}
+
+<div class="custom-liquid-section section-{{ section.id }}-padding">
+  {% if section.settings.use_wrapper %}
+    <div class="container-grid">
+  {% endif %}
+
+  <div class="custom-liquid-container">
+    {% if section.settings.custom_liquid != blank %}
+      {% liquid
+        echo section.settings.custom_liquid
+      %}
+    {% else %}
+      <p>No custom Liquid code has been added yet.</p>
+    {% endif %}
+  </div>
+
+  {% if section.settings.use_wrapper %}
+    </div>
+  {% endif %}
+</div>

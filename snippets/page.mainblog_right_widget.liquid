@@ -1,0 +1,50 @@
+<section class="right-blog hidden lg:block">
+  
+
+  
+  <div class="magazine-feed">
+  <h2 class="the-wall title">See us in the press</h2>
+    <h3>Find our products in magazines</h3>
+    <div class="magazine-wrapper">
+    
+
+	{% for article in blogs.magazines.articles limit:3 %}
+
+
+
+
+  {%- comment %}<locksmith:83ec>{% endcomment -%}
+    {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: article, subject_parent: blogs.magazines, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+  {%- comment %}</locksmith:83ec>{% endcomment -%}
+
+
+
+
+  {% assign url = article.url   | remove: "/blogs/"  %}
+  {% assign blog_category = url | split:'/' | first %}
+
+<article id="{{article.id}}" 
+         class="post type-post category-uncategorized magazine-tag">
+     
+  
+  
+   {% include 'page.mainblog.magazines_side' %}
+
+    
+</article>
+
+ 	{% endfor %}
+      <button type="button" class="mb me-2 rounded-lg border border-pink-700 px-3 py-2 text-center text-sm font-bold text-pink-700 hover:bg-pink-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-pink-300">
+          <a href="/blogs/magazines">View More</a>
+        </button>
+ 
+
+    </div>
+  </div>
+</section>
+
+<style>
+.magazine-feed {
+    margin-top: 3rem;
+}
+</style>

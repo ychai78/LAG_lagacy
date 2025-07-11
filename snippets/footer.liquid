@@ -1,0 +1,265 @@
+{% assign h3_class = 'text-center lg:text-left text-base font-semibold uppercase pt-6 pb-2 lg:p-0' %}
+{% assign fheader_class = 'block text-center lg:text-left mt-4 lg:mt-0' %}
+{% assign ul_class = 'flex-col lg:mt-2 lg:gap-0 lg:p-0' %}
+
+
+<footer id="main-footer" class="bg-secondary-pink">
+  <div class="w-full">
+
+    {% if template == 'page.marketing-resources-home' or template == 'metaobject/display' %} 
+      <footer class="px-4 pb-10 pt-5 container-grid sm:px-6 lg:px-8">
+        
+        <div class="grid lg:grid-cols-5">
+
+          <div class="flex flex-col justify-center col-span-5 my-4 mt-0 lg:border-b footer__privacy border-gray lg:mt-8 lg:flex-row">
+            <div class="{{ fheader_class }}">
+              <h3 class="{{ h3_class }}">
+                {{ linklists['privacy-terms'].title | escape }}
+              </h3>
+              <ul
+                class="flex flex-col my-0 footer__bottom-privacy lg:flex-row lg:gap-4 lg:p-0 lg:py-4"
+                data-display="flex"
+              >
+                {% for link in linklists['privacy-terms'].links %}
+                  {%- comment %}<locksmith:6464>{% endcomment -%}
+                    {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists.privacy-terms, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+                  {%- comment %}</locksmith:6464>{% endcomment -%}
+                  <li>
+                    <a href="{{ link.url }}">{{ link.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+
+          <div class="flex justify-center col-span-5 mt-4">
+            {% render 'social' %}
+          </div>
+          <div class="flex justify-center col-span-5 mt-4 text-sm">
+            <span>© {{ 'now' | date: '%Y' }} L.A. GIRL COSMETICS. ALL RIGHTS RESERVED</span>
+          </div>
+        </div>
+      </footer>
+    {% else %}
+    <footer class="px-4 py-10 container-grid sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-5">
+      <div class="klaviyo-form-Tg5LdC min-w-min "></div>
+    {%- comment %} <div class="col-span-5 footer__newsletter lg:col-span-2">
+        {% render 'newsletter' %}
+      
+      </div>{% endcomment -%}
+      
+      <div class="flex flex-col col-span-5 footer__menu justify-evenly lg:col-span-3 lg:flex-row">
+        <div class="{{ fheader_class }}" data-col="customer-service">
+          <h3 class="{{ h3_class }}">
+            {{ linklists['customer-service'].title | escape }}
+          </h3>
+          <ul
+            class="{{ ul_class }}"
+            data-display="flex"
+          >
+            {% for link in linklists['customer-service'].links %}
+              {%- comment %}<locksmith:0543>{% endcomment -%}
+                {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists.customer-service, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+              {%- comment %}</locksmith:0543>{% endcomment -%}
+              <li>
+                <a href="{{ link.url }}">{{ link.title }}</a>
+              </li>
+            {% endfor %}
+            <!-- OneTrust Cookies Settings button start -->
+            <li>
+              <a class="ot-sdk-show-settings" id="footer">Cookies Settings</a>
+            </li>
+            <!-- OneTrust Cookies Settings button end -->
+          </ul>
+        </div>
+        <div class="{{ fheader_class }}" data-col="about-us">
+          <h3 class="{{ h3_class }}">
+            {{ linklists['about-us'].title | escape }}
+          </h3>
+          <ul
+            class="{{ ul_class }}"
+            data-display="flex"
+          >
+            {% for link in linklists['about-us'].links %}
+              {%- comment %}<locksmith:7903>{% endcomment -%}
+                {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists.about-us, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+              {%- comment %}</locksmith:7903>{% endcomment -%}
+              <li>
+                <a href="{{ link.url }}">{{ link.title }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="{{ fheader_class }}" data-col="also-of-interest">
+          <h3 class="{{ h3_class }}">Also of Interest</h3>
+          <ul
+            id="also-of-interest"
+            class="{{ ul_class }}"
+            data-display="flex"
+          >
+            <div class="footer-link-group also-of-interest be-ix-link-block"></div>
+          </ul>
+        </div>
+      </div>
+      <div class="flex flex-col justify-center col-span-5 my-4 mt-0 lg:border-t lg:border-b footer__privacy border-gray lg:mt-8 lg:flex-row">
+        <div class="{{ fheader_class }}">
+          <h3 class="{{ h3_class }}">
+            {{ linklists['privacy-terms'].title | escape }}
+          </h3>
+          <ul
+            class="flex flex-col my-0 footer__bottom-privacy lg:flex-row lg:gap-4 lg:p-0 lg:py-4"
+            data-display="flex"
+          >
+            {% for link in linklists['privacy-terms'].links %}
+              {%- comment %}<locksmith:6464>{% endcomment -%}
+                {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists.privacy-terms, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+              {%- comment %}</locksmith:6464>{% endcomment -%}
+              <li>
+                <a href="{{ link.url }}">{{ link.title }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      <div class="flex justify-center col-span-5 mt-4">
+        {% render 'social' %}
+      </div>
+      <div class="flex justify-center col-span-5 mt-4 text-sm">
+        <span>© {{ 'now' | date: '%Y' }} L.A. GIRL COSMETICS. ALL RIGHTS RESERVED</span>
+      </div>
+    </div>
+  </footer>
+    {% endif %}
+
+
+
+  </div>
+  <script>
+    document.querySelectorAll('.accordion').forEach((accordion) => {
+    	accordion.addEventListener('click', () => {
+    		if (window.innerWidth < 1024) {
+    			const content = accordion.querySelector('.accordion-content');
+    			const icon = accordion.querySelector('.accordion-icon');
+    			if (content.style.display === 'block' || content.style.display === 'flex') {
+    				content.style.display = 'none';
+    				icon.classList.remove('open');
+    			} else {
+    				content.style.display = content.getAttribute('data-display');
+    				icon.classList.add('open');
+    			}
+    		}
+    	});
+    });
+
+    // Ensure content is displayed for screens larger than 1024px
+    window.addEventListener('resize', () => {
+    	document.querySelectorAll('.accordion-content').forEach((content) => {
+    		if (window.innerWidth >= 1024) {
+    			content.style.display = content.getAttribute('data-display');
+    		} else {
+    			content.style.display = 'none';
+    		}
+    	});
+    });
+
+    // Initial check on page load
+    document.addEventListener('DOMContentLoaded', () => {
+    	document.querySelectorAll('.accordion-content').forEach((content) => {
+    		if (window.innerWidth >= 1024) {
+    			content.style.display = content.getAttribute('data-display');
+    		}
+    	});
+    });
+  </script>
+</footer>
+
+{%- capture css -%}
+<style>
+
+  .ot-sdk-show-settings:hover {
+    cursor: pointer;
+}
+  ul#also-of-interest .be-ix-link-block {
+      min-width: unset !important;
+      border-top: unset !important;
+  }
+    ul#also-of-interest .be-ix-link-block .be-label {
+      display: none !important;
+  }
+  ul#also-of-interest a.be-related-link {
+      color: rgb(55, 65, 81) !important;
+  }
+    ul#also-of-interest ul.be-list {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+      padding: 0 !important;
+  }
+    ul#also-of-interest li.be-list-item {
+      padding: 0 0 !important;
+      line-height: 1.5rem !important;
+  }
+  .accordion {
+  	cursor: pointer;
+  }
+  .accordion-content {
+  	display: none;
+  }
+  .accordion-icon {
+  	transition: transform 0.3s ease;
+  }
+  .accordion-icon.open {
+  	transform: rotate(180deg);
+  }
+
+  @media (min-width: 1024px) {
+  	.accordion-content {
+  		display: block;
+  	}
+  	.accordion {
+  		cursor: default;
+  	}
+  }
+  
+  .footer__menu ul li:not(:last-child) {
+  	margin-bottom: 1rem;
+  }
+
+  ul.footer__bottom-privacy > li:not(:last-child) {
+  	margin-bottom: 1rem;
+  }
+
+  ul.footer__bottom-privacy > li, .footer__menu ul li, {
+  	padding-bottom: 1rem;
+  	width: 100%;
+  }
+
+  @media (min-width: 1024px) {
+  	ul.footer__bottom-privacy > li:not(:last-child) {
+  		margin-bottom: 0;
+  	}
+  	ul.footer__bottom-privacy > li, .footer__menu ul li, {
+  		padding-bottom: 0rem;
+  	}
+    ul#also-of-interest li.be-list-item {
+    max-width: 15ch;
+}
+    .footer__privacy h3 {
+    display: none!important;
+}
+
+  }
+
+  #main-footer > div > footer > div > div.flex.flex-col.col-span-5.footer__menu.justify-evenly.lg\:col-span-3.lg\:flex-row a:hover{
+     text-decoration: underline;
+  }
+  #main-footer > div > footer > div > div.flex.flex-col.justify-center.col-span-5.my-4.mt-0.lg\:border-t.lg\:border-b.footer__privacy.border-gray.lg\:mt-8.lg\:flex-row > div > ul a:hover{
+    text-decoration: underline;
+  }
+  h3, h2{
+   user-select:none;
+  }
+</style>
+{%- endcapture -%}
+{{- css | strip_newlines | replace: ' ', ' ' | replace: ' ', ' ' | replace: ' ', ' ' -}}

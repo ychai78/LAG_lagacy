@@ -1,0 +1,122 @@
+
+
+{% comment %}
+<script>
+$(document).ready(function() {
+    function initHomepageSlider() {
+        // This initiates the image slider on homepage.
+        var $slickSlider = $('#homepage-slider.slick-container');
+
+        $slickSlider.on('init', function() {
+            $(this).removeClass("hidden-visibility");
+
+        });
+
+        $slickSlider.slick({
+            dots: true,
+            infinite: true,
+            autoplay: false,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            lazyLoad: 'ondemand',
+            prevArrow: '<div id="bxslider-control-prev" class="swiper-button-prev"></div>',
+            nextArrow: '<div id="bxslider-control-next" class="swiper-button-next"></div>',
+            responsive: [{
+                breakpoint: 768,
+                settings: {
+                    arrows: false,
+                }
+            }]
+        });
+    }
+  initHomepageSlider();
+});
+
+  </script>
+<style>
+a#wdgt-ftr-usr_profl {
+    display: none;
+}
+  span.snptwdgt__tagline.fxd {
+    display: none;
+}
+
+.instagram-banner h2 {
+    text-align: center;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 3rem;
+    margin-bottom: 0;
+}
+  .banner-block {
+    color: #1b1b1b;
+    font-size: 1.5rem;
+    justify-content: space-between;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+.instagram-banner h3, .instagram-banner h5 {
+    margin-bottom: 0;
+}
+section#home-instagram-gallery .instagram-banner {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 2rem;
+}
+  section#home-instagram-gallery .left-block, section#home-instagram-gallery .right-block {
+    width: 20%;
+    align-self: flex-end;
+}
+  section#home-instagram-gallery .center {
+    width: 60%;
+}
+  .instagram-banner .left-block {
+    font-size: 2rem;
+    font-weight: 700;
+}
+  .right-block.right {
+    font-size: 1.2rem;
+    line-height: 2rem;
+}
+  section#home-instagram-gallery .instagram-banner > div {
+    align-self: center;
+}
+section#home-instagram-gallery .instagram-banner.site-wrap.visible-mobile .center {
+    margin: 0 auto;
+    min-width: 330px;
+}
+  section#home-instagram-gallery .instagram-banner {
+    min-width: 300px;
+}
+  .instagram-banner h3 {
+    margin-top: 1rem;
+}
+</style>
+{% endcomment %}
+  
+{% comment %}
+  {% for block in section.blocks %}
+    {{ block.settings.image| imageURL: 'master'}}
+    {% endfor %}
+    {% endcomment %}
+{% schema %}
+  {
+    "name": "Homepage Slider",
+    "settings": [],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Banner Image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "label": "Banner Text 3",
+            "id": "image"
+          }
+        ]
+        
+      }
+    ]
+  }
+{% endschema %}
+

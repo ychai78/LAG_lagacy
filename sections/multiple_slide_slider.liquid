@@ -1,0 +1,259 @@
+<div class="container-grid">
+  <div class="w-full relative {% if section.settings.full_width %}full-width{% endif %}">
+     {%- for block in section.blocks -%}
+
+ 
+ {%- case block.type -%}
+ {% when 'image' %}
+       {% assign img_urls =  block.settings.img_urls | remove: ' ' | remove: '"' | remove: '{' | remove: '}' | remove: 'images:' | remove: '[' | remove: ']' %}
+       {% assign img_urls_array = img_urls | split: ',' %}
+    <h2 class="text-center text-3xl font-bold">{{  block.settings.image_title }}</h2>
+    <div class="swiper multiple-slide-carousel swiper-container relative" id="multiple-slide-carousel-{{ section.id }}">
+    <div class="swiper-wrapper mb-4">
+      {% for image_url in img_urls_array %}
+        <div class="swiper-slide">
+          <div class="bg-indigo-50 rounded-2xl h-96 flex justify-center items-center">
+            <img src="{{ image_url }}" alt="Slide image" class="swiper-image">
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+     {% render 'sliderbtns',  class: 'flex justify-center items-center m-auto left-0 right-0 w-fit bottom-12 gap-4 mb-16'  %}
+   
+    </div>
+ {% when 'video' %}
+
+
+   {% assign media_string = block.settings.video_urls | strip | split: ',' %}
+   {% assign media_count = media_string | size %}
+      
+  <h2 class="text-center text-3xl font-bold">{{  block.settings.video_title }}</h2>
+  <div class="swiper multiple-slide-carousel swiper-container relative" id="multiple-slide-carousel-{{ section.id }}">
+    <div class="swiper-wrapper mb-4">
+      {% for media in media_string %}
+          {% assign media_split = media | split: ';' %}
+          {% assign image_src = media_split[0] %}
+          {% assign video_link = media_split[1] %}
+        <div class="swiper-slide">
+          <div class="bg-indigo-50 rounded-2xl h-96 flex justify-center items-center">
+            <a href="{{ video_link }}" class="glightbox bg-indigo-50 rounded-2xl h-96 flex justify-center items-center" data-glightbox="gallery1">
+            <img src="{{ image_src }}" alt="Slide image" class="swiper-image">
+              <div class="media-play-icon absolute top-0 left-0 w-full h-full bg-trans-grey text-white flex justify-center items-center pointer-events-none">
+                    {%- render 'icon-play' -%}
+                  </div>
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    
+      {% render 'sliderbtns',  class: 'flex justify-center items-center m-auto left-0 right-0 w-fit bottom-12 gap-4 mb-16'  %}
+    </div>    
+
+
+
+
+ <script>
+            // Initialize GLightbox after the sliders are updated
+            var lightbox = GLightbox({
+              selector: '.glightbox',
+              loop: true,
+              autoplayVideos: true,
+            });
+          </script>
+
+
+   
+  {% endcase %}
+       {% endfor %}
+</div>
+</div>
+<!-- Ensure Swiper.js library is included -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var sliders = document.querySelectorAll(".multiple-slide-carousel");
+
+  sliders.forEach(function(slider) {
+    var slideCount = slider.querySelectorAll('.swiper-slide').length;
+
+    if (slideCount > 1) {
+      var swiper = new Swiper(slider, {
+        loop: true,
+        slidesPerView: 'auto',
+        spaceBetween: 20,
+        navigation: {
+          nextEl: slider.querySelector(".sliderbtn-next"),
+          prevEl: slider.querySelector(".sliderbtn-prev"),
+        },
+        on: {
+          init: function () {
+            this.params.slidesPerGroup = this.slidesPerViewDynamic();
+            updateNavigationButtons(this, slider);
+          },
+          resize: function () {
+            this.params.slidesPerGroup = this.slidesPerViewDynamic();
+          },
+          slideChange: function () {
+            this.params.slidesPerGroup = this.slidesPerViewDynamic();
+            updateNavigationButtons(this, slider);
+          }
+        },
+        breakpoints: {
+          1920: {
+            slidesPerView: 'auto',
+            spaceBetween: 30
+          },
+          1028: {
+            slidesPerView: 'auto',
+            spaceBetween: 30
+          },
+          990: {
+            slidesPerView: 'auto',
+            spaceBetween: 0
+          }
+        }
+      });
+    } else {
+      slider.querySelector(".sliderbtn-prev").classList.add('disabled');
+      slider.querySelector(".sliderbtn-next").classList.add('disabled');
+    }
+  });
+
+  function updateNavigationButtons(swiper, slider) {
+    var prevBtn = slider.querySelector('.sliderbtn-prev');
+    var nextBtn = slider.querySelector('.sliderbtn-next');
+
+    if (swiper.isBeginning) {
+      prevBtn.classList.add('disabled');
+      prevBtn.setAttribute('disabled', true);
+    } else {
+      prevBtn.classList.remove('disabled');
+      prevBtn.removeAttribute('disabled');
+    }
+
+    if (swiper.isEnd) {
+      nextBtn.classList.add('disabled');
+      nextBtn.setAttribute('disabled', true);
+    } else {
+      nextBtn.classList.remove('disabled');
+      nextBtn.removeAttribute('disabled');
+    }
+  }
+});
+</script>
+
+
+
+<style>
+  .swiper-wrapper {
+    width: 100%;
+    height: max-content !important;
+    -webkit-transition-timing-function: linear !important;
+    transition-timing-function: linear !important;
+    position: relative;
+  }
+  .swiper-pagination-bullet {
+    background: #4f46e5;
+  }
+  .swiper-slide {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: auto; /* Allow slide width to adjust based on content */
+  }
+  .swiper-slide img.swiper-image {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+  }
+</style>
+
+
+{% schema %}
+{
+  "name": "Multiple Slide Slider",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+        {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Enable full width layout?",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image Slider",
+      "settings": [
+        {
+          "type": "text",
+          "id": "image_title",
+          "label": "Heading",
+          "default": "Title"
+        },
+
+      {
+      "type": "header",
+      "content": "For Image Slider"
+    },
+        {
+          "type": "textarea",
+          "id": "img_urls",
+          "label": "Enter your images in json format",
+          "default": "FOR IMAGE USE ONLY:\n {\n  \"images\": [\n    \"https://image1.jpg\",\n    \"https://image2.jpg\"\n  ]\n} \n \n FOR VIDEO ONLY USE:\n {\n  \"media\": [\n    {\n      \"image\": \"https://image1.jpg\",\n      \"video\": \"https://video1.mp4\"\n    },\n    {\n      \"image\": \"https://image2.jpg\",\n      \"video\": \"https://video2.mp4\"\n    }\n  ]\n}"
+        }
+        
+      ]
+    },
+    {
+      "type": "video",
+      "name": "Video Slider",
+      "settings": [
+        {
+          "type": "text",
+          "id": "video_title",
+          "label": "Heading",
+          "default": "Title"
+        },
+        {
+      "type": "header",
+      "content": "For Video Slider"
+    },
+        {
+          "type": "textarea",
+          "id": "video_urls",
+          "label": "Enter your videos in json format",
+          "default": "FOR VIDEO USE ONLY:\n https://image1.jpg;https://video1.mp4, https://image1.jpg;https://youtube.com/watch?v=INAfVXXCGf4",
+           "info": "FOR VIDEO USE ONLY:\n https://image1.jpg;https://video1.mp4, https://image1.jpg;https://youtube.com/watch?v=INAfVXXCGf4"
+        }
+        
+      ]
+    }    
+  ],
+  "max_blocks": 2,
+  "presets": [
+    {
+      "name": "Multiple Slide Slider",
+      "category": "Custom",
+      "blocks": [
+        {
+          "type": "image"
+        },
+        {
+          "type": "video"
+        }
+      ]
+    }
+      
+  ]
+}
+{% endschema %}
+
+

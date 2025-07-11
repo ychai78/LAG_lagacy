@@ -1,0 +1,35 @@
+<div class="events_listing magazine">
+
+
+        <div class="portfolio-wrapper">
+         <div class="magazine-image">
+           <a class="magazine-link" href="{{ article.url }}">
+             <img alt="{{ article_title  }}" src="{{ article.image.src | img_url: 'medium' }}"/>
+             <span class="overlay-effect"></span>
+             <div class="magazine-title">
+                 	{% comment %}
+			Grab tagline if exist, if not grab title
+			{% endcomment %}
+        	{% if article.metafields.c_f.blog_tagline  %}
+              {% assign tagline =  article.metafields.c_f.blog_tagline  %}
+              {{tagline}}
+        	{% else %} 
+              {% assign magazine_title = article.title | split:'-' | first %}
+              {{magazine_title}}
+           {% endif %}</div>
+
+             {% assign title =article.title | split: ' - ' %}             
+             <div class="magazine-title date">{{ title[1] }}</div>
+            
+           </a>
+         </div>
+    </div>     
+   
+   
+	
+ 	</div>
+
+
+
+
+

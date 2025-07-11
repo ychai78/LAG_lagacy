@@ -1,0 +1,201 @@
+{% schema %}
+{
+  "name": "Homepage BazaarVoice",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        {
+          "value": "text-left",
+          "label": "Left"
+        },
+        {
+          "value": "text-center",
+          "label": "Center"
+        },
+        {
+          "value": "text-right",
+          "label": "Right"
+        }
+      ],
+      "default": "text-left"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "#LAGIRLCOSMETICS"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Show us your looks and tag @lagirlcosmetics #lagirlcosmetics for a chance to be featured!"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description Color",
+      "default": "#000000"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Homepage BazaarVoice"
+    }
+  ]
+}
+{% endschema %}
+<section id="home-instagram-gallery" 
+         class="container-grid section-{{ section.id }}-padding {{ section.settings.text_alignment }}"
+         data-transition-enabled="true" 
+         data-scroll-transition="fade"
+         style="padding-top: {{ section.settings.padding_top | times: 0.25 | round: 0 }}rem; 
+                padding-bottom: {{ section.settings.padding_bottom | times: 0.25 | round: 0 }}rem;
+                background-color: {{ section.settings.background_color }};">
+    <div>
+       <h3 class="text-3xl lg:text-4xl font-bold" style="color: {{ section.settings.title_color }};">{{ section.settings.title }}</h3>
+       {% if section.settings.description != blank %}
+         <p class="mt-4" style="color: {{ section.settings.description_color }};">{{ section.settings.description }}</p>
+       {% endif %}
+    </div>
+  
+    <div class="home-instaagram-gallery-wrapper mt-4">
+     <div data-crl8-container-id="homepage"></div>
+  
+     <script>
+  // Function to initialize Curalate
+  function initCuralate() {
+    window.CRL8_SITENAME = 'lagirlcosmetics-ln3ru9';
+    if (!window.crl8) {
+      var e = window.crl8 = window.crl8 || {},
+          n = false,
+          i = [];
+      
+      e.ready = function(e) {
+        n ? e() : i.push(e)
+      };
+      e.pixel = e.pixel || function() {
+        e.pixel.q.push(arguments)
+      };
+      e.pixel.q = e.pixel.q || [];
+      
+      var script = document.createElement('script');
+      script.async = true;
+      script.src = document.location.protocol + "//edge.curalate.com/sites/" + CRL8_SITENAME + "/site/latest/site.min.js";
+    
+      
+      script.onload = function() {
+       
+        n = true;
+        i.forEach(function(e) {
+          e()
+        })
+      };
+      document.head.appendChild(script);
+    }
+  }
+
+  // Create Intersection Observer
+  document.addEventListener('DOMContentLoaded', function() {
+  
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+                 initCuralate();
+          observer.unobserve(entry.target);
+         
+        }
+      });
+    }, {
+      rootMargin: '50px 0px',
+      threshold: 0.1
+    });
+
+    // Start observing the Instagram gallery section
+    var gallerySection = document.getElementById('home-instagram-gallery');
+    if (gallerySection) {
+      observer.observe(gallerySection);
+     
+    } else {
+    
+    }
+  });
+</script>
+    </div>
+     {% if section.settings.button_text != blank %}
+    <div>
+   
+      <a
+        href="{{ section.settings.button_link }}"
+        class="inline-block px-12 py-3 mt-8 text-sm font-bold transition rounded hover:shadow focus:outline-none focus:ring"
+        style="background-color: {{ section.settings.button_bg_color }}; color: {{ section.settings.button_text_color }};"
+      >
+        {{ section.settings.button_text }}
+      </a>
+    
+    </div>
+         {% endif %}
+</section>

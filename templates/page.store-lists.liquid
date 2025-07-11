@@ -1,0 +1,138 @@
+<script defer src="{{ 'storeList.js' | asset_url }}"></script>
+<div class="main-wrapper row store-listing-page">
+
+  <div class="rte">{{ page.content | split: '[lang2]' | first }}</div>
+
+  <h2 style="font-weight: 700;">Select your Location</h2>  
+  <div class="grid" id="state-list-grid"></div>
+  <div class="grid hide" id="storelisting-grid"></div>
+
+</div>
+
+             
+
+
+<script>
+  $( document ).ready(function() {
+    initStoreList();
+ 
+});
+  
+  
+  
+
+</script>
+<style>
+  div#state-list-grid .state:hover {
+    color: #eb008b;
+    cursor: pointer;
+}
+  div#storelisting-grid {
+    margin-bottom: 3rem;
+}
+ul.store-info li {
+    display: inline-block;
+    font-weight: 500;
+    font-size: 1.2rem;
+}
+ul.store-info li.city {
+    width: 30%;
+    margin-right: 10px;
+}
+  ul.store-info li.address {
+    width: 70%;
+}
+ul.store-info {
+    margin-bottom: 0;
+    padding-left: 0;
+}
+a.storeByState {
+    margin: 2rem 0 1rem 0;
+    font-size: 1.75rem;
+    display: block;
+    color: #eb008b;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+  div#state-list-grid {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 2rem;
+}
+  
+div#state-list-grid .state {
+    display: inline-block;
+    width: 200px;
+    font-size: 1.2rem;
+    padding: 0.25rem 0;
+}
+a.store-info:hover {
+    color: #eb008b!important;
+    text-decoration: none;
+}
+
+  div#state-list-grid {
+    column-count: 3;
+}
+.store-listing-page {
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+  ul.store-info li.phone {
+    display: none;
+}
+ul.store-info {
+    display: flex;
+}
+ul.store-info li.address span.address {
+    display: block;
+}
+ul.store-info li.address span.phone {
+    display: block;
+}  
+.storelisting.grid-row {
+    border-bottom: 1px solid #e5e5e5;
+    margin-bottom: 1rem;
+}  
+  
+  
+  @media only screen and (min-width:768px) and (max-width: 1024px)  {
+
+    
+ul.store-info li.city {
+    width: 30%;
+    margin-right: 10px;
+}
+  ul.store-info li.address {
+    width: 70%;
+}    
+ul.store-info li.address span.address {
+    display: inline-block;
+}    
+  }  
+  
+  
+  @media only screen and (min-width: 1025px)  {
+    div#state-list-grid {
+    column-count: 5;
+}
+ul.store-info li.address span.address {
+    display: inline-block;
+}
+      ul.store-info li.phone {
+    display: block;
+}
+    ul.store-info li.address span.phone {
+    display: none;
+}
+    
+ul.store-info li.city {
+    width: 30%;
+    margin-right: 10px;
+}
+  ul.store-info li.address {
+    width: 50%;
+}    
+    
+  }  
+
+</style>

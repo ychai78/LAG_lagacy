@@ -1,0 +1,144 @@
+{% assign handle = request.path | split: '/' | last %}
+{% assign display = shop.metaobjects.display[handle] %}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+  /* Hide by default */
+#shopify-section-template--18303904645374__feature_slider_UnEUmG {
+  display: none;
+}
+
+/* Show only if it contains an img element anywhere in its descendants */
+#shopify-section-template--18303904645374__feature_slider_UnEUmG:has(img) {
+  display: block;
+}
+{%- endstyle -%}
+{% capture display-title %}
+    {{- display.display_number -}}{%- unless display.display_number == null %} - {% endunless -%}{{- display.name -}}
+  {% endcapture %}
+
+{% if display %}
+  <div class="container-grid  section-{{ section.id }}-padding">
+    <div class="w-full">
+      {% render 'breadcrumb' , title: display-title %}
+
+      <div class="grid grid-cols-1  {% if display.product.value %} lg:grid-cols-2 lg:grid-cols-[1fr_200px]{% endif %} gap-4 mt-8">
+        <div class="flex justify-center object-contain">
+
+        {% assign flyer_image = display.flyer %}
+        <img 
+          src="{{ flyer_image | image_url }}"
+          srcset="
+            {{ flyer_image | image_url: width: 480 }} 480w,
+            {{ flyer_image | image_url: width: 640 }} 640w,
+            {{ flyer_image | image_url: width: 768 }} 768w,
+            {{ flyer_image | image_url: width: 1024 }} 1024w,
+            {{ flyer_image | image_url: width: 1280 }} 1280w,
+            {{ flyer_image | image_url: width: 1920 }} 1920w
+          "
+          sizes="(max-width: 479px) 480px, (max-width: 639px) 640px, (max-width: 767px) 768px, (max-width: 1023px) 1024px, (max-width: 1279px) 1280px, 100vw"
+          alt="Flyer Image"
+          loading="lazy"
+          width="932"
+          height="1206"
+          class="responsive-image object-contain w-full"
+          
+        >
+          
+        </div>
+        {% comment %}
+        {% if display.product.value %}
+          <div class="flex flex-col">
+            <h3 class="text-3xl font-bold mb-6 font-display left">Featured Products</h3>
+
+            <ul
+              id="Slider-{{ section.id }}"
+              class="grid gap-10 md:grid-cols-2 lg:grid-cols-[repeat(auto-fit,minmax(200px,1fr))]"
+              role="list"
+              aria-label="Slider"
+            >
+              {%- for product in display.product.value -%}
+                <li
+                  id="Slide-{{ section.id }}-{{ forloop.index }}"
+                  class="grid__item slider__slide"
+                >
+                  {% render 'card-product-3',
+                    card_product: product,
+                    show_rating: false,
+                    show_swatch: false,
+                    show_cta: false,
+                    show_rating: false,
+                    show_price: false
+                  %}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {% endif %}
+  {% endcomment %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+
+
+{% schema %}
+{
+  "name": "Displays",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "padding bottom",
+      "default": 36
+    }
+  ]
+}
+{% endschema %}
+
+
+<script>
+ //hide featured product slider if there is none product inside of it
+ // Wait for the DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        const section = document.getElementById('shopify-section-template--18390636560638__feature_slider_UnEUmG');
+        if (!section) return;
+        
+        const slider = section.querySelector('.scroll-snap-slider');
+        if (!slider || !slider.innerHTML.trim() || slider.children.length === 0) {
+            section.classList.add('hide');
+        }
+    }, 100);
+});
+
+</script>

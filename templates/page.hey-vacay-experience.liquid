@@ -1,0 +1,128 @@
+<div class="main-wrapper">
+
+  <div class="hey-vacay-background">
+    <picture>
+      <img src="https://cdn.shopify.com/s/files/1/0944/0398/files/hey_vacay_layout_background_v3.2_72p.gif?v=1617906414"/>
+    </picture>
+  </div>
+  
+  <div class="hey-vacay-promo"> 
+         <picture>
+ 			 <source srcset="https://cdn.shopify.com/s/files/1/0944/0398/files/hey_vacay_layout_art_v4.1_1-4.webp?v=1618333098" type="image/webp">
+  			 <source srcset="https://cdn.shopify.com/s/files/1/0944/0398/files/hey_vacay_layout_art_v4.1_1-4.png?v=1618333703" type="image/png"> 
+  			 <img alt="Alt Text!" src="https://cdn.shopify.com/s/files/1/0944/0398/files/hey_vacay_layout_art_v4.1_1-4.png?v=1618333703"/>
+         </picture>
+     <a href="https://www.lagirlusa.com/pages/hey-hey-vacay-tiktok" >
+         <picture>
+ 			 <source srcset="https://cdn.shopify.com/s/files/1/0944/0398/files/hey_vacay_layout_art_v4.3_2-4.png?v=1619018461" type="image/webp">
+  			 <source srcset="https://cdn.shopify.com/s/files/1/0944/0398/files/hey_vacay_layout_art_v4.3_2-4.webp?v=1619018468" type="image/png"> 
+  			 <img alt="Alt Text!" src="https://cdn.shopify.com/s/files/1/0944/0398/files/hey_vacay_layout_art_v4.3_2-4.png?v=1619018461"/>
+         </picture>    
+    </a>
+     <a href="https://www.lagirlusa.com/pages/hey-hey-vacay-photo-booth">
+         <picture>
+ 			 <source srcset="https://cdn.shopify.com/s/files/1/0944/0398/files/hey_vacay_layout_art_v4_3-4.webp?v=1618332823" type="image/webp">
+  			 <source srcset="https://cdn.shopify.com/s/files/1/0944/0398/files/hey_vacay_layout_art_v4_3-4.png?v=1618333702" type="image/png"> 
+  			 <img alt="Alt Text!" src="https://cdn.shopify.com/s/files/1/0944/0398/files/hey_vacay_layout_art_v4_3-4.png?v=1618333702"/>
+         </picture>  
+    </a>
+     <div class="split-promo">
+       <a class="promo-left" href="https://www.ulta.com/under-palm-16-color-eyeshadow-palette?productId=pimprod2024704"  target="_blank"></a>
+       <a class="promo-right"href="https://www.ulta.com/good-times-tan-lines-16-color-eyeshadow-palette?productId=pimprod2024705&sku=2577208&_requestid=4711809"  target="_blank"></a>
+         <picture>
+ 			 <source srcset="https://cdn.shopify.com/s/files/1/0944/0398/files/hey_vacay_layout_art_v4_4-4.webp?v=1618332824" type="image/webp">
+  			 <source srcset="https://cdn.shopify.com/s/files/1/0944/0398/files/hey_vacay_layout_art_v4_4-4.png?v=1618333702" type="image/png"> 
+  			 <img alt="Alt Text!" src="https://cdn.shopify.com/s/files/1/0944/0398/files/hey_vacay_layout_art_v4_4-4.png?v=1618333702"/>
+         </picture>  
+       <div>
+   
+  </div>
+ 
+
+</div>
+  </div>
+</div>
+<style>
+.main-wrapper {
+    padding: 0;
+}
+main.main-content.site-wrap {
+    max-width: 100%;
+    padding: 0 0;
+}
+  .main-wrapper {
+    max-width: 100%;
+}
+
+  .main-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+  .hey-vacay-background {
+    position: absolute;
+  }
+  .hey-vacay-background img {
+    width: 3000px;
+}
+  
+.hey-vacay-promo {
+    position: relative;
+
+}
+.split-promo {
+    position: relative;
+}  
+.split-promo a {
+    width: 50%;
+    height: 100%;
+    position: absolute;
+}
+  .split-promo a.promo-right {
+    left: 50%;
+}
+  
+  
+  @media only screen and (max-width: 1024px) {
+    .hey-vacay-promo {
+    position: relative;
+    transform: scale(1.4);
+    transform-origin: top center;
+}
+    .hey-vacay-background img {
+    max-width: fit-content;
+}
+
+}
+  
+  
+  footer.site-footer {
+    margin: -1rem 0 0 0;
+}
+</style>
+
+
+
+<script>
+function heyVacayPromoMobile() {
+	$(".hey-vacay-promo").css("height","100%");  
+	var $heightHeyVacayPromo = $('.hey-vacay-promo').height();
+	$(".hey-vacay-promo").css("height",$heightHeyVacayPromo*1.4);
+} 
+  
+const mq = window.matchMedia( "(max-width: 1024px)" );
+if (mq.matches) {
+	heyVacayPromoMobile();
+}
+  
+$(window).resize(function() {
+  if ($(window).width() < 1025) {
+    heyVacayPromoMobile();
+  }
+  else {
+    $(".hey-vacay-promo").css("height","100%");
+  }
+});
+
+  
+</script>

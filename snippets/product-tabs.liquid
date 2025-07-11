@@ -1,0 +1,31 @@
+<ul class="nav nav-tabs product-tabs">
+  		<li class="active"><a data-toggle="tab" href="#tab-description">Description</a></li>
+  {% if product.metafields.custom.how_to_apply != null %}
+  		<li><a data-toggle="tab" href="#tab-how-to">How to Use</a></li>
+  {% endif %}
+  
+  	{% if product.metafields.c_f.product_where_to_buy != null or product.metafields["global"]["where_to_buy"]  != null%}
+  		<li><a data-toggle="tab" href="#tab-where-to-buy">Buy It Locally</a></li>
+	{% endif %}
+</ul>
+
+<div class="tab-content">
+  <div id="tab-description" class="tab-pane fade in active">
+    <h2 class="tab-header">Product Description</h2>
+    <div class="panel-body">{{ product.description  }}</div> 
+  </div>
+  <div id="tab-how-to" class="tab-pane fade">
+     <h2 class="tab-header">How To Use</h2>
+     <div class="panel-body">
+       {{ product.metafields.custom.how_to_apply | metafield_tag  }}
+    </div>
+  </div>
+  <div id="tab-where-to-buy" class="tab-pane fade">
+     <h2 class="tab-header">Buy It Locally</h2>
+    <div class="panel-body">
+      {{ product.metafields.c_f.product_where_to_buy }}
+      {{product.metafields["global"]["where_to_buy"]  }}</div>
+  </div>
+</div>
+
+

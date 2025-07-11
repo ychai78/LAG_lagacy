@@ -1,0 +1,162 @@
+{% if product.metafields.compare_shades.shade_cards %}
+  {% assign shade_cards_string = product.metafields.compare_shades.shade_cards %}
+  {% assign shade_cards_array = shade_cards_string | remove: '[' | remove: ']' | split: '},' %}
+  
+  <compare-shades id="compare-shades-{{ section.id }}" class="block relative my-8" data-section-id="{{ section.id }}" data-section-type="compare-shades">
+    <div class="compare-shades">
+      <div class="compare-shades__content px-4 mb-4 flex justify-center items-center md:items-baseline flex-col md:flex-row">
+        <h3 class="relative z-10 my-1 font-heading text-5xl md:text-6xl leading-8">{{ section.settings.title }}</h3>
+      </div>
+      <div class="compare-shades__slider-container relative">
+        <div id="compare-shades-scroll-{{ section.id }}" class="compare-shades__scroll">
+          {% for card_string in shade_cards_array %}
+            {% assign card = card_string | append: '}' | replace: '\"', '"' %}
+            {% assign image_filename = card | split: '"image":"' | last | split: '"' | first %}
+            {% assign header = card | split: '"header":"' | last | split: '"' | first %}
+            {% assign subheader = card | split: '"subheader":"' | last | split: '"' | first %}
+            {% assign hexcode = card | split: '"hexcode":"' | last | split: '"' | first %}
+            
+            <div class="compare-shades__slide">
+              <div class="compare-shades__card flex-none" data-card-id="{{ forloop.index }}" data-selected="{% if forloop.first %}true{% else %}false{% endif %}">
+                <div class="flex flex-col items-center pb-2">
+                  <div class="compare-shades__image-container w-full mb-2">
+                    {% if image_filename != blank %}
+                      <img alt="{{ header }}" class="compare-shades__image object-cover w-64 h-full select-none block" height="320" loading="lazy" src="{{ image_filename | file_img_url: '640x' }}" width="320"/>
+                      <div class="w-full h-8 compare-shades-swatch" style="--swatch-color:{{ hexcode }}; --swatch-bkg: url({{ hexcode }})"></div>
+                    {% else %}
+                      <div class="compare-shades__image object-cover w-full h-full select-none block bg-gray-200"></div>
+                    {% endif %}
+                  </div>
+                  <h4 class="text-center font-bold text-base md:text-lg font-display">{{ header }}</h4>
+                  <p class="text-center text-sm leading-none font-display mt-1">
+                    {{ subheader }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        
+        <button
+          aria-label="Previous slide"
+          id="compare-shades-previous-{{ section.id }}"
+          class="compare-shades-arrow compare-shades-prev p-3 transition border rounded-full border-black bg-white text-black hover:bg-black hover:text-white absolute top-1/2 left-4 transform -translate-y-1/2 z-10"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <button
+          aria-label="Next slide"
+          id="compare-shades-next-{{ section.id }}"
+          class="compare-shades-arrow compare-shades-next p-3 transition border rounded-full border-black bg-white text-black hover:bg-black hover:text-white absolute top-1/2 right-4 transform -translate-y-1/2 z-10"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </compare-shades>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var scrollContainer = document.getElementById('compare-shades-scroll-{{ section.id }}');
+      var prevButton = document.getElementById('compare-shades-previous-{{ section.id }}');
+      var nextButton = document.getElementById('compare-shades-next-{{ section.id }}');
+
+      function scrollToNextSlide() {
+        scrollContainer.scrollBy({ left: scrollContainer.offsetWidth, behavior: 'smooth' });
+      }
+
+      function scrollToPrevSlide() {
+        scrollContainer.scrollBy({ left: -scrollContainer.offsetWidth, behavior: 'smooth' });
+      }
+
+      nextButton.addEventListener('click', scrollToNextSlide);
+      prevButton.addEventListener('click', scrollToPrevSlide);
+
+      // Optional: Hide/show buttons based on scroll position
+      scrollContainer.addEventListener('scroll', function() {
+        var scrollLeft = scrollContainer.scrollLeft;
+        var scrollWidth = scrollContainer.scrollWidth;
+        var clientWidth = scrollContainer.clientWidth;
+
+        prevButton.style.display = scrollLeft > 0 ? 'flex' : 'none';
+        nextButton.style.display = scrollLeft < scrollWidth - clientWidth ? 'flex' : 'none';
+      });
+    });
+  </script>
+{% endif %}
+
+<style>
+  #compare-shades-{{ section.id }} h3 {
+    color: {{ section.settings.title_color }};
+  }
+  #compare-shades-{{ section.id }} .compare-shades__slider-container {
+    padding: 0 48px; /* Add padding for the arrows */
+    position: relative;
+  }
+  .compare-shades__scroll {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 1rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  }
+  .compare-shades__scroll::-webkit-scrollbar { 
+    display: none;  /* WebKit */
+  }
+  .compare-shades__slide {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    max-width: 256px;
+  }
+  .compare-shades__slide p {
+    line-height: 1.3;
+}
+  .compare-shades-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .compare-shades-arrow svg {
+    width: 24px;
+    height: 24px;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Shade Viewer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "The Shades"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "selected_outline_color",
+      "label": "Selected Card Outline Color",
+      "default": "#000000"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shade Viewer",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}

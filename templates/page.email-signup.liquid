@@ -1,0 +1,38 @@
+<div id="email-subscription-page">
+<div class="email-subscription-page-background-wrapper">
+  {% assign  video-promo-link     = "LAG_BeautyCon_email_signup_background.jpg"  %}
+  <img class="email-page-background" src="{{ video-promo-link  | file_img_url: 'x1024' | split:'?' | first}}" srcset="{{ video-promo-link |  file_img_url: 'x1024' | split:'?' | first}},
+               {{ video-promo-link  |  file_img_url: 'x2048' , scale: 2  | split:'?' | first }} 2x"/>
+   <div class="subscription-box">
+
+  </div>
+</div>
+</div>
+
+
+
+  
+
+<style>
+  .site-wrap {
+    padding: 0px 0px!important;
+}
+.page-wrapper-container._header,footer.site-footer {
+    display: none;
+}
+.page-wrapper-container._body {
+    padding-top: 0px;
+}
+ 
+  div#email-subscription-page .subscription-box {
+   position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+.email-subscription-page-background-wrapper {
+    display: flex;
+    justify-content: center;
+}
+</style>

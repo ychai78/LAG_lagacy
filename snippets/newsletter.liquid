@@ -1,0 +1,262 @@
+<div class="text-left footerSubscriptionEmail ">
+  <h3 class="text-3xl font-bold text-center text-gray-900 sm:text-3xl lg:text-left">Get 15% OFF</h3>
+  <div class="footer__newsletter-copy">
+    <p class="my-4 text-center sign-up-message lg:text-left">Your first order & get our latest promotions!</p>
+    <div class="my-4 text-center" id="post-sign-up-message" style="display:none;">
+      <p>
+        Your 15% off promo code is:
+        <span class="font-bold">WELCOME15</span>
+      </p>
+      <p class="mt-2 text-xs">Offer code valid for first purchase only. One-time use only.</p>
+    </div>
+  </div>
+  <!-- Begin Constant Contact Inline Form Code -->
+  <div class="ctct-inline-form" data-form-id="45ef2fb3-dc06-40bd-aa32-5848cfa55bfa"></div>
+  <!-- End Constant Contact Inline Form Code -->
+  <div class="text-sm">
+    By subscribing to
+    <strong>L.A. Girl Cosmetics</strong>
+    , you agree to receive a varying number of marketing messages via email and understand your information will be
+    collected and used subject to our
+    <a class="underline" href="/pages/privacy-policy">Privacy Policy</a>
+    and
+    <a class="underline" href="/pages/terms-of-use">Terms of Use</a>
+    . You may unsubscribe at any time.
+  </div>
+
+  <style>
+    .ctct-form-embed.form_0 .ctct-form-defaults {
+    	background-color: transparent !important;
+    	padding: 0 !important;
+    }
+    #email_address_label_0,
+    #gdpr_text {
+    	display: none;
+    }
+    .ctct-form-embed.form_0 .ctct-form-custom .ctct-form-button,
+    button.ctct-form-button {
+    	font-weight: bold;
+    	font-family: 'Jost';
+    }
+    div.ctct-form-embed div.ctct-form-defaults h2.ctct-form-header,
+    div.ctct-form-embed div.ctct-form-defaults p.ctct-form-text,
+    div.ctct-form-embed form.ctct-form-custom input.ctct-form-element {
+    	font-family: jost !important;
+    }
+    div#success_message_0 h2.ctct-form-header {
+    	font-size: 2rem !important;
+    	color: rgb(39 39 39 / var(--tw-text-opacity));
+    }
+    div#success_message_0 p.ctct-form-text {
+    	font-size: 0.75rem !important;
+    	line-height: 1rem !important;
+    }
+    div#success_message_0 {
+    	border: 1px solid;
+    	border-radius: 1rem;
+    	padding: 1rem;
+    	text-align: center;
+    }
+  </style>
+  <style>
+    .ctct-form-popup.form_1 .ctct-form-defaults .ctct-form-header {
+    	color: #323232;
+    	text-transform: uppercase;
+    	text-align: center;
+    	font-size: 3.25rem !important;
+    	margin-bottom: 1rem;
+                           line-height: .95 !important;
+
+    }
+    .ctct-popup-content div.ctct-form-defaults h2.ctct-form-header,
+    form#ctct_form_1 p.ctct-form-text {
+    	font-family: 'jost' !important;
+    }
+    form#ctct_form_1 p.ctct-form-text {
+    	text-align: center;
+    	font-size: 1.125rem;
+    	line-height: 1.75rem;
+    }
+    form#ctct_form_1 {
+    	display: flex;
+    	flex-direction: column;
+    	justify-content: center;
+    	align-items: center;
+    }
+    label#email_address_label_1 {
+    	display: none;
+    }
+    div#email_address_field_1 {
+    	width: 100%;
+    }
+    form#ctct_form_1 div#gdpr_text {
+    	display: block;
+    }
+    .ctct-form-container.ctct-form-popup.form_1 .ctct-form-defaults {
+    	padding: 5rem 3rem !important;
+    }
+    .ctct-popup-inner {
+    	box-shadow: 0 25px 50px -12px rgb(0 0 0 / 66%);
+    }
+    .ctct-popup-content button.ctct-popup-close {
+    	margin-top: 1rem;
+    }
+
+    h2.ctct-form-header {
+    	font-size: 2rem !important;
+    	line-height: 2rem !important;
+    }
+    @media (min-width: 1024px) {
+    	h2.ctct-form-header {
+    		font-size: 2.25rem !important;
+    		line-height: 2.5rem !important;
+    	}
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    	// Wait for a short time to ensure the form has loaded
+    	setTimeout(function () {
+    		// Add placeholder to #email_address_0
+    		var emailInput0 = document.querySelector('#email_address_0');
+    		if (emailInput0) {
+    			emailInput0.placeholder = 'Email Address';
+    		}
+
+    		// Add placeholder to #email_address_1
+    		var emailInput1 = document.querySelector('#email_address_1');
+    		if (emailInput1) {
+    			emailInput1.placeholder = 'Email Address';
+    		}
+    	}, 1000); // Wait for 1 second after page load
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+    	// Function to set up the observer
+    	function setupObserver() {
+    		const targetElement = document.getElementById('success_message_0');
+    		const signUpMessage = document.querySelector('.sign-up-message');
+    		const postSignUpMessage = document.getElementById('post-sign-up-message');
+
+    		if (!targetElement || !signUpMessage || !postSignUpMessage) {
+    			// If elements aren't found yet, try again in a short while
+    			setTimeout(setupObserver, 1000);
+    			return;
+    		}
+
+    		// Configure the observer
+    		const config = {
+    			attributes: true,
+    			attributeFilter: ['style'],
+    			subtree: false,
+    		};
+
+    		// Callback function
+    		const callback = function (mutationsList, observer) {
+    			for (const mutation of mutationsList) {
+    				if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+    					const styleValue = targetElement.getAttribute('style');
+    					console.log('Style changed to:', styleValue); // Debug log
+
+    					if (styleValue === '') {
+    						// Hide the sign up message
+    						signUpMessage.style.display = 'none';
+
+    						// Find the success message header
+    						const successHeader = targetElement.querySelector('h2.ctct-form-header');
+
+    						if (successHeader) {
+    							// Move the post sign up message after the header
+    							successHeader.insertAdjacentElement('afterend', postSignUpMessage);
+
+    							// Show the post sign up message
+    							postSignUpMessage.style.display = 'block';
+
+    							console.log('Success message moved and shown'); // Debug log
+    						}
+    					}
+    				}
+    			}
+    		};
+
+    		// Create and start the observer
+    		const observer = new MutationObserver(callback);
+    		observer.observe(targetElement, config);
+    		//console.log('Observer setup completed'); // Debug log
+    	}
+
+    	// Wait for Constant Contact form to load (adjust timing if needed)
+    	setTimeout(setupObserver, 2000);
+    });
+  </script>
+  <script>
+							document.addEventListener('DOMContentLoaded', function () {
+								function setupPopupObserver() {
+									const popupForm = document.getElementById('ctct_form_1');
+
+									if (!popupForm) {
+										setTimeout(setupPopupObserver, 1000);
+										return;
+									}
+
+									// Create popup success message element
+									const postPopupMessage = document.createElement('div');
+									postPopupMessage.className = 'my-4 text-center';
+									postPopupMessage.id = 'post-popup-sign-up-message';
+									postPopupMessage.style.display = 'none';
+									postPopupMessage.innerHTML = `
+            <p>Your 15% off promo code is: <span class="font-bold">WELCOME15</span></p>
+            <p class="mt-2 text-xs">Offer code valid for first purchase only. One-time use only.</p>
+        `;
+
+									const config = {
+										attributes: true,
+										attributeFilter: ['style'],
+									};
+
+									const callback = function (mutationsList, observer) {
+										for (const mutation of mutationsList) {
+											if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+												const styleValue = popupForm.getAttribute('style');
+												console.log('Popup style changed to:', styleValue); // Debug log
+
+												if (styleValue && styleValue.includes('display: none')) {
+													// Find the success message container
+													const successMessage = document.getElementById('success_message_1');
+
+													if (successMessage) {
+														// Get the success header
+														const successHeader = successMessage.querySelector('h2.ctct-form-header');
+
+														// Remove the default success text
+														const defaultText = successMessage.querySelector('p.ctct-form-text');
+														if (defaultText) {
+															defaultText.remove();
+														}
+
+														// Add our custom message after the header
+														if (successHeader) {
+															successHeader.insertAdjacentElement('afterend', postPopupMessage);
+															postPopupMessage.style.display = 'block';
+														}
+
+														// Show the success message container
+														successMessage.style.display = 'block';
+													}
+												}
+											}
+										}
+									};
+
+									const observer = new MutationObserver(callback);
+									observer.observe(popupForm, config);
+									console.log('Popup observer setup completed');
+								}
+
+								// Initialize popup observer
+								setTimeout(setupPopupObserver, 2000);
+							});
+  </script>
+</div>

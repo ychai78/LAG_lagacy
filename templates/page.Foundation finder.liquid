@@ -1,0 +1,808 @@
+{% comment %} This template is also used for listing out articles of a specific tag. You can change layouts or styles by checking if current_tags is true. {% endcomment %}
+<div class="main-wrapper row">
+    <style>
+           .ff-grid__item .grid-product__title {
+             margin-bottom: 0;
+             text-decoration: none;
+             font-weight: 600;
+             letter-spacing: 1px;
+             font-size: 2rem;
+             padding-bottom: .5rem;
+             padding-left: 0;
+             line-height: 2rem;
+           }
+           .ff-grid__item  .product_tile-info_wrapper {
+             text-align: left;
+           }
+             
+           .ff-grid__item   a.grid-product__sku span {
+             font-weight: 900;
+           }
+           .ff-grid__item a.grid-product__sku {
+             font-size: 1.25rem;
+             letter-spacing: 2px;
+             margin-bottom: 1.5rem;
+             display: block;
+           }
+             .ff-grid__item .spr-badge-starrating {
+             display: inline-block;
+             float: left;
+           }
+           .ff-grid__item span.spr-badge-caption {
+             display: block!important;
+             font-size: 1.2rem;
+             width: 100%;
+             float: none;
+           }
+             .ff-grid__item span.spr-badge-caption:before {
+             content: "|";
+             padding: 0 1rem;
+           }
+             
+           .ff-grid__item .grid-product__review-badge {
+             display: inline-block;
+             float: left;
+             width: 100%;
+           }
+           .ff-grid__item .spr-badge {
+             margin-bottom: 1rem;
+           }
+             .ff-grid__item    span.grid-product__price {
+             font-size: 1.5rem;
+             font-weight: 900;
+           }
+             
+             .ff-grid__item .product_description_wrapper h2 {
+             text-align: left;
+             font-size: 1.25rem;
+             text-transform: uppercase;
+             padding: 0 0;
+             margin: 0 0;
+             line-height: 3rem;
+             margin-top: 1rem;
+           }
+             .ff-grid__item .product_description_wrapper p {
+             font-size: 1.25rem;
+             text-align: left;
+           }
+             .ff-grid__item .product_description_wrapper {
+             margin-bottom: 2rem;
+           }
+             .ff-grid__item input#product-add-to-cart {
+             background: #eb008b;
+             color: white;
+           }
+             .ff-product-grid-shade-finder {
+             margin-bottom: 6rem;
+           }
+             
+           .matched-results .grid-product__image-wrapper {
+             width: 40%;
+             display: inline-block;
+           }
+             .matched-results section.product-name-section {
+             width: 60%;
+           }
+              .matched-results .swiper-slide .grid-product__wrapper {
+             flex-direction: row;
+             flex-wrap: wrap;
+           }   
+             
+             .foundation-swiper-container {
+             overflow: hidden;
+           }
+           .swiper-slide {
+             overflow: hidden;
+           }
+
+             .find-my-match-header-container {
+             position: relative;
+           }
+button.startOver-btn {
+    position: absolute;
+    background: black;
+    color: white;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    padding: 1rem;
+    border: none;
+    font-weight: 600;
+    letter-spacing: 2px;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    right: 1rem;
+}
+             .find-my-match-body {
+             height: 605px;
+           }
+             .find-my-match-home .desktop_img {
+             position: absolute;
+             width: 100%;
+             z-index: 0;
+             display: block;
+           }
+             .intro-container {
+             width: 100%;
+             max-width: 1260px;
+             margin: 0 auto;
+             position: relative;
+           }
+           .introText {
+             position: absolute;
+             left: 50%;
+             top: 0;
+             transform: translate(-50%, 65%);
+             width: 900px;
+             text-align: center;
+           }
+           .introText h1 {
+             font-size: 60px;
+             line-height: 60px;
+             letter-spacing: 2px;
+             display: inline;
+             background: black;
+             color: white;
+             font-weight: 900;
+             padding: 10px;
+           }
+           .introText P {
+             text-transform: none;
+             font-size: 23px;
+             line-height: 24px;
+             margin-bottom: 15px;
+             word-spacing: 1px;
+             color: black;
+             margin-top: 3rem;
+           }
+             .find-my-match-body button {
+             background: black;
+             color: white;
+             font-size: 14px;
+             text-transform: uppercase;
+             padding: 1rem;
+             border: none;
+             font-weight: 600;
+             word-spacing: 1px;
+             letter-spacing: 2px;
+           }
+           a.ff-nav {
+             background: black;
+             color: white;
+             font-size: 14px;
+             text-transform: uppercase;
+             padding: .65rem 1rem;
+             border: none;
+             font-weight: 600;
+             word-spacing: 1px;
+             letter-spacing: 2px;
+           margin-top:2rem;
+           }
+             a.ff-nav:hover {
+             text-decoration: none;
+             cursor: pointer;
+           }
+
+             .introText button {
+             margin-top: 5rem;
+           }
+            .find-my-match-slides {
+             position: absolute;
+             left: 50%;
+             top: 0;
+             transform: translate(-50%, 0%);
+             width: 100%;
+             text-align: center;
+           } 
+           .find-my-match-slides h2,.find-my-match-slides-results h2 {
+             font-size: 3rem;
+             line-height: 60px;
+             letter-spacing: 2px;
+             font-weight: 700;
+             padding: 0;
+             margin-top: 2rem;
+             margin-bottom: 4rem;
+             display: block;
+           }
+             .find-my-match-slides-results h2 {
+             font-size: 3rem;
+           text-align:center;
+           }
+             
+             .match-selection h3 {
+             font-size: 3rem;
+             font-weight: 600;
+             margin: 2rem 0;
+           }
+             .match-selection {
+             display: flex;
+           }
+           .match-selection > div {
+             flex: 1;
+             border-right: 1px solid #ddd;
+           }
+             .match-selection > div:last-child {
+             border: none;
+           }
+           .match-selection p {
+             font-size: 1.25rem;
+             width: 200px;
+             text-align: left;
+             margin: 0 auto;
+             min-height: 100px;
+           }
+             .match-selection .disable {
+             position: relative;
+           }
+           .match-selection .disable:before {
+             content: '';
+             background: #ffffff;
+             opacity: .75;
+             display: block;
+             width: 100%;
+             height: 110%;
+             position: absolute;
+           }
+             
+             .product-grid .product-grid-shade-finder {
+             display: flex;
+             flex-direction: column;
+             flex-wrap: nowrap;
+             width: 100%;
+           }
+      section.foundation-finder-slider {
+    position: relative;
+    }
+    </style>
+    <style>
+             @media (max-width: 767px){
+               
+               section.foundation-finder-slider {
+             max-width: 400px;
+             margin: 0 auto;
+           }
+               .ff-results {
+    margin-top: 3rem;
+    max-width: 400px;
+    margin: 0 auto;
+    }
+    .find-my-match-home .desktop_img {
+    transform: rotate(0deg) translate(-260px,-230px);
+    max-width: unset;
+    width: 210%;
+    }
+    .introText h1 {
+    font-size: 4.25rem;
+    line-height: 4.2rem;
+    width: 315px;
+    display: block;
+    margin: 0 auto;
+    }
+    .introText {
+    width: 375px;
+    transform: translate(-50%, 40%);
+    }
+           .introText P {
+    line-height: 3rem;
+    font-size: 2rem;
+    }
+               .introText button {
+             margin-top: 4rem;
+           }
+           
+
+               button.startOver-btn {
+    padding: 3px 3px;
+    letter-spacing: 0;
+    font-size: 1rem;
+    right: .5rem;
+}
+               .find-my-match-body {
+    height: 600px;
+    margin-top: 2rem;
+    display: inline-block;
+    width: 100%;
+    }
+    .find-my-match-slides h2, .find-my-match-slides-results h2 {
+    font-size: 2rem;
+    margin: 0 0 2rem 0;
+    display: inline-block;
+    line-height: 2rem;
+    }
+               .match-selection {
+             display: flex;
+             flex-direction: column;
+           }
+               .match-selection img {
+             width: 100px;
+           }
+               .match-selection-left {
+    width: 35%;
+    float: left;
+    }
+               .match-selection-right {
+    width: 65%;
+    float: right;
+    }
+               .match-selection h3 {
+    margin: 0 0;
+    font-size: 2rem;
+    text-align: left;
+    }.match-selection p {
+    width: 100%;
+    min-height: unset;
+    }.undertone-selection a.ff-nav {
+    display: block;
+    width: 100px;
+    margin: 1rem 0;
+    }.match-selection > div {
+    display: flex;
+    align-items: center;
+    padding: 1rem 0;    border-right: none;
+    border-bottom: 1px solid #ddd;}
+               .match-selection > div:first-child {
+    border-top: 1px solid #ddd;
+    }
+               .match-selection .shade-selection {
+    padding: 0.25rem;
+    }
+               .coverage-selection .match-selection-right h3 {
+    width: 100%;
+    }
+               .coverage-selection a.ff-nav {
+    float: left;
+    }
+               .match-selection-right h3 {
+    display: inline-block;
+    width: 100%;
+    }.shade-selection h3 {
+    width: 100px;
+    }
+               .match-selection .finish-selection a {
+    float: left;
+    }.find-my-match-slides-results h2 {
+    margin: 2rem auto;
+    width: 100%;
+    }
+
+
+
+               
+             }
+
+    </style>
+    <div class="grid hide" id="shadeSelector-grid"></div>
+    <section class="foundation-finder-slider">
+        <div class="find-my-match-header ff-results-header" style="display:none;">
+            <div class="find-my-match-header-container">
+              <div class="header-progress-bar">
+               	<picture class="header-progress progress-1 hide">
+                  <source 
+                    media="(min-width: 768px)" 
+                    srcset="https://cdn.shopify.com/s/files/1/0944/0398/files/Foundation_Finder-Progress-1.jpg">
+
+                  <source 
+                    media="(min-width: 300px)" 
+                    srcset="https://cdn.shopify.com/s/files/1/0944/0398/files/Foundation_Finder-Progress-mobile-1.jpg">
+               	  <img src="https://cdn.shopify.com/s/files/1/0944/0398/files/Foundation_Finder-Progress-1.jpg"/>
+                </picture>
+                <picture class="header-progress progress-2 hide">
+                  <source 
+                    media="(min-width: 768px)" 
+                    srcset="https://cdn.shopify.com/s/files/1/0944/0398/files/Foundation_Finder-Progress-2.jpg">
+
+                  <source 
+                    media="(min-width: 300px)" 
+                    srcset="https://cdn.shopify.com/s/files/1/0944/0398/files/Foundation_Finder-Progress-mobile-2.jpg">
+               	  <img src="https://cdn.shopify.com/s/files/1/0944/0398/files/Foundation_Finder-Progress-2.jpg"/>
+                </picture>
+               	<picture class="header-progress progress-3 hide">
+                  <source 
+                    media="(min-width: 768px)" 
+                    srcset="https://cdn.shopify.com/s/files/1/0944/0398/files/Foundation_Finder-Progress-3.jpg">
+
+                  <source 
+                    media="(min-width: 300px)" 
+                    srcset="https://cdn.shopify.com/s/files/1/0944/0398/files/Foundation_Finder-Progress-mobile-3.jpg">
+               	  <img src="https://cdn.shopify.com/s/files/1/0944/0398/files/Foundation_Finder-Progress-3.jpg"/>
+                </picture>
+                <picture class="header-progress progress-4 hide">
+                  <source 
+                    media="(min-width: 768px)" 
+                    srcset="https://cdn.shopify.com/s/files/1/0944/0398/files/Foundation_Finder-Progress-4.jpg">
+
+                  <source 
+                    media="(min-width: 300px)" 
+                    srcset="https://cdn.shopify.com/s/files/1/0944/0398/files/Foundation_Finder-Progress-mobile-4.jpg">
+               	  <img src="https://cdn.shopify.com/s/files/1/0944/0398/files/Foundation_Finder-Progress-4.jpg"/>
+                </picture>              
+                <picture class="header-progress progress-5 hide">
+                  <source 
+                    media="(min-width: 768px)" 
+                    srcset="https://cdn.shopify.com/s/files/1/0944/0398/files/Foundation_Finder-Progress-5.jpg">
+
+                  <source 
+                    media="(min-width: 300px)" 
+                    srcset="https://cdn.shopify.com/s/files/1/0944/0398/files/Foundation_Finder-Progress-mobile-5.jpg">
+               	  <img src="https://cdn.shopify.com/s/files/1/0944/0398/files/Foundation_Finder-Progress-5.jpg"/>
+                </picture>              
+              </div>
+                <nav class="find-my-match-nav">
+                    <button class="startOver-btn">Start Over</button>
+                </nav>
+            </div>
+        </div>
+        <div class="foundation-swiper-container">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide swiper-no-swiping">
+                    <div class="find-my-match-body">
+                        <div class="find-my-match-home">
+                            <img alt="Foundation Finder Group Photo" class="desktop_img" src="https://cdn.shopify.com/s/files/1/0944/0398/files/Foundation_Finder-front.jpg"/>
+                            <div class="intro-container">
+                                <div class="introText">
+                                    <h1>Match My Skin Tone</h1>
+                                    <p>Want to know your perfect foundation and shade?<br>
+                                    Let's get started...</p><button class="ff-nav slide1">Get Started</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide swiper-no-swiping">
+                    <div class="find-my-match-body">
+                        <div class="intro-container">
+                            <div class="find-my-match-slides">
+                                <h2>What is your undertone?</h2>
+                                <div class="match-selection">
+                                    <div class="undertone-selection cool">
+                                        <div class="match-selection-left"><img alt="cool undertone" class="desktop_img" src="https://cdn.shopify.com/s/files/1/0944/0398/files/undertone_cool.png?5479863788722165667"/></div>
+                                        <div class="match-selection-right">
+                                            <h3>Cool</h3>
+                                            <p>These shades are perfect for skin that has pink, red or blue hues.</p><a class="ff-nav slide2" data-filter="cool">Select</a>
+                                        </div>
+                                    </div>
+                                    <div class="undertone-selection Neutral">
+                                        <div class="match-selection-left"><img alt="neutral undertone" class="desktop_img" src="https://cdn.shopify.com/s/files/1/0944/0398/files/undertone_neutral.png?5479863788722165667"/></div>
+                                        <div class="match-selection-right">
+                                            <h3>Neutral</h3>
+                                            <p>These shades are perfect for skin that has a combination of both cool and warm hues. There is no dominant tone.</p><a class="ff-nav slide2" data-filter="neutral">Select</a>
+                                        </div>
+                                    </div>
+                                    <div class="undertone-selection Warm">
+                                        <div class="match-selection-left"><img alt="warm undertone" class="desktop_img" src="https://cdn.shopify.com/s/files/1/0944/0398/files/undertone_warm.png?5479863788722165667"/></div>
+                                        <div class="match-selection-right">
+                                            <h3>Warm</h3>
+                                            <p>These shades are perfect for skin that has yellow, golden, or peach hues.</p><a class="ff-nav slide2" data-filter="warm">Select</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide swiper-no-swiping">
+                    <div class="find-my-match-body">
+                        <div class="intro-container">
+                            <div class="find-my-match-slides">
+                                <h2>Select your closest skin tone.</h2>
+                                <div class="match-selection">
+                                    <div class="shade-selection light">
+                                        <div class="match-selection-left"><img alt="light shade" class="desktop_img" src="https://cdn.shopify.com/s/files/1/0944/0398/files/shade_light.png"/></div>
+                                        <div class="match-selection-right">
+                                            <h3>Light</h3><a class="ff-nav slide3" data-filter="light">Select</a>
+                                        </div>
+                                    </div>
+                                    <div class="shade-selection medium">
+                                        <div class="match-selection-left"><img alt="medium shade" class="desktop_img" src="https://cdn.shopify.com/s/files/1/0944/0398/files/shade_medium_50d2539b-270a-43d8-ad69-64e03ad6e170.png?4632530160709263170"/></div>
+                                        <div class="match-selection-right">
+                                            <h3>Medium</h3><a class="ff-nav slide3" data-filter="medium">Select</a>
+                                        </div>
+                                    </div>
+                                    <div class="shade-selection tan">
+                                        <div class="match-selection-left"><img alt="tan shade" class="desktop_img" src="https://cdn.shopify.com/s/files/1/0944/0398/files/shade_tan.png"/></div>
+                                        <div class="match-selection-right">
+                                            <h3>Tan</h3><a class="ff-nav slide3" data-filter="tan">Select</a>
+                                        </div>
+                                    </div>
+                                    <div class="shade-selection dark">
+                                        <div class="match-selection-left"><img alt="dark shade" class="desktop_img" src="https://cdn.shopify.com/s/files/1/0944/0398/files/shade_dark.png"/></div>
+                                        <div class="match-selection-right">
+                                            <h3>Dark</h3><a class="ff-nav slide3" data-filter="dark">Select</a>
+                                        </div>
+                                    </div>
+                                    <div class="shade-selection deep">
+                                        <div class="match-selection-left"><img alt="deep shade" class="desktop_img" src="https://cdn.shopify.com/s/files/1/0944/0398/files/shade_deep.png"/></div>
+                                        <div class="match-selection-right">
+                                            <h3>Deep</h3><a class="ff-nav slide3" data-filter="deep">Select</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide swiper-no-swiping">
+                    <div class="find-my-match-body">
+                        <div class="intro-container">
+                            <div class="find-my-match-slides">
+                                <h2>What type of coverage do you need?</h2>
+                                <div class="match-selection">
+                                    <div class="coverage-selection sheer">
+                                        <div class="match-selection-left"><img alt="sheer coverage" class="desktop_img" src="https://cdn.shopify.com/s/files/1/0944/0398/files/coverage_sheer.png?14722373160801667136"/></div>
+                                        <div class="match-selection-right">
+                                            <h3>Sheer</h3>
+                                            <p>Lightweight, buildable coverage.</p><a class="ff-nav slide4" data-filter="sheer">Select</a>
+                                        </div>
+                                    </div>
+                                    <div class="coverage-selection medium">
+                                        <div class="match-selection-left"><img alt="medium coverage" class="desktop_img" src="https://cdn.shopify.com/s/files/1/0944/0398/files/coverage_medium_86b0ee99-99b3-4c05-98d1-62f97a19d2b9.png?14722373160801667136"/></div>
+                                        <div class="match-selection-right">
+                                            <h3>Medium</h3>
+                                            <p>Just enough coverage to leave your skin looking natural.</p><a class="ff-nav slide4" data-filter="medium">Select</a>
+                                        </div>
+                                    </div>
+                                    <div class="coverage-selection full">
+                                        <div class="match-selection-left"><img alt="full coverage" class="desktop_img" src="https://cdn.shopify.com/s/files/1/0944/0398/files/coverage_full.png?14722373160801667136"/></div>
+                                        <div class="match-selection-right">
+                                            <h3>Full</h3>
+                                            <p>Highly pigmented coverage to conceal blemishes and correct discoloration.</p><a class="ff-nav slide4" data-filter="full">Select</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide swiper-no-swiping">
+                    <div class="find-my-match-body">
+                        <div class="intro-container">
+                            <div class="find-my-match-slides">
+                                <h2>What is your preferred finish?</h2>
+                                <div class="match-selection">
+                                    <div class="finish-selection dewy">
+                                        <div class="match-selection-left"><img alt="dewy finish" class="desktop_img" src="https://cdn.shopify.com/s/files/1/0944/0398/files/finish_dewy.png?1775621402907300809"/></div>
+                                        <div class="match-selection-right">
+                                            <h3>Dewy</h3>
+                                            <p>For a naturally moist, radiant look.</p><a class="ff-nav slide5" data-filter="dewy">Select</a>
+                                        </div>
+                                    </div>
+                                    <div class="finish-selection luminous">
+                                        <div class="match-selection-left"><img alt="luminous finish" class="desktop_img" src="https://cdn.shopify.com/s/files/1/0944/0398/files/finish_luminous.png?13578306110824875647"/></div>
+                                        <div class="match-selection-right">
+                                            <h3>Luminous</h3>
+                                            <p>For an even-toned glowing look.</p><a class="ff-nav slide5" data-filter="luminous">Select</a>
+                                        </div>
+                                    </div>
+                                    <div class="finish-selection matte">
+                                        <div class="match-selection-left"><img alt="matte finish" class="desktop_img" src="https://cdn.shopify.com/s/files/1/0944/0398/files/finish_matte.png?13578306110824875647"/></div>
+                                        <div class="match-selection-right">
+                                            <h3>Matte</h3>
+                                            <p>For a velvety smooth, shine-free look.</p><a class="ff-nav slide5" data-filter="matte">Select</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="ff-results" style="display: none;">
+        <div class="find-my-match-slides-results">
+            <h2>Our best match for you</h2>
+            <div class="matched-results"></div>
+        </div>
+    </div>
+    <div class="collection-wrapper">
+        <div class="main-content-layout collections">
+            <div class="category product-grid">
+                <div class="ff-products-grid col-xs-12">
+                    {% for product in collections.foundation-finder.products %}
+                  		{%- comment %}<locksmith:eae6>{% endcomment -%}
+                  		  {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: collections.foundation-finder, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+                  		{%- comment %}</locksmith:eae6>{% endcomment -%}
+                  		{% for variant in product.variants %} 
+                  			{% include 'product-grid-item-shade-finder' %}
+                  		{% endfor %}
+                  {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+       var swiper = new Swiper('.foundation-swiper-container', {
+       speed: 500,
+       autoHeight: true,
+       simulateTouch: false,
+       noSwiping: true
+
+       });
+
+        $("button.startOver-btn").on("click", function(e) {
+         e.preventDefault();
+         location.reload();
+          
+      });
+     //nav buttons
+        $(".ff-nav.slide1").on("click", function(e) {
+         e.preventDefault();
+          $('.find-my-match-header.ff-results-header').show();
+          $('.header-progress.progress-1').removeClass("hide");
+        
+          swiper.slideTo(1, 0);
+      });
+          $(".ff-nav.slide2").on("click", function(e) {
+         e.preventDefault();
+            $('.header-progress.progress-1').addClass("hide");
+            $('.header-progress.progress-2').removeClass("hide");
+
+         swiper.slideTo(2, 0);
+      });
+          $(".ff-nav.slide3").on("click", function(e) {
+         e.preventDefault();
+            $('.header-progress.progress-2').addClass("hide");
+            $('.header-progress.progress-3').removeClass("hide");
+            
+         swiper.slideTo(3, 0);
+      });
+          $(".ff-nav.slide4").on("click", function(e) {
+         e.preventDefault();
+            $('.header-progress.progress-3').addClass("hide");
+            $('.header-progress.progress-4').removeClass("hide");
+            
+         swiper.slideTo(4, 0);
+      });
+          $(".ff-nav.slide5").on("click", function(e) {
+         e.preventDefault();
+            $('.header-progress.progress-4').addClass("hide");
+            $('.header-progress.progress-5').removeClass("hide");
+            
+        $('.swiper-wrapper').slideUp();
+        $(' .ff-results').slideDown();  
+
+      });
+     
+</script> 
+              
+
+
+<script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js">
+</script> 
+<script>
+  var dataURL=  "https://cdn.shopify.com/s/files/1/0944/0398/t/30/assets/foundationFinderData_013118.2.json";  
+  $.get( dataURL, function( data ) {
+           var HTML = '';
+               for (var i = 0; i < data.length; i++) {
+                   value = data[i];
+                   HTML += '<div class="isotope-product '
+                   +value.Undertone+ ' ' 
+                   +value.Coverage+ ' '
+                   +value.Shade+ ' '
+                   +value.Finish+ ' '
+                   +'" data-product="'+value.PageHandle
+                   +'" data-undertone="'+value.Undertone
+                   +'" data-coverage="'+value.Coverage
+                   +'" data-finish="'+value.Finish
+                   +'" data-shade="'+value.Shade
+                   +'" data-sku="'+value.SKU+'">'
+                   +value.SKU+'<\/div>';
+               }
+     $('#shadeSelector-grid').append(HTML);
+
+       
+       // init Isotope
+       var $grid = $('.grid').isotope({
+         itemSelector: '.isotope-product'
+       });
+      
+      // init queries
+      var undertone = "";
+      var shade = "";
+      var coverage = "";
+      var finish = "";
+      var filterQuery = "";
+      var skus =[];
+      var resultsCounter = 0;
+      
+      // capture user selections
+      $( ".ff-nav.slide2" ).on( "click", function() {    
+       undertone = $(this).attr("data-filter");   
+       });
+      
+      $( ".ff-nav.slide3" ).on( "click", function() {    
+       shade = $(this).attr("data-filter");
+       checkCoverageAvailibity();
+      });
+          
+        $( ".ff-nav.slide4" ).on( "click", function() {   
+       coverage = $(this).attr("data-filter");  
+       checkFinishAvailibity();
+       });         
+        
+      $( ".ff-nav.slide5" ).on( "click", function() {   
+       finish = $(this).attr("data-filter");  
+
+
+       // alert('.isotope-product[data-undertone="'+undertone+'"][data-shade="'+shade+'"][data-coverage="'+coverage+'"][data-finish="'+finish+'"]');
+        
+        // Query the selection
+        filterQuery=$('.isotope-product[data-undertone~="'+undertone+'"][data-shade~="'+shade+'"][data-coverage~="'+coverage+'"][data-finish~="'+finish+'"]');  
+
+        filterQuery.each(function(index, obj) {
+             skus.push($(this).text());
+        });
+        
+        // Show the results
+         $.each(skus, function (index, value) {
+            console.log("#"+value);
+           resultsCounter++;
+          $("#"+value).css("display","block");
+         });
+         
+         updateURL();
+        
+        //Center the product if there is only 1 result
+        
+        if(resultsCounter == 1){
+        $('.ff-product-grid-shade-finder').css("width","100%");
+          
+        
+        }
+      });
+     
+     
+     $(".collection-wrapper").appendTo(".matched-results");
+
+                                               
+     
+    function checkFinishAvailibity(){
+      var checkFinishQuery = "";
+      var dewy = 0;
+      var luminous = 0;
+      var matte = 0;
+     
+        checkFinishQuery=$('.isotope-product[data-undertone~="'+undertone+'"][data-shade~="'+shade+'"][data-coverage~="'+coverage+'"]');  
+        checkFinishQuery.each(function(index, obj) {
+      
+         if ($(this).attr( "data-finish" ) == "dewy"){dewy++};
+         if ($(this).attr( "data-finish" ) == "luminous"){luminous++}; 
+         if ($(this).attr( "data-finish" ) == "matte"){ matte++;}; 
+         
+       });
+
+     if (dewy == 0){  $(".finish-selection.dewy").addClass("disable");}
+     if (luminous == 0){  $(".finish-selection.luminous").addClass("disable");}
+     if (matte == 0){  $(".finish-selection.matte").addClass("disable");}
+    }   
+    function checkCoverageAvailibity() {
+      var checkFilterQuery = "";
+      var sheer = 0;
+      var medium = 0;
+      var full = 0;
+     
+        checkFilterQuery=$('.isotope-product[data-undertone~="'+undertone+'"][data-shade~="'+shade+'"]');   
+        checkFilterQuery.each(function(index, obj) {
+         
+         if ($(this).attr( "data-coverage" ) == "sheer"){sheer++};
+         if ($(this).attr( "data-coverage" ) == "medium"){medium++}; 
+         if ($(this).attr( "data-coverage" ) == "medium full"){ medium++; full++;}; 
+         if ($(this).attr( "data-coverage" ) == "full"){full++};
+       });
+
+     if (sheer == 0){  $(".coverage-selection.sheer").addClass("disable");}
+     if (medium == 0){  $(".coverage-selection.medium").addClass("disable");}
+     if (full == 0){  $(".coverage-selection.full").addClass("disable");}
+    }  
+    function updateURL() {
+         if (history.pushState) {
+             var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?undertone='+undertone+"+shade="+shade+"+coverage="+coverage+"+finish="+finish;
+             window.history.pushState({path:newurl},'',newurl);
+         }
+       } 
+
+
+      
+    });
+</script>

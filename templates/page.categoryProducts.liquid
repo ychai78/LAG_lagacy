@@ -1,0 +1,72 @@
+{% assign collection_type =  {{page.handle}}  %}
+
+
+{% assign collection_types =  {{collections[collection_type].all_types}}  %}
+
+ 
+
+
+
+{% comment %}
+{{ page.content}}
+ grab page handle to get the collection name.  Use the collection name to get all products beloging to that collection.
+{% endcomment %}
+
+
+{% for item in collection_types reversed %}
+{%- comment %}<locksmith:1a31>{% endcomment -%}
+  {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: item, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+{%- comment %}</locksmith:1a31>{% endcomment -%}
+{% assign item_stripped =   item| replace:' ','-' %}
+
+<section class="widget-trending-product" data-type="{{item_stripped}}">
+
+  
+
+  <div class="widget-title wow fadeIn">   
+
+	<fieldset class="box-title">
+   <legend align="center">{{ item }}</legend>
+  
+      {% comment %}
+      <span class="read-more">
+     <a href="{{collections[item_stripped].url}}" class="navigation-link">View all ({{collections[item_stripped].products_count}})</a>
+      </span>
+  {% endcomment %}
+
+    </fieldset>
+
+  </div>
+
+  <div class="widget-product">
+    <div class="products-grid owl-carousel">
+    
+     
+      {% for product in collections[item_stripped].products %}
+        {%- comment %}<locksmith:98ea>{% endcomment -%}
+          {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: collections[item_stripped], variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+        {%- comment %}</locksmith:98ea>{% endcomment -%}
+        {% include 'product-grid-item-trending' %}
+      {% endfor %}
+    </div> 
+ 	</div>
+
+    
+
+</section>
+  
+{% endfor %}
+
+
+
+
+<script>
+jQuery(document).ready(function() {
+  jQuery(".widget-trending-product .products-grid").owlCarousel({
+    navigation : true,
+    items : 5,
+    itemsTablet: [767,3],
+    itemsTabletSmall: [721,2]
+  });
+});
+</script>

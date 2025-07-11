@@ -1,0 +1,283 @@
+{% comment %}
+ Use CHECKOUT NOTICE to write a notice onto the checkout page.
+Thank you for your order. Please be advised that all orders placed on Wednesday, December 22nd, after 10:00 AM PST will begin processing on January 3rd, 2022.
+Please note that your credit card will be charged should you choose to place your order during our closure period.
+{% endcomment %}
+{% assign CHECKOUT_NOTICE = 'Thank you for your order. Please be advised that all orders placed on Wednesday, December 22nd, after 10:00 AM PST will begin processing on January 3rd, 2022. Please note that your credit card will be charged should you choose to place your order during our closure period.' %}
+{% assign CHECKOUT_NOTICE = 'Thank you for your order. Please note that our office will be closed from 12/23/2022 to 1/2/2023 in observance of the holidays. All orders placed after 9:30 AM PST on Thursday, December 22, 2022, will be processed and shipped after we return.  Please be advised that your credit card will be charged should you choose to place your order during our holiday closure period.'%}
+
+{% assign timer_start_date = "2022/12/19 00:01" | remove: "/"  | remove: ":" | remove: " " %}
+{% assign timer_end_date   = "2023/01/03 23:59" | remove: "/"  | remove: ":" | remove: " " %}
+{% assign current_date = 'now' |  date: "%Y/%m/%d %H:%M" | remove: "/"  | remove: ":" | remove: " "  %}{% comment %} <!-- 2019/12/25 13:17 -->{% endcomment %}
+
+{% assign within_release_date = false %}
+{% if current_date >= timer_start_date and current_date <= timer_end_date %}
+{% assign within_release_date = true %}
+{% endif %}
+
+{%- liquid   
+  assign purchasable  = true
+
+  for item in cart.items
+    if item.vendor == 'NotForSale'
+      assign purchasable = false
+      break
+    endif
+  endfor    
+-%}
+
+
+
+<script>if (typeof Shopify === "undefined") var Shopify = {}; Shopify.cart = {{ cart | json }};</script> 
+<div id="freegift_cart_container" name="sca.fg.cart" class="sca-fg-cart-container" style="display: none;">
+  <div id="freegift_message" class="owl-carousel"></div>
+</div> 
+<div id="sca-fg-slider-cart" style="display: none;">
+  <div class="sca-fg-cart-title">
+    <strong>Select your free gift (s)</strong>
+  </div>
+  <div id="sca_freegift_list" class="owl-carousel"></div>
+</div>
+<div id="sca_fg_cart">
+  <div class="page-cart site-wrap">
+    {% if cart.item_count > 0 %}     
+    <section class="cart-wrapper">
+      <form action="/cart" method="post" novalidate>
+        <section class="cart-panel">
+          <div class="cart-main col-xs-12 col-md-8">
+            <header class="page-header">
+              <h1 class="checkout-title">Shopping Bag <span class="item-count">{{ cart.item_count }} {{ cart.item_count | pluralize: 'Item', 'Items' }} </span></h1>
+                <div class="mybag_header">
+                  <span class="free-shipping-note-cart-">
+                    {% if cart.total_price < 3500 %}
+                    You are {{3500 | minus:  cart.total_price | money}} away from <span class="red">FREE SHIPPING</span>
+                    {% else %}You qualify for <span class="red">FREE SHIPPING</span>{% endif %}</span>
+                </div>
+            </header>
+            <div class="cart-items products">
+              <table id="cart-table" class="item-list">
+                <thead>
+                  <tr>
+                    <th class="first" colspan="2">Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th class="last">&nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in cart.items %}
+                  <tr class="cart-row">
+                    <td class="item-image">
+                      <a class="product-img" href="{% unless item.price <= 0 %}{{ item.url | within: collections.all }}{%endunless%}">
+                        <img src="{{ item | img_url: 'medium' }}"  alt="{{ item.title | escape }}" class="cart-item__thumb-image">
+                      </a>
+                    </td>
+                    <td class="item-details">
+                      <div class="info cart-item__desc-info">
+                        <div class="product_name cart-item__product-name">
+                          <a href="{% unless item.price <= 0 %}{{ item.url }}{%endunless%}" class="product-name">
+                            {{item.product.title}}
+                          </a>
+                        </div>
+                        <div class="price column cart-item__price cart-item__price--mobile-only">
+                          <div class="price-label cart-item__price-label">Price: </div>
+                          $50.00
+                        </div>
+                        <div class="cart-item__sku">
+                          Item Number: {{item.sku}}
+                        </div>
+                        <div class="color column">
+                          <div class="swatch-label" data-swatch-color="{{item.variant.option1 | handleize }}">{{item.variant.option1}}</div>
+                          <div class="shade"><span class="shade-label">Shade: </span>
+                            {% assign full_shade=  item.variant.option1 | split: ' ' %}
+                            {% for shade in full_shade offset:1  %}
+                              {% if shade == "Title" %}
+                                  (one color)
+                              {% else %}
+                                  {{ shade }}
+                              {% endif %}
+                            {% endfor %}
+                          </div>
+                        </div>        
+                        
+                        {% comment %}if product is a nail product then display final sale.{%endcomment%}                         
+                        {% for collection in item.product.collections %}
+                          {%- comment %}<locksmith:1e40>{% endcomment -%}
+                            {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: collection, subject_parent: item.product, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+                          {%- comment %}</locksmith:1e40>{% endcomment -%}
+                          {% if collection.title == 'Nails' %}
+                          	<div class="final-sale">FINAL SALE</div>
+                          {% else %}    
+                          {% endif %} 
+                        {% endfor %}
+                      </div>
+                    </td>
+                    <td class="item-quantity">
+                      <div class="qty-label cart-item__qty-label">Qty: </div>
+                      <input type="text" size="4" name="updates[]" id="updates_{{ item.id }}" value="{{ item.quantity }}" 
+                             {% unless item.variant.inventory_management == blank or item.variant.inventory_policy == 'continue' %} max="{{ item.variant.inventory_quantity }}"
+                             {% endunless %}
+                             onfocus="this.select();" class="tc item-quantity  {% if item.product.tags contains 'freebies'%} lock-qty{% endif %} " />
+                      <input class="update hidden" type="submit" name="update" class="btn-secondary" value="update">
+                    </td>
+                    <td class="item-price"><div class="qty-label cart-item__qty-label line-total-label">PRICE: </div> {% unless item.vendor == 'NotForSale' %}{{ item.price | money }}{% endunless %}</td>
+                    <td class="item-total"><div class="qty-label cart-item__qty-label line-total-label">TOTAL: </div>{% unless item.vendor == 'NotForSale' %}{{ item.line_price | money }}{% endunless %}</td>
+                    <td class="item-remove">
+                      <div class="cart-item__remove-form">
+                        <a class="remove-item" href="/cart/change/{{ item.variant.id }}?quantity=0" >X</a>
+                      </div> 
+                    </td>
+                  </tr>
+                  {% endfor %} 	
+                </tbody><tfoot></tfoot>
+              </table>
+            </div>
+            <section id="order-summary-panel" class="order-summary-panel panel ">
+              <div class="order-summary__content content clearfix">
+                <div class="subtotal label order-summary__subtotal-label">Sub Total</div>
+                <div class="subtotal value order-summary__subtotal-value" id="subtotal-row-total">{{ cart.total_price | money }}</div>
+                <div class="shipping label order-summary__subtotal-label">Estimated Shipping</div>
+                <div class="shipping value order-summary__shipping-value">
+                    {% if cart.total_price >= 3500 %}FREE
+                            {% assign shipping_total =  0%}
+                            {% else %}$8.00
+                            {% assign shipping_total =  800%}
+                            {% endif %}
+                </div>
+                <div class="tax label order-summary__tax-label">Estimated Tax</div>
+                <div class="tax value order-summary__tax-value">N/A</div>
+                <div class="total label order-summary__total-label">Estimated Total</div>
+                <div class="total value order-summary__total-value">{{ cart.total_price | plus: shipping_total | money}}</div>             
+              </div>
+            </section>
+          </div>
+          <div class="cart-sidebar cart-sidebar-top col-xs-12 col-md-4" id="cart-summary">
+            <div class="cart-sidebar-wrapper bshadow"> 
+              <div class="cart_col side-box summary">
+                <div class="cart__col--side-header">
+                  <h3 class="cart_col side-title">Order Summary</h3>
+                </div>
+                <div class="productcount_baskettotal">
+                  <div class="item_subtotal">
+                    <div class="summary_row">
+                      <p class="subtotal_row">
+                        <span class="cart__summary--title">Subtotal</span>
+                        <span class="cart__summary--amount">{{ cart.total_price | money }}</span>
+                      </p>
+                      <p class="shipping_row">
+                        <span class="cart__shipping--title">Estimated Shipping*</span>
+                        <span class="cart__shipping--amount">
+                          {% if cart.total_price >= 3500 %}FREE
+                          {% assign shipping_total =  0%}
+                          {% else %}$8.00
+                          {% assign shipping_total =  800%}
+                          {% endif %}</span>
+                      </p>
+                      <p class="tax_row">
+                        <span class="cart__tax--title">Estimated Tax*</span>
+                        <span class="cart__tax--amount">N/A</span>
+                      </p>
+                      <p class="grandtotal_row">
+                        <span class="cart__grandtotal--title">Estimated Total</span>
+                        <span class="cart__grandtotal--amount">{{ cart.total_price | plus: shipping_total | money}}</span>
+                      </p>             
+                    </div>
+                  </div>
+                </div>
+                <p class="shipping-tax">*Tax and shipping is calculated at checkout.</p>
+              </div>
+
+
+               {% if purchasable %}
+              <section class="checkout-panel">
+                <input type="submit" name="checkout" class="btn"  value="Checkout">     
+                {% if additional_checkout_buttons %}
+                <span class="or center">OR</span>
+                <p class="center">{{ content_for_additional_checkout_buttons }}</p>
+                {% endif %}
+              </section>
+                 {% else %}
+                 <div class="error-message-panel">
+                   <p class="error-message"> Sorry, but the products below cannot be purchased. Please remove them from your cart to proceed to checkout.</p>
+                   <ul>
+                     {% for item in cart.items %}
+                       {% if item.vendor == 'NotForSale' %}
+                       <li>{{ item.title }} </li>
+                       {% endif %}
+                     {% endfor %}
+                 </ul>
+                 </div>
+                 {% endif %}
+              
+              <div class="disclaimer-note">Please note, L.A. Girl only ships to the cardholder’s authorized billing address.</div>
+            </div> 
+            
+            <div class="cart-sidebar-wrapper bshadow notice" 
+                 style="font-size: 1.3rem;
+                        border-top: 1px solid #444;
+                        margin-top: 0rem;
+                        margin-bottom: 2.5rem;">
+               {% if within_release_date %}
+              {% unless CHECKOUT_NOTICE == ""  %}  
+              <div class="color" style="margin: 0px 0;color: red;border-bottom: 1px solid #ccc;margin-bottom: 1.1em;font-size: 1.25rem;">
+               
+                {{CHECKOUT_NOTICE}}
+                <br><br>
+               
+              </div>
+              {% endunless %}
+               {% endif %}
+              <span class="">Please note to qualify for free shipping, your total before tax and after all discounts must be $35 or more.</span>
+            </div>
+            <div class="checkout-disclaimer">
+              <span class="bold">Disclaimer: </span>Due to individual user's monitor settings, calibrations and lighting sources, the colors that appear on your screen may not be an exact representation of the actual product. We strive to show the colors as accurately as possible, but screen images are intended as a guide only.
+            </div> 
+          </div>
+        </section>
+      </form>
+    </section>
+    <div id="cbb-also-bought-box"></div>
+    <section class="cart-bottom-wrapper">  
+      {% include 'now-trending-slider' %}
+    </section>
+    {% else %}
+    <form action="/cart" method="post" novalidate>
+      <div class="">
+        <article class="cart-panel empty">
+          <div class="cart-main col-xs-12 col-md-9">
+            <header class="page-header">
+              <h1>Your Bag <span class="item-count">{{ cart.item_count }} {{ cart.item_count | pluralize: 'Item', 'Items' }} </span></h1>
+            </header>
+            <section class="empty-cart">
+              <p class="checkout-empty-cart-msg">Your bag is currently empty</p>
+              <a href="/" class="continue" >Continue Shopping</a>
+            </section>     
+          </div>  
+        </article>
+      </div>
+    </form>
+    {% endif %}
+  </div> 
+</div>
+ {% comment %}
+{% if within_release_date == true %}
+{% include 'freebie-app' %}
+{% endif %}
+ {% endcomment %}
+
+<script>
+  $( ".cart-item__qty" ).change(function () {
+    $( ".cart-item__qty .update" ).trigger( "click" );
+  })
+
+  if(jQuery.browser.mobile){
+
+  }
+</script>
+<style>
+._1mqqPYZtCQtz5_i0b-po4l {
+    justify-content: center;
+
+}
+</style>

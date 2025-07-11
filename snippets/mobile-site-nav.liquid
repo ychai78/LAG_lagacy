@@ -1,0 +1,81 @@
+<div class="header-mobile lg:hidden">
+  <div class="container-grid bg-black">
+    <div class="flex min-h-16 w-full items-center">
+      <div class="flex w-1/2 justify-start">
+        <label for="mobile-drawer" aria-label="open mobile sidebar" class="daisybtn daisybtn-square daisybtn-ghost">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            class="inline-block h-6 w-6 stroke-current"
+            style=" color: white;"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </label>
+      </div>
+      <div class="shrink-0">
+        <a href="/" class="header-logo" aria-label="logo homepage">
+          <img alt="{{ shop.name }}" height="50" src="https://cdn.shopify.com/s/files/1/0944/0398/files/LAG_logo_pink_x100.png?v=1714121312" width="139"/>
+        </a>
+      </div>
+      
+      <div class="flex w-1/2 justify-end">
+          <div role="button" class="mobilebtn w-4 js_mobile-search-open">
+           <a id="search-mobile-open" href="#" data-search-target="mobile-search-modal">
+              <button
+                id="search-mobile-open"
+                aria-expanded="false"
+                role="button"
+                type="button"
+                class="icon svg-item"
+                data-message="search-message"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4">
+                  <path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd" />
+                  </path>
+                </svg>
+              </button>
+            </a></div>
+        <div role="button" class="js_slideRightBar mobilebtn" id="minicarttotal">
+          <div class="indicator relative inline-flex w-max-content">
+            <label for="cart-drawer" class="cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 26" fill="none">
+                <path d="M1.7832 6.77734H23.0013V24.1997H1.7832V6.77734Z" stroke="white" stroke-width="2"></path>
+                <path d="M7.67188 9.26487V6.16468C7.72095 4.96181 8.24472 3.82741 9.12848 3.00993C10.0122 2.19245 11.184 1.75852 12.387 1.80318C13.59 1.75852 14.7618 2.19245 15.6455 3.00993C16.5293 3.82741 17.0531 4.96181 17.1021 6.16468V9.26487" stroke="white" stroke-width="2"></path>
+              </svg>
+              <span class="cartCount indicator-item badge-sm font-semibold">{{ cart.item_count }}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+     {% render 'search-bar-mobile', class: 'mobile-search-modal hidden' %}
+   
+
+    <div class="nav__mobile-bar relative overflow-x-scroll lg:hidden">
+      <ul class="scroll-snap gap-2 text-sm font-bold text-white">
+        <li><a href="/collections/whats-new" class="inline-block py-1.5">What's New</a></li>
+        {%- comment %}<locksmith:8803>{% endcomment -%}
+          {%- assign locksmith_7914_forloop__size = 0 %}{% for link in linklists['mobile-main-menu'].links %}{% capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists.mobile-main-menu, variable: 'transparent' %}{% endcapture %}{% if var == 'true' %}{% assign locksmith_7914_forloop__size = locksmith_7914_forloop__size | plus: 1 %}{% endif %}{% endfor %}{% assign locksmith_7914_forloop__index = nil -%}
+        {%- comment %}</locksmith:8803>{% endcomment -%}
+        {% for link in linklists['mobile-main-menu'].links %}
+          {%- comment %}<locksmith:a8a8>{% endcomment -%}
+            {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists.mobile-main-menu, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% if locksmith_7914_forloop__index == nil %}{% assign locksmith_7914_forloop__index = 1 %}{% assign locksmith_7914_forloop__index0 = 0 %}{% else %}{% assign locksmith_7914_forloop__index = locksmith_7914_forloop__index | plus: 1 %}{% assign locksmith_7914_forloop__index0 = locksmith_7914_forloop__index0 | plus: 1 %}{% endif %}{% if locksmith_7914_forloop__index == 1 %}{% assign locksmith_7914_forloop__first = true %}{% else %}{% assign locksmith_7914_forloop__first = false %}{% endif %}{% if locksmith_7914_forloop__index == locksmith_7914_forloop__size %}{% assign locksmith_7914_forloop__last = true %}{% else %}{% assign locksmith_7914_forloop__last = false %}{% endif %}{% assign locksmith_7914_forloop__rindex = locksmith_7914_forloop__size | minus: locksmith_7914_forloop__index | minus: 1 %}{% assign locksmith_7914_forloop__rindex0 = locksmith_7914_forloop__size | minus: locksmith_7914_forloop__index0 | minus: 1 %}{% else %}{% continue %}{% endif -%}
+          {%- comment %}</locksmith:a8a8>{% endcomment -%}
+          <li>
+            <a
+              href="{{ link.url }}"
+              class="inline-block py-1.5 px-2 {% if locksmith_7914_forloop__last %} last:pr-4{% endif %}"
+              aria-label="{{ link.title }}"
+            >
+              {{- link.title -}}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+      {% render 'scroll-snap-fade', fade-color: 'black', arrow-color: 'white' %}
+    </div>
+  </div>
+</div>

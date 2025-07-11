@@ -1,0 +1,48 @@
+{% comment %}
+    Renders a product's availability
+
+    Accepts:
+    - product: {Object} Product object
+    - variant: {Object} Variant object    
+    - text: {String} product_availability (boolean) or cta_text (string)
+
+    Usage:
+    {%- 
+      render 'product-availability-logic', 
+      product: product, 
+      variant: variant, 
+      text: "product_availability" 
+    -%}
+    
+    {%- 
+      render 'product-availability-logic', 
+      product: product, 
+      variant: variant, 
+      text: "cta_text" 
+    -%}
+{% endcomment %}
+
+{%- liquid
+  assign product_availability = true
+  assign cta_text = "Add to Bag"
+   
+  if product.vendor contains "NotForSale"
+    assign product_availability = false
+    assign cta_text = "Learn More"
+  elsif product.available == false
+    assign product_availability = false
+    assign cta_text = "Out of Stock"
+  elsif variant.available == false
+    assign product_availability = false
+    assign cta_text = "Out of Stock"
+  endif
+-%}
+
+{%- case text -%}
+  {%- when 'product_availability' -%}
+    {{ product_availability }}
+  {%- when 'cta_text' -%}
+    {{ cta_text }}
+  {%- else -%}
+    {%- comment -%} Handle default case here if needed {%- endcomment -%}
+{%- endcase -%}

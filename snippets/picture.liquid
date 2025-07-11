@@ -1,0 +1,56 @@
+{% comment %}
+  Renders an image using the picture tag
+  
+  Accepts:
+  - images: {Object} Liquid object
+  - class: {string} class used for the image tag (optional)
+  - lazy_load: {Boolean} Image should be lazy loaded. Default: true (optional)
+  - alt_tag: {string} the alt tag for the image (optional)
+  - fetchpriority: {string} fetch priority for the image. Default: 'auto' (optional)
+  - decoding: {string} decoding method for the image. Default: 'async' (optional)
+
+  Usage:
+  {% render 'image',
+    images: images, 
+    class: 'image-class', 
+    lazy_load: false, 
+    alt_tag: 'image-alt-tag', 
+    fetchpriority: 'high',
+    decoding: 'async'
+  %}
+{% endcomment %}
+
+{%- liquid
+  assign aspect_ratio = images.aspect_ratio
+  
+  assign mobile_widths = '240, 336, 480, 720, 816, 960' | split: ','
+  assign desktop_widths = '500, 700, 1000, 1500, 1700, 2000, 2400' | split: ','
+  assign default_width = '1080'
+  assign height = default_width | divided_by: aspect_ratio | round
+  assign class = class | default: 'block object-cover w-full'
+  assign alt_tag = alt_tag | default: images | split: '/' | last | split: '?' | first | split: '.' | first | replace: '_', ' ' | replace: 'LAG ', 'LA Girl '
+  assign fetchpriority = fetchpriority | default: 'auto'
+  assign decoding = decoding | default: 'async'
+-%}
+  {%- capture mobile_srcset -%}
+    {% for width in mobile_widths %}
+      {{ images | image_url: width: width | strip }} {{ width | strip }}w{% if forloop.last == false %},{% endif %}
+    {% endfor %}
+  {%- endcapture -%}
+
+  {%- capture desktop_srcset -%}
+    {% for width in desktop_widths %}
+      {{ images | image_url: width: width | strip }} {{ width | strip }}w{% if forloop.last == false %},{% endif %}
+    {% endfor %}
+  {%- endcapture -%}
+
+
+<picture>
+  <source media="(max-width: 1024px)" srcset="{{ mobile_srcset }}">
+  <source srcset="{{ desktop_srcset }}">
+  {% if lazy_load == false %}
+    <img alt="{{ alt_tag }}" class="{{ class }}" decoding="{{ decoding }}" fetchpriority="{{ fetchpriority }}" height="{{ height }}" loading="eager" src="{{ images | image_url: width: default_width }}" width="{{ default_width }}"/>
+  {% else %}
+    <img alt="{{ alt_tag }}" class="{{ class }}" decoding="{{ decoding }}" fetchpriority="{{ fetchpriority }}" height="{{ height }}" loading="lazy" src="{{ images | image_url: width: default_width }}" width="{{ default_width }}"/>
+  {% endif %}
+</picture>

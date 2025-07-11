@@ -1,0 +1,178 @@
+{{ 'collections.css' | asset_url | stylesheet_tag }}
+
+{% assign product_per_page = 48 %}
+{% capture category_title %}
+  {% render 'collection titles' %}
+  {% endcapture %}
+
+{% assign product_count = 0 %}
+{% for product in collection.products %}
+	{%- comment %}<locksmith:cbcc>{% endcomment -%}
+	  {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: collection, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+	{%- comment %}</locksmith:cbcc>{% endcomment -%}
+	{% unless product.tags contains 'coming soon' %}
+		{% assign product_count = product_count | plus: 1 %}
+	{% endunless %}
+{% endfor %}
+
+{% assign collection_list = collection.metafields.c_f.collection_type %}
+{% assign collection_linklist = linklists[collection_list].links %}
+
+{% assign collection_of_page = collection.handle | remove: '-' %}
+
+{% for link in collection_linklist %}
+	{%- comment %}<locksmith:fa3f>{% endcomment -%}
+	  {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+	{%- comment %}</locksmith:fa3f>{% endcomment -%}
+	{% assign submenu_total = forloop.length %}
+{% endfor %}
+
+{% render 'collection-header',
+	category_title: category_title,
+	collection_list: collection_list,
+	collection_linklist: collection_linklist
+%}
+
+<div class="mt-4 container-grid">
+	<div class="flex items-center justify-between mt-4">
+		<div class="flex items-baseline gap-4 collection__header">
+			{% comment %} <span class="block font-normal tracking-overline">{{- collection_list -}}</span>{% endcomment %}
+			<h1 class="inline mx-auto text-3xl uppercase md:text-4xl">{{ category_title }}</h1>
+			<span class="text-xl lowercase search-results-count-container tracking-overline">
+				{{- product_count }}
+				{{ product_count | pluralize: 'item', 'items' }}
+			</span>
+		</div>
+
+		<div class="justify-end hidden sortByOptions md:flex">
+			<div class="daisydropdown daisydropdown-bottom daisydropdown-end">
+				<div tabindex="0" role="button" id="sortButton" class="m-1 sortByFilter daisybtn">
+					Sort by -
+					<span id="sortText">Featured</span>
+					<svg width="12" height="7" viewBox="0 0 12 7" xmlns="http://www.w3.org/2000/svg">
+						<path id="icon-expand" d="M10.95 2.364A1 1 0 109.536.95L6 4.485 2.465.95A1 1 0 001.05 2.364l4.243 4.243a1 1 0 001.414 0v-.001l4.243-4.242z" fill="currentColor" fill-rule="evenodd"></path>
+					</svg>
+				</div>
+				<ul tabindex="0" class="daisydropdown-content z-[1] daisymenu p-2 shadow bg-base-100 rounded-box w-52">
+					<li value="manual"><a href="{{ collection.url | sort_by: 'manual' }}" class="sortOption ">Featured</a></li>
+					<li value="best-selling">
+						<a href="{{ collection.url | sort_by: 'best-selling' }}" class="sortOption">Best Selling</a>
+					</li>
+					<li value="price-descending">
+						<a href="{{ collection.url | sort_by: 'price-ascending' }}" class="sortOption">Price: Low to High</a>
+					</li>
+					<li value="price-ascending">
+						<a href="{{ collection.url | sort_by: 'price-descending' }}" class="sortOption">Price: High to Low</a>
+					</li>
+					<li value="title-ascending">
+						<a href="{{ collection.url | sort_by: 'title-ascending' }}" class="sortOption">A-Z</a>
+					</li>
+					<li value="title-descending">
+						<a href="{{ collection.url | sort_by: 'title-descending' }}" class="sortOption">Z-A</a>
+					</li>
+				</ul>
+			</div>
+
+			<script>
+				document.addEventListener('DOMContentLoaded', function () {
+					const sortOptions = document.querySelectorAll('.sortOption');
+					const sortText = document.getElementById('sortText');
+
+					sortOptions.forEach((option) => {
+						option.addEventListener('click', function (event) {
+							event.preventDefault(); // Prevent the default link behavior
+							const selectedText = this.textContent;
+							sortText.textContent = selectedText;
+
+							// Redirect to the href of the clicked link
+							window.location.href = this.href;
+						});
+					});
+
+					// Set the sort text based on the current URL
+					const urlParams = new URLSearchParams(window.location.search);
+					const sortBy = urlParams.get('sort_by');
+					if (sortBy) {
+						const selectedOption = Array.from(sortOptions).find(
+							(option) => option.parentElement.getAttribute('value') === sortBy
+						);
+						if (selectedOption) {
+							sortText.textContent = selectedOption.textContent;
+						}
+					}
+				});
+			</script>
+		</div>
+	</div>
+	{% unless submenu_total == null %}
+		<div class="flex gap-2 py-4 collection-quicklink align-center ">
+			<span class="flex items-center font-bold collection-quicklink__header text-step--1 whitespace-nowrap">
+				Shop by
+			</span>
+			<quicklinks-nav class="relative overflow-x-scroll">
+				<div class="gap-4 quicklinks__nav-menu scroll-snap">
+					{%- comment %}<locksmith:ec0c>{% endcomment -%}
+					  {%- assign locksmith_89b9_forloop__size = 0 %}{% for link in collection_linklist %}{% capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, variable: 'transparent' %}{% endcapture %}{% if var == 'true' %}{% assign locksmith_89b9_forloop__size = locksmith_89b9_forloop__size | plus: 1 %}{% endif %}{% endfor %}{% assign locksmith_89b9_forloop__index = nil -%}
+					{%- comment %}</locksmith:ec0c>{% endcomment -%}
+					{% for link in collection_linklist %}
+						{%- comment %}<locksmith:f1fa>{% endcomment -%}
+						  {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% if locksmith_89b9_forloop__index == nil %}{% assign locksmith_89b9_forloop__index = 1 %}{% assign locksmith_89b9_forloop__index0 = 0 %}{% else %}{% assign locksmith_89b9_forloop__index = locksmith_89b9_forloop__index | plus: 1 %}{% assign locksmith_89b9_forloop__index0 = locksmith_89b9_forloop__index0 | plus: 1 %}{% endif %}{% if locksmith_89b9_forloop__index == 1 %}{% assign locksmith_89b9_forloop__first = true %}{% else %}{% assign locksmith_89b9_forloop__first = false %}{% endif %}{% if locksmith_89b9_forloop__index == locksmith_89b9_forloop__size %}{% assign locksmith_89b9_forloop__last = true %}{% else %}{% assign locksmith_89b9_forloop__last = false %}{% endif %}{% assign locksmith_89b9_forloop__rindex = locksmith_89b9_forloop__size | minus: locksmith_89b9_forloop__index | minus: 1 %}{% assign locksmith_89b9_forloop__rindex0 = locksmith_89b9_forloop__size | minus: locksmith_89b9_forloop__index0 | minus: 1 %}{% else %}{% continue %}{% endif -%}
+						{%- comment %}</locksmith:f1fa>{% endcomment -%}
+						<a
+							data-link="{{link.title | downcase}}"
+							href="{{link.url }}"
+							class="section-menu__item daisybtn daisybtn-outline daisybtn-accent h-8 min-h-8 font-sans font-bold text-xs md:text-sm{% if link.handle == collection_of_page %} active{% endif %}{% if locksmith_89b9_forloop__last %} last:pr-4{% endif %}"
+						>
+							{{- link.title -}}
+						</a>
+					{% endfor %}
+				</div>
+			</quicklinks-nav>
+		</div>
+	{% endunless %}
+
+	{% render 'collection-promo-banner' %}
+
+	{% paginate collection.products by product_per_page %}
+		{% if collection.products.size > 0 %}
+			<div class="grid grid-cols-2 gap-4 products-grid lg:grid-cols-3">
+				{% comment %} Display the new products first {% endcomment %}
+				{% for product in collection.products %}
+					{%- comment %}<locksmith:91f7>{% endcomment -%}
+					  {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: collection, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+					{%- comment %}</locksmith:91f7>{% endcomment -%}
+					{% if product.tags contains 'new' %}
+						{% unless product.tags contains 'coming soon' or product.type contains 'test' %}
+							{% render 'card-product-3', card_product: product %}
+						{% endunless %}
+					{% endif %}
+				{% endfor %}
+
+				{% comment %} Display all products that are not new and not coming soon{% endcomment %}
+				{% for product in collection.products %}
+					{%- comment %}<locksmith:acbe>{% endcomment -%}
+					  {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: collection, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+					{%- comment %}</locksmith:acbe>{% endcomment -%}
+					{% unless product.tags contains 'coming soon'
+						or product.tags contains 'new'
+						or product.type contains 'test'
+					%}
+						{% render 'card-product-3', card_product: product %}
+					{% endunless %}
+				{% endfor %}
+			</div>
+
+		{% else %}
+			<p
+				style="text-align: center;"
+			>
+				{{ 'collections.general.no_matches' | t }}
+			</p>
+		{% endif %}
+
+		{%- if paginate.pages > 1 -%}
+			{% render 'pagination', paginate: paginate, anchor: '' %}
+		{%- endif -%}
+	{% endpaginate %}
+	{% render 'collection-description' %}
+</div>

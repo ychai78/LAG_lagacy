@@ -1,0 +1,41 @@
+<script>var CRL8_SITENAME = 'lagirlcosmetics-ln3ru9';!function(){var e=window.crl8=window.crl8||{},n=!1,i=[];e.ready=function(e){n?e():i.push(e)},e.pixel=e.pixel||function(){e.pixel.q.push(arguments)},e.pixel.q=e.pixel.q||[];var t=window.document,o=t.createElement("script"),c=e.debug||-1!==t.location.search.indexOf("crl8-debug=true")?"js":"min.js";o.async=!0,o.src=t.location.protocol+"//edge.curalate.com/sites/"+CRL8_SITENAME+"/site/latest/site."+c,o.onload=function(){n=!0,i.forEach(function(e){e()})};var r=t.getElementsByTagName("script")[0];r.parentNode.insertBefore(o,r.nextSibling)}();</script>
+<div class="full-width bg-secondary-pink my-4 hide">
+  <div class="px-4 py-10 container-grid sm:px-6 lg:px-8">
+       <h3 class="text-3xl lg:text-4xl font-bold text-black">#LAGIRLCOSMETICS</h3>
+       
+         <p class="mt-0 mb-4 text-black">Show us your looks and tag @lagirlcosmetics #lagirlcosmetics for a chance to be featured!</p>
+
+      <div id='bazaarvoice-ugc' crl8-container-id="product" crl8-filter="productId:'{{ product.selected_or_first_available_variant.sku }}'">
+        
+      </div>
+    </div>
+    </div>
+    
+<script>
+  
+ document.addEventListener('DOMContentLoaded', function() {
+    // Function to check and show the container
+    function checkAndShowContainer() {
+        const carouselHeading = document.getElementById('crl8-product-carousel-carousel-heading');
+        if (carouselHeading) {
+            const containerDiv = document.querySelector('.full-width.bg-secondary-pink.my-4.hide');
+            // If container exists, remove the hide class
+            if (containerDiv) {
+                containerDiv.classList.remove('hide');
+            }
+        }
+    }
+    //  All chekcing to make sure checkAndShowContainer() works
+    // Check after 0.2 second
+    setTimeout(checkAndShowContainer, 200);
+    // Check after 0.5 second
+    setTimeout(checkAndShowContainer, 500);
+    // Check after 1 seconds
+    setTimeout(checkAndShowContainer, 1000);
+    // Check after 1.5 seconds
+    setTimeout(checkAndShowContainer, 1500);
+    // Check after 2 seconds
+    setTimeout(checkAndShowContainer, 2000);
+});
+  
+</script>

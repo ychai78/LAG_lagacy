@@ -1,0 +1,65 @@
+{{ 'loyalty.css' | asset_url | stylesheet_tag }}
+
+<div class="redeem-section max-w-1200">
+  <div class="redeem-section-container">
+  <div class="redeem-header">
+    <h2 class="redeem-title">REDEEM <span class="redeem-title-highlight">PRO.POINTS</span></h2>
+    <p class="redeem-subtitle">LOG IN, SHOP YOUR KIT ESSENTIALS, AND REDEEM POINTS AT CHECKOUT</p>
+  </div>
+
+  <div class="redeem-container">
+    <div class="redeem-item">
+      <div class="redeem-points">500 PRO.POINTS</div>
+      <div class="redeem-offer">$5 OFF</div>
+      <div class="redeem-benefits">
+        <div class="redeem-benefit">Free Lip Liner</div>
+        <div class="redeem-benefit">Free Lip Plumper</div>
+      </div>
+    </div>
+
+    <div class="redeem-item">
+      <div class="redeem-points">1000 PRO.POINTS</div>
+      <div class="redeem-offer">10% OFF</div>
+      <div class="redeem-benefits">
+        <div class="redeem-benefit">Free Mascara</div>
+        <div class="redeem-benefit">Free Shipping</div>
+      </div>
+    </div>
+
+    <div class="redeem-item">
+      <div class="redeem-points">1500 PRO.POINTS</div>
+      <div class="redeem-offer">15% OFF</div>
+      <div class="redeem-benefits">
+        <div class="redeem-benefit">Free Eye + Lip Liner</div>
+        <div class="redeem-benefit">Free Lip Oil</div>
+      </div>
+    </div>
+
+    <div class="redeem-item">
+      <div class="redeem-points">2000 PRO.POINTS</div>
+      <div class="redeem-offer">$20 OFF</div>
+      <div class="redeem-benefits">
+        <div class="redeem-benefit">Free PRO.Kit</div>
+        <div class="redeem-benefit">*50% off</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="redeem-disclaimer">
+    *Restrictions apply, applicable to one item per purchase.
+  </div>
+  </div>
+</div>
+
+{% schema %}
+    {
+      "name": "Loyalty_Redeem",
+      "settings": [],
+      "presets": [
+        {
+          "name": "Loyalty Redeem",
+          "category": "Loyalty Page"
+        }
+      ]
+    }
+{% endschema %}

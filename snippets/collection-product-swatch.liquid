@@ -1,0 +1,72 @@
+{% for option in product.options.first %}
+  {% assign option_index = 0 %}
+  {% assign file_extension = 'png' %}
+  {% assign found_option = false %}
+  {% assign option_index = 0 %}
+  {% assign is_color = true %}
+  <div class="tooltips"></div>
+  <div class="swatch clearfix" data-option-index="{{ option_index }}">
+      <div class="collection-swatch-wrapper">
+        {% assign values = '' %}
+       <div class="slick-wrapper collection-product-swatch">
+         <div class="slick-container swipe-collection  hidden-visibility" data-total-swatches="{{product.variants.size }}"> 
+             {% for variant in product.variants %}
+             {% assign value = variant.options[option_index] %}
+             {% unless values contains value %}
+               {% assign values = values | join: ',' %}	
+               {% assign values = values | append: ',' | append: value %} 
+               {% assign values = values | split: ',' %}
+
+               {% if variant.metafields.custom.hide_shade.value == true %}
+                 {% continue %}
+                 {% else %}
+                 <div class="swiper-slide swiper-slide-swatch" data-value="{{ value | escape }}">
+                
+                    <div data-value="{{ value | escape }}" class="swatch-element {% if is_color %}color {% endif %}{{ value | handle }} {% if variant.available %}available{% else %}soldout{% endif %}">
+                      <a class="product-swatch-link" href="javascript:void(0)" title="{{ value }}">
+                        <input id="swatch-{{ option_index }}-{{ value | handle }}" type="radio" name="option-{{ option_index }}" value="{{ value | escape }}" {% unless variant.available %}disabled{% endunless %} />
+                        {% if is_color %}
+                 
+                    {% if product.metafields.c_f.real_product_swatch != null %}
+                        {% assign background_image_url = value | handle | append: '.' | append: file_extension | file_url %}
+                    {% else %}
+                        {% assign background_image_url = ""%}
+                    {% endif%}
+                        
+                        <label for="swatch-{{ option_index }}-{{ value | handle }}" data-swatch-color="{{ value | handle }}" >
+                          <span class="crossed-out">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" aria-label="sold out" role="img" focusable="false">
+                              <path d="M75,83.6l-64.7,64.7c-1.1,1.1-2.7,1.8-4.3,1.8c-1.6,0-3.1-0.6-4.3-1.8c-2.4-2.4-2.4-6.2,0-8.6L66.4,75L1.8,10.3
+	c-2.4-2.4-2.4-6.2,0-8.6c2.4-2.4,6.2-2.4,8.6,0L75,66.4l64.7-64.7c2.4-2.4,6.2-2.4,8.6,0c2.4,2.4,2.4,6.2,0,8.6L83.6,75l64.7,64.7
+	c2.4,2.4,2.4,6.2,0,8.6c-1.1,1.1-2.7,1.8-4.3,1.8c-1.6,0-3.1-0.6-4.3-1.8L75,83.6z"></path> </svg>
+                          </span>
+                        </label>
+                        {% else %}
+            
+                        <label for="swatch-{{ option_index }}-{{ value | handle }}" data-swatch-color="{{ value | handle }}" >
+                          {{ value }}
+                          <span class="crossed-out">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" aria-label="sold out" role="img" focusable="false">
+                              <path d="M75,83.6l-64.7,64.7c-1.1,1.1-2.7,1.8-4.3,1.8c-1.6,0-3.1-0.6-4.3-1.8c-2.4-2.4-2.4-6.2,0-8.6L66.4,75L1.8,10.3
+	c-2.4-2.4-2.4-6.2,0-8.6c2.4-2.4,6.2-2.4,8.6,0L75,66.4l64.7-64.7c2.4-2.4,6.2-2.4,8.6,0c2.4,2.4,2.4,6.2,0,8.6L83.6,75l64.7,64.7
+	c2.4,2.4,2.4,6.2,0,8.6c-1.1,1.1-2.7,1.8-4.3,1.8c-1.6,0-3.1-0.6-4.3-1.8L75,83.6z"></path> </svg>
+                          </span>
+                        </label>
+                        {% endif %}
+                      </a>
+                    </div>
+                  </div>
+              {% endif %}
+              {% endunless %}
+              {% endfor %}
+             
+          </div>
+       </div> 
+      </div>
+    </div>
+   {% endfor %}
+      
+     
+
+
+

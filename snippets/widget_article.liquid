@@ -1,0 +1,34 @@
+<div class="widget widget-recent-articles">
+  <div class="widget-title">
+    <h3>
+      <span>
+       upcoming events
+      </span>
+    </h3>
+  </div>
+  {% capture today_date %}{{ 'now' | date: '%Y%m%d' }}{% endcapture %}
+
+
+  <div class="widget-content">
+    <ul>
+      {% for article in blog.articles %}
+  		{%- comment %}<locksmith:3fcc>{% endcomment -%}
+  		  {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: article, subject_parent: blog, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+  		{%- comment %}</locksmith:3fcc>{% endcomment -%}
+  		{% assign event_date = {{article.metafields.c_f.eventDate | remove:"/"}} %}		
+         {% if event_date > today_date  %}
+      <li class="article">
+        <p>
+          <a href="{{ article.url }}">
+           
+            {{ article.title}}  
+          </a>
+          
+        </p>
+      </li>
+      {% endif %} 
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+

@@ -1,0 +1,156 @@
+<main class="main-content l-wrapper" role="main">
+<div class="main-wrapper">
+
+  
+{% include 'customer_service_side_menu' %}
+  
+<div class="customer-service-main col-xs-12 col-md-8">
+  <div class="col-xs-12">  
+    <header class="page-header">
+      <h2>{{ page.title | split: '|' | first }}</h2>
+    </header>
+<article id="{{page.handle}}" class="info">    
+    <div class="col-xs-12 contact-us-image">  
+<img src="//cdn.shopify.com/s/files/1/0944/0398/files/Beauty21_Front_grande.jpg?v=1474384160" alt="Beauty21 Building" class="unselectable" style="
+    width: 100%;
+">
+  
+  </div>
+  {% form 'contact' %}
+  {% if form.posted_successfully? %}
+  <p class="note form-success" {% if settings.enable_multilang %}data-translate="contact.form.post_success"{% endif %}>
+    {{ 'contact.form.post_success' | t }}
+  </p>
+  {% endif %}
+  
+  {{ form.errors | default_errors }}
+  
+  <div id="contactFormWrapper">
+    <p>{{ settings.contact_text_desc | split: '|' | first }}</p>
+    
+      <address>
+        <strong>L.A. Girl Cosmetics</strong>
+        2021 South Archibald Avenue<br>
+       Ontario, California 91761 USA<br>
+
+      </address>
+        <p>You may find the answer to your questions(s) on our  <a class="color" href="https://lagirlusa.com/pages/faq" target="_blank" style="text-decoration: underline;">FAQ page</a>.</p>
+    <hr>
+
+    <p></p>
+    <p style="font-size: 85%;">All fields required unless marked optional.</p>
+    <div>
+    <input type="text" id="contactFormFirstName" name="contact[first name]" autocapitalize="words" placeholder="First Name"  required >
+    <input type="text" id="contactFormLastName" name="contact[last name]" autocapitalize="words" placeholder="Last Name"  required >
+    <input type="email"name="contact[email]" id="contactFormEmail" autocorrect="off" autocapitalize="off" placeholder="Email"  required >
+    <input type="tel"  name="contact[phone]" id="contactFormPhone" pattern="[0-9]*" placeholder="Phone #"  required >
+    </div>
+    <div>
+    <p style="font-size: 85%;">To expedite the response time, please let us know where you are located.</p>
+    <input type="text" name="contact[city]" placeholder="City (Optional)" />
+    <input type="text" name="contact[state]" placeholder="State (Optional)" />
+    <input type="text" name="contact[zip]" placeholder="Zip Code (Optional)" />
+    <input type="text" name="contact[country]" placeholder="Country (Optional)" />
+    </div>
+   <div style="margin-top: 1rem;">
+      <input type="text" name="contact[order number]" placeholder="Order # (Optional)" />
+  
+     <select id="contactFormQuestionType" name="contact[question type]" required>
+    <option value="">Choose a Subject</option>    
+     <option value="Product Question">Product Question</option>
+      <option value="Order Placement">Order Placement</option>
+      <option value="Where is my order/return?">Where is my order/return?</option>
+      <option value="General Questions">General Questions</option>
+    <option value="International Inquiries">International Inquiries</option>
+  </select>
+    
+   
+    </div>
+    <textarea rows="10" name="contact[body]" id="contactFormMessage"  placeholder="Please leave your message here"></textarea>
+    
+    
+
+    <div class="pull-left">
+    
+       <button type="submit" name="submit_message" id="submit_message">Send Message</button>
+    </div>
+  </div> 
+  
+  {% if settings.display_location %} 
+  <div class="col-xs-3">
+        {% if settings.location_code != blank %}
+       
+        <div class="location">{{ settings.location_code | split: '|' | first }}</div>
+     
+        {% endif %}
+      </div>
+  {% endif %}
+  {% endform %}
+  
+  {{ page.content}}
+
+  </article>
+    
+    
+<div id="btn_confirmation_window" style="display:none">
+  <button id="accept" value="true">accept</button>
+  <button id="go_back" value="false">go back</button>
+</div>
+    
+    
+    <script>
+$(function () {
+    'use strict';
+
+    function confirmDialog(title, message, success) {
+        var confirmdialog = $('<div></div>').appendTo('body')
+            .html('<div><h6>' + message + '</h6></div>')
+            .dialog({
+                modal: true,
+                title: title,
+                zIndex: 10000,
+                autoOpen: false,
+                width: 'auto',
+                resizable: false,
+                buttons: {
+                    Yes: function () {
+                        success();
+                        $(this).dialog("close");
+                    },
+                    No: function () {
+                        $(this).dialog("close");
+                    }
+                },
+                close: function() {
+                    $(this).remove();
+                }
+            });
+
+        return confirmdialog.dialog("open");
+    }
+
+    $('form').on('submit', function (e) {
+        e.preventDefault();
+        var form = this;
+
+        confirmDialog('Confirm', 'Are you sure you want to continue with submitting your message?<br>You may find the answer to your question(s) on our <a href="https://lagirlusa.com/pages/faq" target="_blank" style="text-decoration: underline;">FAQ page</a>. ', function () {
+            form.submit();
+        });
+    });
+});
+    </script>
+  </div>
+</div>
+  
+  
+  
+  
+
+
+
+
+</div>
+</main>
+
+
+

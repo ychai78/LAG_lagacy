@@ -1,0 +1,449 @@
+<style>
+    label.swatch-label,   .dropdown-swatch-color {
+      background-image: var(--swatch-bkg);
+      background-color: var(--swatch-color);
+
+  }
+</style>
+
+{% comment %}
+  replace: variant.metafields.custom.hide_shade.value
+  with the correct metafield to hide the varient
+
+  if test=yes then display the hidden shade, else hide the shade
+{% endcomment %}
+
+{% for variant in product.variants %}
+  {% if variant.metafields.custom.hide_shade.value == true %}
+    <style>
+      .chosen-results li[data-swatch-option={{variant.title | handleize}}] {display: none!important;}
+    </style>
+  {% endif %}
+{% endfor %}
+
+<script>
+  $( document ).ready(function() {
+    if (document.location.href.indexOf('test=yes') > 0)
+    {
+      $(".mix").removeClass("hide-shade");
+      $('style:contains(".chosen-results li[data-swatch-option=")').remove();
+
+    }
+    else {
+      $(".mix.hide-shade").remove();
+    }
+  });
+</script>
+
+
+{% if swatch == blank %}
+  <div class="swatch error">
+    <p>You must include the snippet swatch.liquid with the name of a product option.</p>
+    <p>
+      Use: <code>{% raw %}{% include 'swatch' with 'name of your product option here' %}{% endraw %}</code>
+    </p>
+    <p>
+      Example: <code>{% raw %}{% include 'swatch' with 'Color' %}{% endraw %}</code>
+    </p>
+  </div>
+{% else %}
+  {% assign found_option = false %}
+
+  {% assign option_index = 0 %}
+
+  {% for option in product.options %}
+    {% if option == swatch %}
+      {% assign found_option = true %}
+      {% assign option_index = forloop.index0 %}
+     
+    {% endif %}
+  {% endfor %}
+
+  <select id="product-selectors" name="id" style="display:none;">
+    {% for variant in product.variants %}
+      {% if variant.metafields.custom.hide_shade.value == true %}
+        {% continue %}
+      {% else %}
+        <option
+          {% if variant == product.selected_or_first_available_variant %}
+            selected="selected"
+          {% endif %}
+          value="{{ variant.id }}"
+        >
+          {{ variant.title }}
+        </option>
+      {% endif %}
+    {% endfor %}
+  </select>
+
+  {% unless found_option %}
+    <div class="swatch error">
+      <p>
+        You included the snippet swatch.liquid with the name of a product option — <code>'{{ swatch }}'</code> — that
+        does not belong to your product.
+      </p>
+      <p>
+        Use <code>{% raw %}{% include 'swatch' with 'name of your product option here' %}{% endraw %}</code>
+      </p>
+      <p>
+        Example: <code>{% raw %}{% include 'swatch' with 'Color' %}{% endraw %}</code>
+      </p>
+      <p>
+        <strong>This is case-sensitive!</strong> Do not put in <code>'color'</code> if your product option name is
+        <code>'Color'</code>.
+      </p>
+    </div>
+  {% else %}
+    {% if product.metafields.c_f.product_filterable_shades or product.metafields.global.product_filterable_shades %}
+      <div class="filter-tabs relative overflow-x-scroll">
+        <ul class="control-filter scroll-snap gap-2">
+          {% if product.metafields.c_f.product_filterable_shades %}
+            {% assign filterCatagories = product.metafields.c_f.product_filterable_shades | split: ', ' %}
+          {% else %}
+            {% assign filterCatagories = product.metafields.global.product_filterable_shades | split: ', ' %}
+          {% endif %}
+          <li class="filter  h-6 min-h-6 px-2 text-xs md:text-sm" data-filter="all">All</li>
+          {% for filter in filterCatagories %}
+            <li class="filter h-6 min-h-6 px-2 text-xs md:text-sm" data-filter=".{{ filter | handleize }}">
+              {{ filter }}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+    {% if product.metafields.c_f.product_filterable_foundation %}
+      <form class="controls">
+        <!-- NB: Each filter group has been named by providing a value to the `data-filter-group` attribute -->
+
+        <fieldset data-filter-group="color" class="control-group">
+          <label class="control-group-label">Skin Tone</label>
+          {% assign filterCatagories = product.metafields.c_f.product_filterable_foundation | split: ', ' %}
+          {% for filter in filterCatagories %}
+            <button type="button" class="control control-color" data-filter=".{{ filter | handleize }}">
+              {{ filter }}
+            </button>
+          {% endfor %}
+        </fieldset>
+
+        <fieldset data-filter-group="shape" class="control-group">
+          <label class="control-group-label">Color</label>
+
+          <button type="button" class="control control-shape" data-filter=".cool">Cool</button>
+          <button type="button" class="control control-shape" data-filter=".neutral">Neutral</button>
+          <button type="button" class="control control-shape" data-filter=".warm">Warm</button>
+        </fieldset>
+      </form>
+    {% endif %}
+
+    <div class="shadeName-label">Selected Shade: <label class="shadeNames"></label></div>
+    <div class="swatch clearfix" data-option-index="{{ option_index }}" data-product="{{product.handle}}">
+      {% assign values = '' %}
+    
+
+      {% for variant in product.variants %}
+        {% assign value = variant.options[option_index] %}
+        {% unless values contains value %}
+          {% assign values = values | join: ',' %}
+          {% assign values = values | append: ',' | append: value %}
+          {% assign values = values | split: ',' %}
+
+          {%- capture filterTag -%}
+        {%- if variant.metafields.c_f.varient_filter_tag or variant.metafields["global"]["varient_filter_tag"] -%}
+        {{variant.metafields.c_f.varient_filter_tag | downcase}}{{variant.metafields["global"]["varient_filter_tag"] | downcase}}
+          {%- endif -%}
+        {%- endcapture -%}
+
+          <div
+            class="mix {{ filterTag }} {%- if variant.metafields.custom.hide_shade.value == true %}hide-shade{%- endif -%}"
+            data-sku="{{ value | handle }}"
+          >
+            {%- capture product_availability  -%}
+              {%- render 'product-availability-logic', product: product, variant: variant, text: "product_availability" -%}
+            {%- endcapture -%}
+            {%- assign product_availability = product_availability  | strip -%}
+            
+            <div
+              data-value="{{ value | escape }}"
+
+              {%- if variant.metafields.c_f.varient_discontinued_tag %}
+                data-discontinued="yes"
+              {% endif %}
+              {%- if variant.metafields.c_f.varient_finish_tag %}
+                data-finish="{{variant.metafields.c_f.varient_finish_tag | downcase}}"
+              {% endif %}
+              {%- if variant.metafields.c_f.varient_new_shade_tag or variant.metafields.global.varient_new_shade_tag %}
+                data-color="new"
+              {% endif %}
+              class="swatch-element color {{ value | handle }} {% if product_availability == "true" %}available{% else %}soldout{% endif %}"
+            >
+              {% if variant.metafields.c_f.varient_new_shade_tag or variant.metafields.global.varient_new_shade_tag %}
+                <span class="new-color-swatch">new</span>
+              {% endif %}
+              <input
+                id="swatch-{{ option_index }}-{{ value | handle }}"
+                class="hidden"
+                data-index=" {{ forloop.index0 }}"
+                data-sku="{{ variant.sku }}"
+                type="radio"
+                name="option-{{ option_index }}"
+                value="{{ value | escape }}"
+                {% if forloop.first %}
+                  checked
+                {% endif %}
+      
+              >
+              
+               
+
+                {% assign hex_code = variant.metafields.custom.hex_code.value %}
+                {% assign hex_image = variant.metafields.custom.hex_image.value %}
+
+                <label
+                  class="swatch-label"
+                  for="swatch-{{ option_index }}-{{ value | handle }}"
+                  data-variant-id="{{ variant.id }}"
+                  data-sku="{{ variant.sku }}"
+                  data-swatch-color="{{ value | handle }}"
+                  data-value="{{ value | handle  }}"
+                  data-featured-image-id="{{ variant.featured_media.id }}"
+                  data-available="{{ product_availability  | strip }}"
+
+                  {% if hex_code %}
+                    data-hex-code="{{ hex_code }}"
+                    style="--swatch-color: {{ hex_code }};"
+
+                  {% elsif hex_image %}
+                    data-hex-image="{{ hex_image | image_url: width: 60 }}"
+                    style="--swatch-bkg: url('{{ hex_image | image_url: width: 60 }}');"
+                  {% endif %}
+                >
+                 {% if product_availability == "true" %}{% else %}<span class="crossed-out"></span>{% endif %}
+                </label>
+             
+              
+            </div>
+          </div>
+        {% endunless %}
+      {% endfor %}
+    </div>
+
+
+  {% endunless %}
+{% endif %}
+
+
+{% if product.metafields.c_f.product_filterable_foundation %}
+  <script>
+            var containerEl = document.querySelector('.swatch.clearfix');
+            var targetSelector = '.mix';
+            var activeHash = '';
+
+            /**
+             * Deserializes a hash segment (if present) into in an object.
+             *
+             * @return {object|null}
+             */
+
+            function deserializeHash() {
+                var hash    = window.location.hash.replace(/^#/g, '');
+                var obj     = null;
+                var groups  = [];
+
+                if (!hash) return obj;
+
+                obj = {};
+                groups = hash.split('&');
+
+                groups.forEach(function(group) {
+                    var pair = group.split('=');
+                    var groupName = pair[0];
+
+                    obj[groupName] = pair[1].split(',');
+                });
+
+                return obj;
+            }
+
+            /**
+             * Serializes a groupsState object into a string.
+             *
+             * @param   {object}    groupsState
+             * @return  {string}
+             */
+
+            function serializeGroupsState(groupsState) {
+                var output = '';
+
+                for (var key in groupsState) {
+                    var values = groupsState[key];
+
+                    if (!values.length) continue;
+
+                    output += key + '=';
+                    output += values.join(',');
+                    output += '&';
+                };
+
+                output = output.replace(/&$/g, '');
+
+                return output;
+            }
+
+            /**
+             * Constructs a `groupsState` hash object using the
+             * `getFilterGroupSelectors()` API method.
+             *
+             * @return {object}
+             */
+
+            function getGroupsState() {
+                // NB: You will need to rename the object keys to match the names of
+                // your project's filter groups –&nbsp;these should match those defined
+                // in your HTML.
+
+                var groupsState = {
+                    color: mixer.getFilterGroupSelectors('color').map(getValueFromSelector),
+                    shape: mixer.getFilterGroupSelectors('shape').map(getValueFromSelector),
+                    
+                };
+
+                return groupsState;
+            }
+
+            /**
+             * Updates the URL hash whenever the current filter changes.
+             *
+             * @param   {mixitup.State} state
+             * @return  {void}
+             */
+
+            function setHash(state) {
+                var selector = state.activeFilter.selector;
+
+                // Construct an object representing the current state of each
+                // filter group
+
+                var groupsState = getGroupsState();
+
+                // Create a URL hash string by serializing the groupsState object
+
+                var newHash = '#' + serializeGroupsState(groupsState);
+
+                if (selector === targetSelector && window.location.hash) {
+                    // Equivalent to filter "all", remove the hash
+
+                    activeHash = '';
+
+                    history.pushState(null, document.title, window.location.pathname); // or `history.replaceState()`
+                } else if (newHash !== window.location.hash && selector !== targetSelector) {
+                    // Change the hash
+
+                    activeHash = newHash;
+
+                    history.pushState(null, document.title, window.location.pathname + newHash); // or `history.replaceState()`
+                }
+            }
+
+            /**
+             * Filters the mixer and updates the multifilter UI using a provided
+             * groupsState object.
+             *
+             * @param  {object|null}    groupsState
+             * @param  {boolean}        [animate]
+             * @return {Promise}
+             */
+
+            function filterMixerByGroupsState(groupsState, animate) {
+                var color = (groupsState && groupsState.color) ? groupsState.color : [];
+                var size = (groupsState && groupsState.size) ? groupsState.size : [];
+                
+
+                mixer.setFilterGroupSelectors('color', color.map(getSelectorFromValue));
+                mixer.setFilterGroupSelectors('size', size.map(getSelectorFromValue));
+              
+
+                // Parse the filter groups (passing `false` will perform no animation)
+
+                return mixer.parseFilterGroups(animate ? true : false);
+            }
+
+            /**
+             * Converts a selector (e.g. '.green') into a simple value (e.g. 'green').
+             *
+             * @param   {string} selector
+             * @return  {string}
+             */
+
+            function getValueFromSelector(selector) {
+                return selector.replace(/^./, '');
+            }
+
+            /**
+             * Converts a simple value (e.g. 'green') into a selector (e.g. '.green').
+             *
+             * @param   {string} selector
+             * @return  {string}
+             */
+
+            function getSelectorFromValue(value) {
+                return '.' + value;
+            }
+
+            var groupsState = deserializeHash();
+
+            // Instantiate MixItUp
+
+            var mixer = mixitup(containerEl, {
+                multifilter: {
+                    enable: true
+                },
+                animation: {
+                   enable: false
+                },
+                callbacks: {
+                    onMixEnd: setHash // Call the setHash() method at the end of each operation
+                }
+            });
+
+            if (groupsState) {
+                // If a valid groupsState object is present on page load, filter the mixer
+
+                filterMixerByGroupsState(groupsState);
+            }
+
+            // Add an "onhashchange" handler to keep the mixer in sync as the user goes
+            // back and forward through their history.
+
+            // NB: This may or may not be the desired behavior for your project. If you don't
+            // want MixItUp operations to count as individual history items, simply use
+            // `history.replaceState()` instead of `history.pushState()` within the `setHash()`
+            // function above. In which case this handler would no longer be neccessary.
+
+            window.onhashchange = function() {
+                var groupsState = deserializeHash();
+                var hash        = window.location.hash;
+
+                // Compare new hash with active hash
+
+                if (hash === activeHash) return; // no change
+
+                activeHash = hash;
+
+                filterMixerByGroupsState(groupsState, true);
+            };
+  </script>
+{% endif %}
+
+<script>
+  $('.swatch.clearfix').mixItUp({
+
+      selectors: {
+          filter: '.filter'
+      },animation: {
+  		enable: false
+  	}
+
+  });
+</script>
+
+

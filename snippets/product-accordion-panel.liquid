@@ -1,0 +1,127 @@
+ <div class="product-info-panel" id="product-info-accordion">
+        
+            <div class="panel panel-default" id="p-description">
+              <div class="panel-heading">
+                
+                  <a data-toggle="collapse"  href="#panel-product-description" >
+                    <h4 class="panel-title"><span>Description</span></h4><span class="icon-add">
+                    <span class="navigation-icon-add-line1 navigation-icon-add-line"></span>
+                  </span></a>
+                
+              </div>
+
+              <div id="panel-product-description" class="panel-collapse collapse in">
+                <div class="panel-body">{{ product.description  }}</div> 
+                {%- comment %}<locksmith:ffbf>{% endcomment -%}
+                  {%- capture var %}{% render 'locksmith-variables', variable: 'transparent', hiding_scope: 'resource' %}{% endcapture %}{% if var == 'true' %}<meta name="description" content="{{ page_description | escape }}" />{% endif -%}
+                  {%- comment %}original: <meta name="description" content="{{ page_description | escape }}" />{%- endcomment %}
+                {%- comment %}</locksmith:ffbf>{% endcomment -%}
+              </div>
+            </div>
+    		
+   			 {% if product.metafields.custom.how_to_apply != null %}
+            <div class="panel panel-default">
+              <div class="panel-heading">
+               
+                <a data-toggle="collapse"  href="#panel-product-how-to-use" class="collapsed"> <h4 class="panel-title"><span>How to Use</span></h4><span class="icon-add">
+                    <span class="navigation-icon-add-line1 navigation-icon-add-line"></span>
+                  </span></a>
+                
+              </div>
+
+              <div id="panel-product-how-to-use" class="panel-collapse collapse">
+                <div class="panel-body">
+                   {{ product.metafields.custom.how_to_apply | metafield_tag  }}
+                </div>
+              </div>
+            </div>
+            {% endif %}
+      		<div class="panel panel-default" id="p-cross-sell">
+              <div class="panel panel-default">
+              <div class="panel-heading">
+               
+                <a data-toggle="collapse"  href="#panel-product-cross-sell" class="collapsed"> <h4 class="panel-title"><span>You may also like</span></h4><span class="icon-add">
+                    <span class="navigation-icon-add-line1 navigation-icon-add-line"></span>
+                  </span></a>
+                
+              </div>
+
+              <div id="panel-product-cross-sell" class="panel-collapse collapse">
+                <div class="panel-body">
+                </div>
+              </div>
+            </div>
+
+   
+
+           
+   
+
+        </div> 
+{%comment%}
+   {% if product.metafields.c_f.video_url or product.metafields["global"]["video_url"] %}
+    	{% if product.metafields.c_f.video_url %}
+			{% assign videoContent =  product.metafields.c_f.video_url  | split: ','%}
+    	{% else %}
+    		 {% assign videoContent =  product.metafields["global"]["video_url"]  | split: ','%}
+    	{% endif %}
+   
+            <div class="panel panel-default" id="p-video">
+              <div class="panel-heading">
+               
+                  
+             {% comment%} class="" is used to open the accordion{% endcomment %}
+                <a data-toggle="collapse"  href="#panel-product-video" class=""> <h4 class="panel-title"><span>Video</span></h4><span class="icon-add">
+                    <span class="navigation-icon-add-line1 navigation-icon-add-line"></span>
+                  </span></a>
+                
+              </div>
+			  
+              {% comment%}"collapse in" opens the accordion{% endcomment %}
+              <div id="panel-product-video" class="panel-collapse collapse in">
+                <div class="panel-body">
+   				  <div class="panel-product-video-wrapper ">
+                    
+                    
+
+                    <div class="slick-wrapper">
+  <div class="slick-container-videos">
+                     {% for videos in videoContents %}
+                   <li>
+                     <a href="http://www.youtube.com/watch?v={{videos}}" data-lity>
+                    <img src="//img.youtube.com/vi/{{videos | strip }}/0.jpg" class="img-responsive" data-video-id="y-{{videos}}"
+                        alt="{{ product.title | split: '|' | first }} - video">
+                   
+                  </a>
+                    </li>
+                      {% endfor %}
+                                                                              </div>
+                                                                              </div>
+                  </div>
+                  
+                </div>
+              </div>
+   </div>
+             {% endif %}
+</div>   			
+
+ <script type="text/javascript">
+$(document).ready(function(){       
+
+
+  
+  $('.slick-container-videos').slick({
+     infinite: false,
+    slidesToShow: 1,
+    centerMode: false,
+    arrows:false,
+    dots: true
+
+  });
+ 
+
+
+  
+        });
+</script>  
+{%endcomment%}

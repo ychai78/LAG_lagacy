@@ -1,0 +1,2307 @@
+/* ==========================================================================
+   IMPORTS
+   ========================================================================== */
+   @import url('https://fonts.cdnfonts.com/css/futura-now-headline');
+   
+   /* ==========================================================================
+      VARIABLES & CUSTOM PROPERTIES
+      ========================================================================== */
+   :root {
+     --primary-color: #ED008B;
+     --secondary-color: #F4AED3;
+     --font-family: 'Futura Now Headline', sans-serif;
+     --border-width: 2px;
+     --banner-height: 100vh; /* Default banner height */
+   }
+   
+
+   *{
+    h1{
+    margin-bottom:0;
+   }}
+   /* ==========================================================================
+      BASE STYLES
+      ========================================================================== */
+   /* Reset, normalize, base element styles */
+
+    .Futura-Now-Headline-font {
+      font-family: 'Futura Now Headline', sans-serif !important;
+    }
+
+    .max-w-1200{
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-btm-border{
+      border-bottom: var(--border-width) solid #000; 
+    }
+    [data-widget-type="rewards-referral"] {
+border:none !important;}
+   
+   
+   /* ==========================================================================
+      LAYOUT
+      ========================================================================== */
+   /* Grid, flexbox, positioning */
+   
+
+
+   /* ==========================================================================
+   LOYALTY BANNER STYLES
+   ========================================================================== */
+
+/* Styles for loyalty_banner.liquid */
+#banner {
+  display: flex;
+  flex-direction: column; /* Mobile-first: stack content */
+  width: 100%;
+  background-color: #f9f9f9;
+  height: var(--banner-height); /* Use CSS variable for dynamic height */
+  transition: height 0.3s ease; /* Smooth transition when height changes */
+  overflow: hidden; /* Prevent content overflow */
+}
+
+.banner-content,
+.banner-image-container {
+  width: 100%; /* Mobile-first: full width */
+  transition: all 0.3s ease; /* Smooth transition when size changes */
+}
+
+.banner-image-container {
+  height: 50vh; /* Mobile-first height - taller */
+  order: -1; /* Image on top for mobile */
+}
+
+.banner-content {
+  padding: 1rem; /* Mobile-first: smaller padding for extra small devices */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
+  text-align: center;
+  height: 50vh; /* Match height with image container for mobile */
+}
+
+.banner-logo {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto 0.75rem;
+  width: 280px; /* Base size for mobile */
+}
+
+.banner-subtitle {
+  font-size: 1rem; /* Mobile-first: smaller font size for extra small devices */
+  margin-bottom: 1.25rem;
+  font-weight: normal;
+  color: #000;
+  line-height: 1.4;
+  width: 80%; /* Wider for small screens */
+}
+
+.banner-content > div {
+  display: flex;
+  flex-direction: row; /* Always horizontal layout for buttons */
+}
+
+.banner-buttons{
+  display: flex;
+  flex-direction: row;
+  gap: 1em; /* Consistent 1em gap for all breakpoints */
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-wrap: nowrap; /* Prevent wrapping to new line */
+}
+
+.banner-button {
+  font-weight: 600 !important;
+  background: transparent;
+  border: var(--border-width) solid #000;
+  padding: 0.4rem 0.8rem; /* Mobile-first: smaller padding for extra small devices */
+  min-width: 100px; /* Auto-fit content but maintain minimum width */
+  width: auto; /* Allow content to determine width */
+  height: 40px; /* Responsive height - will scale with breakpoints */
+  text-transform: uppercase;
+  font-size: 0.825rem; /* Increased by 10% from 0.75rem */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #000;
+  font-weight: normal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  box-sizing: border-box; /* Ensure padding is included in width/height */
+  flex-shrink: 0; /* Prevent buttons from shrinking */
+  text-align: center; /* Ensure text is centered */
+  line-height: 1; /* Ensure consistent line height for centering */
+  flex: 1; /* Make buttons share equal width */
+  max-width: 120px; /* Limit maximum width */
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+.banner-button a {
+  color: inherit;
+  text-decoration: none;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: inherit; /* Inherit font size from parent */
+  font-weight: inherit; /* Inherit font weight from parent */
+  text-align: center; /* Ensure text is centered */
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+.banner-button:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+.banner-image-container img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover; /* Ensure image covers the container without distortion */
+}
+
+
+   /* ==========================================================================
+      COMPONENTS
+      ========================================================================== */
+   /* Buttons, cards, modals, etc. */
+   
+   /* ==========================================================================
+      UTILITIES
+      ========================================================================== */
+   /* Helper classes */
+   
+   /* ==========================================================================
+      RESPONSIVE DESIGN
+      ========================================================================== */
+   
+   /* Extra Small Devices (0px to 376px) - Buttons in single row */
+   @media (min-width: 0px) and (max-width: 376px) {
+     .banner-logo {
+       width: 240px;
+       max-width: 95%;
+     }
+     
+     .banner-content > div{
+       gap:2rem;
+     }
+     
+     .banner-subtitle {
+       font-size: 1.1rem;
+       width: 70%;
+     }
+     
+     .banner-buttons {
+       flex-direction: row;
+       gap: 1em;
+     }
+     
+     .banner-button {
+       width: 100px;
+       height: 40px;
+       font-size: 0.825rem;
+       padding: 0.4rem 0.8rem;
+     }
+     
+     .banner-content > div {
+       flex-direction: row;
+ 
+     }
+   }
+   
+   /* Small Devices (376px to 600px) - Buttons stack vertically */
+   @media (min-width: 376px) and (max-width: 600px) {
+     .banner-logo {
+       width: 300px;
+       max-width: 90%;
+     }
+     
+     .banner-buttons {
+       flex-direction: row;
+       gap: 1em;
+     }
+     
+     .banner-button {
+       width: 110px;
+       height: 44px;
+       font-size: 0.85rem;
+       padding: 0.5rem 1rem;
+     }
+     
+     .banner-content > div {
+       flex-direction: row;
+       gap: 1rem;
+     }
+   }
+   
+   /* Tablet Devices (601px to 991px) */
+   @media (min-width: 601px) and (max-width: 991px){
+     #banner {
+       flex-direction: row;
+       height: 50% !important; /* Fixed height for tablet breakpoint */
+     }
+     
+     .banner-logo {
+       width: 350px;
+       max-width: 85%;
+     }
+     
+     .banner-content, 
+     .banner-image-container {
+       width: 50%;
+       height: 60vh !important; /* Fixed height for both sections */
+     }
+     
+     .banner-content {
+       order: 0; /* Content first (left side) */
+       padding: 2rem;
+     }
+     
+     .banner-image-container {
+       order: 1; /* Image second (right side) */
+     }
+     
+     .banner-subtitle {
+       font-size: 1.25rem;
+     }
+     
+     .banner-button {
+       width: 130px;
+       height: 48px;
+       font-size: 0.85rem;
+       padding: 0.6rem 1.2rem;
+     }
+     
+     .banner-content > div {
+       gap: 1rem;
+     }
+     
+     .banner-buttons {
+       gap: 1em;
+     }
+   }
+   
+   /* Desktop Devices (992px and up) */
+   @media (min-width: 992px) {
+     #banner {
+       flex-direction: row;
+     }
+     
+     .banner-content,
+     .banner-image-container {
+       width: 50%;
+     }
+     
+     .banner-logo {
+       width: 480px;
+       max-width: 85%;
+     }
+     
+     .banner-content {
+       order: 0; /* Content first (left side) */
+       padding: 2rem;
+     }
+     
+     .banner-image-container {
+       order: 1; /* Image second (right side) */
+     }
+     
+     .banner-subtitle {
+       font-size: 1.5rem;
+     }
+     
+     .banner-button {
+       width: 150px;
+       height: 52px;
+       font-size: 0.9rem;
+       padding: 0.7rem 1.5rem;
+     }
+     
+     .banner-buttons {
+       gap: 1em;
+     }
+   }
+   
+   /* ==========================================================================
+      UTILITIES
+      ========================================================================== */
+   
+   .sr-only {
+     position: absolute;
+     width: 1px;
+     height: 1px;
+     padding: 0;
+     margin: -1px;
+     overflow: hidden;
+     clip: rect(0, 0, 0, 0);
+     white-space: nowrap;
+     border: 0;
+   }
+
+   /* ==========================================================================
+      Sections Styles
+      ========================================================================== */
+   
+
+/* ===================== step SECTION STYLES ===================== */
+.step-section {
+  color: #000;
+  text-align: center;
+  padding: 2.5rem 1rem 2rem 1rem;
+  margin: 0 auto;
+  font-family: 'Futura Now Headline', Arial, sans-serif;
+  
+}
+.step-title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.01em;
+}
+.step-desc {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #222;
+  font-weight: 400;
+  width: 100%;
+  padding:0 1rem;
+}
+.step-highlight {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 2rem;
+}
+.step-highlight .primary {
+  color: var(--primary-color);
+}
+.step-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  align-items: center;
+}
+.step-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 260px;
+}
+.step-step-img {
+  margin-bottom: 1rem;
+}
+.step-step-title {
+  font-size: 1.25rem;
+  font-weight: 900;
+  margin-bottom: 0.25rem;
+  letter-spacing: 0.01em;
+}
+.step-step-desc {
+  font-size: 1.05rem;
+  color: #222;
+  font-weight: 400;
+}
+
+/* Small-Medium Devices (376px to 600px) */
+@media (min-width: 376px) and (max-width: 600px) {
+  .step-section {
+    padding: 2.8rem 1rem 2.3rem 1rem;
+  }
+  .step-title {
+    font-size: 2.4rem;
+  }
+  .step-desc {
+    font-size: 1.15rem;
+  }
+  .step-highlight {
+    font-size: 1.9rem;
+  }
+}
+
+/* Tablet (601px to 991px) */
+@media (min-width: 601px) and (max-width: 991px) {
+  .step-section {
+    padding: 3rem 1rem 2.5rem 1rem;
+  }
+  .step-title {
+    font-size: 2.6rem;
+  }
+  .step-desc {
+    font-size: 1.2rem;
+  }
+  .step-highlight {
+    font-size: 2.1rem;
+    margin-bottom: 2.2rem;
+  }
+  .step-steps {
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 3.5rem;
+  }
+  .step-step {
+    flex-direction: column;
+    align-items: center;
+    max-width: 220px;
+    width: 100%;
+    padding: 0;
+  }
+  .step-step-img, .step-step-title, .step-step-desc {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .step-step-img {
+    margin-bottom: 1rem;
+    min-height: 56px;
+  }
+  .step-step-title {
+    font-size: 1.3rem;
+    margin-bottom: 0.25rem;
+    min-height: 32px;
+  }
+  .step-step-desc {
+    font-size: 1.07rem;
+    min-height: 32px;
+  }
+}
+
+/* Large Tablet and above: horizontal alignment for step-steps */
+@media (min-width: 601px) {
+  .step-steps {
+    align-items: stretch;
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 992px)  {
+  .step-section {
+    padding: 3.5rem 1rem 3rem 1rem;
+  }
+  .step-title {
+    font-size: 3rem;
+  }
+  .step-desc {
+    font-size: 1.3rem;
+  }
+  .step-highlight {
+    font-size: 2.5rem;
+    margin-bottom: 2.5rem;
+    font-weight: 600;
+  }
+  .step-steps {
+    flex-direction: row;
+    justify-content: center;
+    gap: 4rem;
+  }
+  .step-step {
+    max-width: 220px;
+  }
+  .step-step-title {
+    font-size: 1.5rem;
+    text-wrap: nowrap;
+  }
+  .step-step-desc {
+    font-size: 1.1rem;
+  }
+}
+
+/* ===================== TIERS SECTION STYLES ===================== */
+.tiers-section {
+  color: #000;
+  font-family: 'Futura Now Headline', Arial, sans-serif;
+}
+
+.tiers-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.tiers-left {
+  width: 100%;
+}
+
+.tiers-background {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #F467BC;
+  min-height: 350px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.tiers-background::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+
+.tiers-content {
+  text-align: left;
+  z-index: 3;
+  color: white;
+  padding: 3rem;
+  position: relative;
+}
+
+.tiers-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+}
+
+.tiers-subtitle {
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.3;
+  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.7);
+}
+
+.tiers-right {
+  width: 100%;
+  margin: 2em 0;
+}
+
+.tiers-cards {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tier-card {
+  background: white;
+  padding: 1.5rem;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.tier-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.tier-icon {
+  flex-shrink: 0;
+}
+
+.tier-name {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #000;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.tier-description {
+  font-size: 1rem;
+  color: #222;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.4;
+  margin-left: calc(24px + 0.75rem);
+}
+
+.benefit-list li{
+  margin-left: 0.75rem;
+}
+/* Small-Medium Devices (376px to 600px) */
+@media (min-width: 376px) and (max-width: 600px) {
+  .tiers-title {
+    font-size: 3.5rem;
+  }
+  .tiers-subtitle {
+    font-size: 1.2rem;
+  }
+  .tier-name {
+    font-size: 1.15rem;
+  }
+}
+
+/* Tablet (601px to 991px) */
+@media (min-width: 601px) and (max-width: 991px) {
+  .tiers-title {
+    font-size: 4rem;
+  }
+  .tiers-subtitle {
+    font-size: 2rem;
+  }
+  .tiers-background {
+    min-height: 350px;
+  }
+  .tier-name {
+    font-size: 1.3rem;
+  }
+  .tier-description {
+    font-size: 1.05rem;
+  }
+}
+
+/* Desktop styles (992px and above) */
+@media (min-width: 992px) {
+  .tiers-container {
+    display: flex;
+    flex-direction: row;
+    min-height: 500px;
+  }
+  
+  .tiers-left {
+    width: 50%;
+    margin-bottom: 0;
+  }
+  
+  .tiers-background {
+    height: 100%;
+    min-height: 500px;
+  }
+  
+  .tiers-title {
+    font-size: 4rem;
+  }
+  
+  .tiers-subtitle {
+    font-size: 1.5rem;
+  }
+  
+  .tiers-right {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+  }
+  
+  .tiers-cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .tier-card {
+    width: 80%;
+    padding: 1rem 2rem;
+  }
+  
+  .tier-name {
+    font-size: 1.5rem;
+  }
+  
+  .tier-description {
+    font-size: 1.1rem;
+  }
+}
+
+/* ===================== BENEFIT SECTION STYLES ===================== */
+.benefit-section {
+  color: #000;
+  text-align: center;
+  padding: 2.5rem 1rem 2rem 1rem;
+  margin: 0 auto;
+  font-family: 'Futura Now Headline', Arial, sans-serif;
+  position: relative;
+  overflow: hidden; /* Hide all scrollbars */
+}
+
+.benefit-header {
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.benefit-title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.01em;
+}
+
+.benefit-title-highlight {
+  color: var(--primary-color);
+}
+
+.benefit-subtitle {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #222;
+  font-weight: 400;
+}
+
+.benefit-container {
+  position: relative;
+  width: 100%;
+  z-index: 2;
+}
+
+.desktop-only {
+  display: none !important;
+}
+
+.mobile-only {
+  display: block !important;
+}
+
+.benefit-tiers {
+  display: flex;
+  justify-content: space-between;
+  gap: 3rem;
+  flex-wrap: nowrap;
+  
+}
+
+.benefit-card-wrapper {
+  flex: 1;
+  width: calc(33.33% - 2rem);
+  max-width: calc(33.33% - 2rem);
+  height: 100%;
+}
+
+.benefit-tier {
+  border: 2px solid var(--secondary-color);
+  padding: 0 1rem 1rem 1rem;
+  height: fit-content;
+  width: 100%;
+}
+
+.benefit-tier-header {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.benefit-tier-title {
+  font-size: 1.25rem;
+  overflow: visible;  
+  z-index: 15;
+  margin: 0;
+  position: absolute;
+  top:-1.3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: fit-content;
+  background-color: #fff;
+  padding: 0.25rem 1.5rem;
+  border-radius: 0.25rem;
+  letter-spacing: 0.05em;
+  text-wrap: nowrap;
+  font-weight:800;
+}
+
+.benefit-multiplier {
+  color: var(--primary-color);
+  font-size: 1rem;
+  font-weight: 600;
+  font-style: italic;
+  display: block;
+  margin-top: -0.75rem;
+}
+
+.benefit-list {
+  list-style: none;
+  padding: 0.5rem 0;
+  margin: 0;
+  text-align: left;
+}
+
+.benefit-list li {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.benefit-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #000;
+}
+
+/* Mobile Carousel */
+.benefit-carousel {
+  position: relative;
+  overflow: visible;
+  padding-top: 1.5rem;
+}
+
+.carousel-container {
+  overflow: visible;
+  position: relative;
+  transition: height 0.3s ease;
+  padding-top: 1.5rem;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.3s ease;
+  width: 300%; /* 3 slides at 100% each */
+}
+
+.carousel-slide {
+  width: 33.333%; /* Each slide takes 1/3 of track width */
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+
+.carousel-slide .benefit-tier {
+  margin: 0 auto;
+  max-width: 400px;
+  width: 100%;
+  padding-top: 1rem;
+}
+
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 2rem 0;
+}
+
+.indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  background-color: #ddd;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.indicator:hover {
+  background-color: #bbb;
+}
+
+.indicator.active {
+  background-color: var(--primary-color);
+}
+
+.indicator:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.benefit-lines {
+  position: static; /* Remove absolute positioning so lines position relative to .benefit-section */
+  pointer-events: none; /* Allow clicking through the decorative lines */
+  z-index: 1;
+}
+
+.benefit-line-left,
+.benefit-line-right {
+  position: absolute;
+  width: auto;
+  height: auto;
+  max-width: 400px;
+  max-height: 300px;
+  object-fit: contain;
+}
+
+.benefit-line-left {
+  bottom: -30%; /* Hide 30% at bottom */
+  left: -30%; /* Hide 30% at left */
+}
+
+.benefit-line-right {
+  top: -30%; /* Hide 30% at top */
+  right: -30%; /* Hide 30% at right */
+  transform: rotate(360deg);
+}
+
+/* Extra Small Devices (0px to 376px) */
+@media (min-width: 0px) and (max-width: 376px) {
+  .desktop-only {
+    display: none !important;
+  }
+  
+  .mobile-only {
+    display: block !important;
+  }
+  
+  .benefit-section {
+    overflow: hidden !important; /* Hide both X and Y overflow on mobile */
+  }
+  
+  .benefit-line-left {
+    max-width: 500px;
+    max-height: 400px;
+    bottom: -160px; /* Fixed pixel value instead of percentage */
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .benefit-line-right {
+    display: none;
+  }
+  .benefit-tier-title {
+    top:-2rem;
+  }
+  
+  .benefit-tier-header{
+    margin-bottom: 1rem;
+  }
+}
+
+/* Small-Medium Devices (376px to 600px) */
+@media (min-width: 376px) and (max-width: 600px) {
+  .benefit-section {
+    padding: 2.8rem 1rem 2.3rem 1rem;
+    overflow: hidden !important; /* Hide both X and Y overflow on mobile */
+  }
+  .benefit-title {
+    font-size: 2.4rem;
+  }
+  .benefit-subtitle {
+    font-size: 1.15rem;
+  }
+  .benefit-tier-title {
+    top:-2rem;
+  }
+  
+  .benefit-tier-header{
+    margin-bottom: 1rem;
+  }
+  .desktop-only {
+    display: none !important;
+  }
+  
+  .mobile-only {
+    display: block !important;
+  }
+  
+  .benefit-line-left {
+    max-width: 500px;
+    max-height: 400px;
+    bottom: -160px; /* Fixed pixel value instead of percentage */
+    left: 50%; /* Centered instead of 60% */
+    transform: translateX(-50%);
+    z-index: -1;
+  }
+  
+  .benefit-line-right {
+    display: none;
+  }
+}
+
+/* Tablet (601px to 991px) */
+@media (min-width: 601px) and (max-width: 991px) {
+  .benefit-section {
+    padding: 3rem 1rem 2.5rem 1rem;
+    overflow: hidden !important; /* Hide both X and Y overflow on mobile */
+  }
+  .benefit-title {
+    font-size: 2.6rem;
+  }
+  .benefit-subtitle {
+    font-size: 1.2rem;
+  }
+  .benefit-tier-title {
+    font-size: 1.3rem;
+    top:-2rem;
+    
+  }
+  
+  .carousel-indicators{
+    z-index:15;
+  }
+  .indicator.active{
+    outline:1px solid var(--primary-color);
+    outline-offset: 2px;
+  }
+  .benefit-tier-header{
+    margin-bottom: 1rem;
+  }
+
+  
+  .desktop-only {
+    display: none !important;
+  }
+  
+  .mobile-only {
+    display: block !important;
+  }
+  
+  .benefit-line-left {
+    max-width: 360px;
+    max-height: 240px;
+    bottom: -96px; /* Fixed pixel value instead of percentage */
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .benefit-line-right {
+    display: none;
+  }
+}
+
+/* Desktop styles (992px to 1199px) - Very conservative positioning */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .benefit-section {
+    padding: 3.5rem 1rem 3rem 1rem;
+    overflow-x: hidden !important; /* Hide horizontal overflow */
+    overflow-y: visible !important; /* Allow vertical overflow if needed */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+  }
+  
+  .benefit-section::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
+  }
+  
+  .benefit-title {
+    font-size: 3rem;
+  }
+  
+  .benefit-subtitle {
+    font-size: 1.3rem;
+  }
+  
+  .desktop-only {
+    display: block !important;
+  }
+  
+  .mobile-only {
+    display: none !important;
+  }
+  
+  .benefit-tiers {
+    display: flex !important;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: nowrap;
+  }
+  
+  .benefit-card-wrapper {
+    flex: 1;
+    width: calc(33.33% - 1rem);
+    max-width: calc(33.33% - 1rem);
+    height: 100%;
+  }
+  
+  .benefit-tier {
+    height: fit-content;
+    width: 100%;
+  }
+  
+  .benefit-tier-title {
+    font-size: 1.5rem;
+  }
+  
+  .benefit-list li {
+    font-size: 1.1rem;
+  }
+  
+  /* Very conservative positioning - no overflow */
+  .benefit-line-left {
+    max-width: 350px;
+    max-height: 250px;
+    bottom: -10%;
+    left: 0%; /* No overflow */
+  }
+  
+  .benefit-line-right {
+    max-width: 300px;
+    max-height: 200px;
+    top: -30%;
+    right: 0%; /* No overflow */
+    z-index: 12;
+  }
+}
+
+/* Large Desktop styles (1200px to 1699px) - Moderate positioning */
+@media (min-width: 1200px) and (max-width: 1699px) {
+  .benefit-section {
+    padding: 3.5rem 1rem 3rem 1rem;
+    overflow-x: hidden !important; /* Still hide horizontal overflow */
+    overflow-y: visible !important;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .benefit-section::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .benefit-title {
+    font-size: 3rem;
+  }
+  
+  .benefit-subtitle {
+    font-size: 1.3rem;
+  }
+  
+  .desktop-only {
+    display: block !important;
+  }
+  
+  .mobile-only {
+    display: none !important;
+  }
+  
+  .benefit-tiers {
+    display: flex !important;
+    justify-content: space-between;
+    gap: 2.5rem;
+    flex-wrap: nowrap;
+  }
+  
+  .benefit-card-wrapper {
+    flex: 1;
+    width: calc(33.33% - 1.67rem);
+    max-width: calc(33.33% - 1.67rem);
+    height: 100%;
+  }
+  
+  .benefit-tier {
+    height: fit-content;
+    width: 100%;
+  }
+  
+  .benefit-tier-title {
+    font-size: 1.5rem;
+  }
+  
+  .benefit-list li {
+    font-size: 1.1rem;
+  }
+  
+  /* Moderate positioning - slight overflow but contained */
+  .benefit-line-left {
+    max-width: 450px;
+    max-height: 300px;
+    bottom: -10%;
+    left: -8%;
+  }
+  
+  .benefit-line-right {
+    max-width: 350px;
+    max-height: 250px;
+    top: -40%;
+    right: -10%;
+    z-index: 12;
+  }
+}
+
+/* Extra Large Desktop styles (1700px and above) - Full decorative positioning */
+@media (min-width: 1700px) {
+  .benefit-section {
+    padding: 3.5rem 1rem 3rem 1rem;
+    overflow-x: visible !important; /* Allow horizontal overflow on very large screens */
+    overflow-y: visible !important;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .benefit-section::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .benefit-title {
+    font-size: 3rem;
+  }
+  
+  .benefit-subtitle {
+    font-size: 1.3rem;
+  }
+  
+  .desktop-only {
+    display: block !important;
+  }
+  
+  .mobile-only {
+    display: none !important;
+  }
+  
+  .benefit-tiers {
+    display: flex !important;
+    justify-content: space-between;
+    gap: 3.5rem;
+    flex-wrap: nowrap;
+  }
+  
+  .benefit-card-wrapper {
+    flex: 1;
+    width: calc(33.33% - 2.33rem);
+    max-width: calc(33.33% - 2.33rem);
+    height: 100%;
+  }
+  
+  .benefit-tier {
+    height: fit-content;
+    width: 100%;
+  }
+  
+  .benefit-tier-title {
+    font-size: 1.5rem;
+  }
+  
+  .benefit-list li {
+    font-size: 1.1rem;
+  }
+  
+  /* Full aggressive positioning - maximum decorative effect */
+  .benefit-line-left {
+    max-width: 600px;
+    max-height: 400px;
+    bottom: -10%;
+    left: -15%;
+  }
+  
+  .benefit-line-right {
+    max-width: 400px;
+    max-height: 200px;
+    top: -50%;
+    right: -20%;
+    z-index: 12;
+    transform: rotate(180deg);
+  }
+}
+
+/* ===================== REDEEM SECTION STYLES ===================== */
+.redeem-section {
+  color: #000;
+  text-align: center;
+  padding: 2.5rem 1rem 2rem 1rem;
+  margin: 0 auto;
+  font-family: 'Futura Now Headline', Arial, sans-serif;
+  position: relative;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-image: url("https://cdn.shopify.com/s/files/1/0944/0398/files/redeem_mobile.png?v=1750976536");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.redeem-section-container {
+  padding: 2rem 4rem;
+  margin: 2rem 4rem;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.0.65);
+  position: relative;
+  z-index: 2;
+}
+
+.redeem-header,
+.redeem-container,
+.redeem-disclaimer {
+  position: relative;
+  z-index: 3;
+}
+
+.redeem-header {
+  margin-bottom: 2rem;
+}
+
+.redeem-title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.01em;
+}
+
+.redeem-title-highlight {
+  color: var(--primary-color);
+}
+
+.redeem-subtitle {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #222;
+  font-weight: 400;
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.redeem-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  
+}
+
+.redeem-item {
+  background: transparent;
+  padding: 1.5rem 1rem;
+  width: 100%;
+  max-width: 280px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  min-height: 180px;
+}
+
+.redeem-points {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.redeem-offer {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #000;
+  margin-bottom: 0.5rem;
+  line-height: 1;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.redeem-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 2.5rem;
+}
+
+.redeem-benefit {
+  font-size: 0.85rem;
+  color: #333;
+  font-weight: 400;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-align: center;
+  padding:0.2rem 0;
+}
+
+.redeem-disclaimer {
+  font-size: 0.75rem;
+  color: #666;
+  font-weight: 400;
+  text-align: center;
+  margin-top: auto;
+}
+
+/* Mobile responsive padding and margin for container */
+@media (max-width: 600px) {
+  .redeem-section-container {
+    padding: 1.5rem 1rem;
+    margin: 1.5rem 1rem;
+  }
+  
+  .redeem-container {
+    flex-direction: column !important;
+    gap: 0;
+    align-items: center;
+    max-width: 100%;
+  }
+  
+  .redeem-item {
+    flex: none !important;
+    max-width: 280px !important;
+    width: 100%;
+    padding: 1rem 0.75rem;
+    min-height: 150px;
+    gap: 0;
+  }
+}
+
+/* Small-Medium Devices (376px to 600px) */
+@media (min-width: 376px) and (max-width: 600px) {
+  .redeem-section {
+    padding: 2.8rem 1rem 2.3rem 1rem;
+  }
+  
+  .redeem-title {
+    font-size: 2.4rem;
+  }
+  
+  .redeem-subtitle {
+    font-size: 1.15rem;
+  }
+}
+
+/* Tablet (601px to 991px) */
+@media (min-width: 601px) and (max-width: 991px) {
+  .redeem-section {
+    padding: 3rem 1rem 2.5rem 1rem;
+    min-height: 400px;
+  }
+  
+  .redeem-section-container {
+    padding: 2rem 3rem;
+    margin: 2rem 3rem;
+  }
+  
+  .redeem-title {
+    font-size: 2.6rem;
+  }
+  
+  .redeem-subtitle {
+    font-size: 1.2rem;
+  }
+  
+  .redeem-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .redeem-item {
+    flex: 0 0 50%;
+    max-width: 50%;
+    min-width: 0;
+    padding: 1.25rem 0.75rem;
+    min-height: 160px;
+    gap: 0;
+  }
+  
+  .redeem-points {
+    font-size: 0.8rem;
+  }
+  
+  .redeem-offer {
+    font-size: 1.8rem;
+  }
+  
+  .redeem-benefit {
+    font-size: 0.7rem;
+  }
+}
+
+/* Desktop (992px and above) */
+@media (min-width: 992px) {
+  .redeem-section {
+    padding: 3.5rem 1rem 3rem 1rem;
+    min-height: 450px;
+    width: 100%;
+    background-image: url("https://cdn.shopify.com/s/files/1/0944/0398/files/redeem.png?v=1750976536");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  .redeem-section-container {
+    padding: 2rem 4rem;
+    margin: 2rem 4rem;
+  }
+  
+  .redeem-title {
+    font-size: 3rem;
+  }
+  
+  .redeem-subtitle {
+    font-size: 1.3rem;
+  }
+  
+  .redeem-container {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 2rem;
+    align-items: stretch;
+    max-width: none;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .redeem-item {
+    flex: 1;
+    max-width: none;
+    min-width: 0;
+    padding: 1.25rem;
+    height: auto;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
+  .redeem-points {
+    font-size: 0.9rem;
+  }
+  
+  .redeem-offer {
+    font-size: 2.2rem;
+  }
+  
+  .redeem-benefit {
+    font-size: 0.8rem;
+  }
+  
+  .redeem-disclaimer {
+    font-size: 0.8rem;
+  }
+}
+
+/* Large Desktop (1200px+) */
+@media (min-width: 1200px) {
+  .redeem-section-container {
+    padding: 2.5rem 5rem;
+    margin: 2.5rem 5rem;
+  }
+  
+  .redeem-container {
+    gap: 3rem;
+    justify-content: space-between;
+  }
+  
+  .redeem-item {
+    padding: 1.5rem;
+    flex: 1;
+    min-height: 220px;
+  }
+  
+  .redeem-offer {
+    font-size: 2.5rem;
+  }
+  
+  .redeem-benefit {
+    font-size: 1rem;
+  }
+}
+
+/* ===================== EARN SECTION STYLES ===================== */
+.earn-section {
+  color: #000;
+  text-align: center;
+  padding: 2.5rem 1rem 2rem 1rem;
+  margin: 0 auto;
+  font-family: 'Futura Now Headline', Arial, sans-serif;
+  margin-bottom: 1.5rem;
+}
+
+.earn-header {
+  margin-bottom: 2rem;
+}
+
+.earn-title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.01em;
+}
+
+.earn-title-highlight {
+  color: var(--primary-color);
+}
+
+.earn-subtitle {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #222;
+  font-weight: 400;
+  width: 100%;
+  padding: 0 1rem;
+}
+
+.earn-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+  justify-items: center;
+  align-items: center;
+}
+
+.earn-item {
+  background: white;
+  border: 2px solid #000;
+  box-shadow: -7px 7px 0 var(--secondary-color);
+  padding: 0.625rem 0.5rem 0.5rem 0.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 160px;
+  width: 160px;
+  height: 160px;
+  position: relative;
+}
+
+.earn-icon {
+  flex-shrink: 0;
+}
+
+.earn-icon img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.earn-points {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: #000;
+  margin: 0.5rem 0;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.earn-description {
+  font-size: 0.75rem;
+  color: #333;
+  font-weight: 400;
+  line-height: 1.3;
+  text-align: center;
+  max-width: 100%;
+}
+
+/* Small-Medium Devices (376px to 600px) */
+@media (min-width: 376px) and (max-width: 600px) {
+  .earn-section {
+    padding: 2.8rem 1rem 2.3rem 1rem;
+  }
+  
+  .earn-title {
+    font-size: 2.4rem;
+  }
+  
+  .earn-subtitle {
+    font-size: 1.15rem;
+  }
+  
+  .earn-container {
+    gap: 1.25rem;
+    max-width: 500px;
+  }
+  
+  .earn-item {
+    min-height: 170px;
+    width: 170px;
+    height: 170px;
+    padding: 0.625rem 0.375rem 0.5rem 0.375rem;
+  }
+  
+  .earn-icon {
+  }
+  
+  .earn-icon img {
+    width: 55px;
+    height: 55px;
+  }
+  
+  .earn-points {
+    font-size: 1.15rem;
+  }
+  
+  .earn-description {
+    font-size: 0.8rem;
+  }
+}
+
+/* Small Tablet (601px to 839px) - 2x4 grid */
+@media (min-width: 601px) and (max-width: 839px) {
+  .earn-section {
+    padding: 3rem 1rem 2.5rem 1rem;
+  }
+  
+  .earn-title {
+    font-size: 2.6rem;
+  }
+  
+  .earn-subtitle {
+    font-size: 1.2rem;
+  }
+  
+  .earn-container {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 1.5rem;
+    max-width: 500px;
+    justify-items: center;
+    align-items: center;
+  }
+  
+  .earn-item {
+    min-height: 170px;
+    width: 170px;
+    height: 170px;
+    padding: 0.75rem 0.5rem 0.625rem 0.5rem;
+  }
+  
+  .earn-item:hover {
+    box-shadow: -7px 7px 0 var(--primary-color);
+  }
+  
+  .earn-icon {
+  }
+  
+  .earn-icon img {
+    width: 55px;
+    height: 55px;
+  }
+  
+  .earn-points {
+    font-size: 1.15rem;
+  }
+  
+  .earn-description {
+    font-size: 0.8rem;
+  }
+}
+
+/* Larger Tablet (840px to 991px) - 4x2 grid */
+@media (min-width: 840px) and (max-width: 991px) {
+  .earn-section {
+    padding: 3rem 1rem 2.5rem 1rem;
+  }
+  
+  .earn-title {
+    font-size: 2.6rem;
+  }
+  
+  .earn-subtitle {
+    font-size: 1.2rem;
+  }
+  
+  .earn-container {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 800px;
+    justify-items: center;
+    align-items: center;
+  }
+  
+  .earn-item {
+    min-height: 180px;
+    width: 180px;
+    height: 180px;
+    padding: 0.75rem 0.5rem 0.625rem 0.5rem;
+  }
+  
+  .earn-item:hover {
+    box-shadow: -7px 7px 0 var(--primary-color);
+  }
+  
+  .earn-icon {
+  }
+  
+  .earn-icon img {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .earn-points {
+    font-size: 1.2rem;
+  }
+  
+  .earn-description {
+    font-size: 0.85rem;
+  }
+}
+
+/* Desktop (992px and above) */
+@media (min-width: 992px) {
+  .earn-section {
+    padding: 3.5rem 1rem 3rem 1rem;
+    width: 100%;
+  }
+  
+  .earn-title {
+    font-size: 3rem;
+  }
+  
+  .earn-subtitle {
+    font-size: 1.3rem;
+  }
+  
+  .earn-container {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 2rem;
+    max-width: 1000px;
+    justify-items: center;
+    align-items: center;
+  }
+  
+  .earn-item {
+    min-height: 200px;
+    width: 200px;
+    height: 200px;
+    padding: 1rem 0.75rem 0.75rem 0.75rem;
+  }
+  
+  .earn-item:hover {
+    box-shadow: -7px 7px 0 var(--primary-color);
+  }
+  
+  .earn-icon {
+  }
+  
+  .earn-icon img {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .earn-points {
+    font-size: 1.3rem;
+  }
+  
+  .earn-description {
+    font-size: 0.9rem;
+  }
+}
+
+/* Large Desktop (1200px+) */
+@media (min-width: 1200px) {
+  .earn-container {
+    gap: 2.5rem;
+    max-width: 1100px;
+    justify-items: center;
+    align-items: center;
+  }
+  
+  .earn-item {
+    min-height: 220px;
+    width: 220px;
+    height: 220px;
+    padding: 1.125rem 0.875rem 0.875rem 0.875rem;
+  }
+  
+  .earn-item:hover {
+    box-shadow: -7px 7px 0 var(--primary-color);
+  }
+  
+  .earn-icon {
+  }
+  
+  .earn-icon img {
+    width: 75px;
+    height: 75px;
+  }
+  
+  .earn-points {
+    font-size: 1.4rem;
+  }
+  
+  .earn-description {
+    font-size: 0.95rem;
+  }
+}
+
+/* ===================== FAQ SECTION STYLES ===================== */
+.content-section {
+  color: #000;
+  text-align: center;
+  padding: 2.5rem 1rem 2rem 1rem;
+  margin: 0 auto;
+  font-family: 'Futura Now Headline', Arial, sans-serif;
+}
+
+.content-section h2 {
+  font-size: 2rem;
+  font-weight: 900;
+  margin-bottom: 2rem;
+  letter-spacing: 0.01em;
+  color: var(--primary-color);
+  text-align: left;
+}
+
+.faq-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.faq-item {
+  border-bottom: 1px solid #000;
+  margin-bottom: 0;
+}
+
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.625rem 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.faq-question span:first-child {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #000;
+  text-transform: uppercase;
+  flex: 1;
+  line-height: 1.3;
+}
+
+.faq-icon {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  font-weight: 300;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+
+.faq-answer {
+  padding: 0 0 0.625rem 0;
+  font-size: 0.75rem;
+  color: #333;
+  line-height: 1.4;
+  text-align: left;
+  display: none;
+  font-weight: 400;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.faq-item.active .faq-answer {
+  display: block;
+  animation: slideDown 0.3s ease;
+}
+
+.faq-item.active .faq-icon {
+  transform: rotate(0deg);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    max-height: 200px;
+    transform: translateY(0);
+  }
+}
+
+.content-section p {
+  text-align: center;
+  font-size: 0.85rem;
+  margin-top: 6rem;
+  color: #222;
+  line-height: 1.4;
+}
+
+.content-section p a {
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+
+/* Small-Medium Devices (376px to 600px) */
+@media (min-width: 376px) and (max-width: 600px) {
+  .content-section {
+    padding: 2.8rem 1rem 2.3rem 1rem;
+  }
+  
+  .content-section h2 {
+    font-size: 2.2rem;
+  }
+  
+  .faq-question span:first-child {
+    font-size: 0.85rem;
+  }
+  
+  .faq-answer {
+    font-size: 0.8rem;
+  }
+}
+
+/* Tablet (601px to 991px) */
+@media (min-width: 601px) and (max-width: 991px) {
+  .content-section {
+    padding: 3rem 1rem 2.5rem 1rem;
+  }
+  
+  .content-section h2 {
+    font-size: 2.4rem;
+  }
+  
+  .faq-question span:first-child {
+    font-size: 0.9rem;
+  }
+  
+  .faq-answer {
+    font-size: 0.85rem;
+  }
+  
+  .faq-list {
+    width: 100%;
+  }
+}
+
+/* Desktop (992px and above) */
+@media (min-width: 992px) {
+  .content-section {
+    padding: 3.5rem 1rem 3rem 1rem;
+    width: 100%;
+  }
+  
+  .content-section h2 {
+    font-size: 2.8rem;
+  }
+  
+  .faq-question {
+    padding: 0.75rem 0;
+  }
+  
+  .faq-question span:first-child {
+    font-size: 1rem;
+  }
+  
+  .faq-answer {
+    font-size: 0.9rem;
+    padding: 0 0 0.75rem 0;
+  }
+  
+  .faq-list {
+    width: 100%;
+  }
+}
+
+/* Large Desktop (1200px+) */
+@media (min-width: 1200px) {
+  .faq-question span:first-child {
+    font-size: 1.05rem;
+  }
+  
+  .faq-answer {
+    font-size: 0.95rem;
+  }
+  
+  .faq-list {
+    width: 100%;
+  }
+}
+
+/* ===================== Refer SECTION STYLES ===================== */
+/* Target the campaigns-refer container */
+.stamped-rewards-page-campaigns-refer {
+    position: relative !important;
+    min-height: 500px !important;
+    display: flex !important;
+    align-items: stretch !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+}
+
+/* Add background image to left half using pseudo-element */
+.stamped-rewards-page-campaigns-refer::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 50% !important;
+    height: 100% !important;
+    background-image: url('https://cdn.shopify.com/s/files/1/0944/0398/files/Mixed_Swatches.png?v=1750976536') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    z-index: 1 !important;
+}
+
+/* Position the content to the right half */
+.stamped-rewards-page-campaigns-refer .stamped-rewards-page-refer-section-holder {
+    position: relative !important;
+    width: 50% !important;
+    margin-left: 50% !important;
+    z-index: 2 !important;
+    padding: 40px 30px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+}
+
+/* Ensure proper spacing and alignment for the content */
+.stamped-rewards-page-campaigns-refer .stamped-rewards-widget-heading-sub,
+.stamped-rewards-page-campaigns-refer .stamped-rewards-widget-heading-main,
+.stamped-rewards-page-campaigns-refer .stamped-rewards-page-border,
+.stamped-rewards-page-campaigns-refer .stamped-rewards-widget-description {
+    text-align: left !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 100% !important;
+}
+
+/* Center the content elements but keep text left-aligned */
+.stamped-rewards-page-campaigns-refer .stamped-reward-referral-wrapper,
+.stamped-rewards-page-campaigns-refer .stamped-rewards-page-buttonAddon {
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin: 0 !important;
+  
+}
+
+.stamped-reward-referral-wrapper{
+  max-width:700px !important;
+}
+
+#stamped-rewards-widget > div > div > div:nth-child(7) > div.stamped-rewards-page-buttonAddon > button{
+  height:40px;
+}
+#stamped-rewards-widget > div > div > div:nth-child(7) > div.stamped-rewards-page-buttonAddon > button:hover{
+  background-color:#D4CCC4;
+  
+}
+
+#stamped-rewards-widget > div > div > div:nth-child(5) > div.stamped-reward-referral-wrapper > span{
+  width:55px;
+}
+
+#reward-referral-yourfriendemail{
+  height:40px !important;
+}
+
+/* Align social platforms to the far left */
+.stamped-rewards-page-campaigns-refer .stamped-reward-referral-platforms {
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    width: 100% !important;
+    margin: 10px 0 !important;
+    max-width: none !important;
+}
+
+.stamped-rewards-page-campaigns-refer .stamped-reward-referral-platforms > span {
+    width: auto !important;
+    margin-right: 10px !important;
+}
+
+/* Adjust the main heading size for better fit */
+.stamped-rewards-page-campaigns-refer .stamped-rewards-widget-heading-main {
+    font-size: 28px !important;
+    line-height: 1.2 !important;
+}
+
+/* Style the content sections within the right half */
+.stamped-rewards-page-campaigns-refer div[data-target-id] {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#stamped-rewards-widget > div > div > div:nth-child(5){
+  width:100% !important;
+  max-width:700px !important;
+}
+
+/* Style the referral link container */
+.stamped-rewards-page-campaigns-refer .stamped-reward-referral-link {
+    margin: 0 !important;
+    background-color: #F1F1F1 !important;
+    width:100%;
+    
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important; /* IE and Edge */
+}
+
+/* Hide scrollbar for webkit browsers */
+.stamped-rewards-page-campaigns-refer .stamped-reward-referral-link::-webkit-scrollbar {
+    display: none !important;
+}
+
+.stamped-rewards-widget-heading-main{
+  margin:0 !important;
+  padding: 1rem 0 0.8rem 0;
+  color:#000;
+  font-size:40px !important;
+  
+}
+
+/* Style the copy button */
+.stamped-rewards-page-campaigns-refer .stamped-reward-copy-icon {
+    background-color: var(--secondary-color) !important;
+}
+
+.stamped-rewards-page-campaigns-refer .stamped-reward-copy-icon:hover{
+  background-color: var(--primary-color) !important;
+  color:white;
+}
+
+#stamped-rewards-widget > div > div > div:nth-child(7) > div.stamped-rewards-page-subtitle{
+  text-align: left;
+  width:100%;
+  padding:1.5rem 0 0.5rem 0 ;
+}
+[data-widget-type="rewards-referral"] .stamped-reward-referral-platforms:before{
+  margin:0 0.5rem 0 0  !important;
+}
+#stamped-rewards-widget > div > div > div:nth-child(7){
+  width:100%;
+}
+#stamped-rewards-widget{
+  margin-bottom:0;
+}
+
+#stamped-rewards-widget > div > div > div.stamped-rewards-widget-heading-sub{
+  font-size: 18px !important;
+}
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .stamped-rewards-page-campaigns-refer {
+        flex-direction: column !important;
+        min-height: auto !important;
+    }
+    
+    .stamped-rewards-page-campaigns-refer::before {
+        position: relative !important;
+        width: 100% !important;
+        height: 200px !important;
+        margin-bottom: 0 !important;
+    }
+    
+    .stamped-rewards-page-campaigns-refer .stamped-rewards-page-refer-section-holder {
+        width: 100% !important;
+        margin-left: 0 !important;
+        position: relative !important;
+    }
+    
+
+    
+    .stamped-rewards-page-campaigns-refer .stamped-rewards-widget-heading-main {
+        font-size: 36px !important;
+    }
+}

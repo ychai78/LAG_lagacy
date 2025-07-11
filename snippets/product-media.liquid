@@ -1,0 +1,230 @@
+{% comment %}
+	product-media.liquid
+	Enhanced version with Swiper integration
+{% endcomment %}
+
+<div class="flex flex-col items-start w-full mx-auto overflow-hidden product-container md:flex-row md:gap-4">
+	<div class="relative h-auto overflow-hidden product-main__media-slider grow lg:aspect-portrait">
+     
+      {%- liquid
+      assign current_variant = product.selected_or_first_available_variant
+      assign on_sale = false
+      if current_variant.compare_at_price > current_variant.price
+        assign on_sale = true
+        assign discount_percentage = current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round
+      endif
+    -%}
+
+    {% if on_sale and discount_percentage > 0 %}
+      <span class="absolute top-2 left-2 z-10 bg-pink-700 block max-w-fit text-center text-white text-sm font-bold uppercase px-2 py-1 pt-[3px] max-h-[25px]">{{ discount_percentage }}% OFF</span>
+    {% endif %}
+      
+		<div class="relative swiper-container main-slider">
+			<div class="swiper-wrapper max-w-[100vw] aspect-square" id="main-slider-wrapper">
+				{%- capture sizes -%}(max-width: 767px) 100vw, (max-width: 1023px) 100vw, (max-width: 1279px) 60vw{%- endcapture -%}
+
+				{% assign variant_image_srcs = product.variants | map: 'image' | map: 'src' %}
+				{% for media in product.media %}
+					{% if media.media_type == 'image' %}
+						{% assign media_src = media.src | split: '?' | first %}
+						{% assign media_filename = media_src | split: '/' | last | split: '.' | first %}
+						<div
+							class="swiper-slide"
+							data-name="{{ media_filename }} {% if media.alt contains 'common' or media_filename contains 'common' %}common{% endif %}"
+							data-variant-image="{% if variant_image_srcs contains media_src %}yes{% else %}no{% endif %}"
+							data-media-id="{{ media.id }}"
+						>
+							{% render 'responsive-image',
+								image: media,
+								sizes: sizes,
+								lazyload: false,
+								width: 1024,
+								basewidth: 200,
+								alt: media.alt,
+								class: 'max-w-[100vw] w-full'
+							%}
+						</div>
+					{% endif %}
+				{% endfor %}
+			</div>
+
+			<div class="hidden swiper-button-next"></div>
+			<div class="swiper-button-prev"></div>
+		</div>
+		<div class="swiper-pagination !relative mt-4"></div>
+	</div>
+	<div class="product-main__media-thumbs hidden lg:flex -mx-4 basis-[70px] shrink-0 lg:order-first lg:mx-0 lg:basis-[60px] lg:flex lg:flex-col w-[80px]" id="side-thumnail-priWrapper">
+    <button type="button" class="thumbnail-prev-btn flex items-center justify-center w-full h-8 mb-2 bg-gray-100 hover:bg-gray-300 rounded">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m18 15-6-6-6 6"/>
+    </svg>
+    </button>
+		<div class="relative swiper-container thumbnail-slider">
+
+			<div class="grid swiper-wrapper" id="thumbnail-slider-wrapper">
+				{% assign variant_image_srcs = product.variants | map: 'image' | map: 'src' %}
+				{% for media in product.media %}
+					{% if media.media_type == 'image' %}
+						{% assign media_src = media.src | split: '?' | first %}
+						{% assign media_filename = media_src | split: '/' | last | split: '.' | first %}
+						<div
+							class="swiper-slide"
+							data-name="{{ media_filename }} {% if media.alt contains 'common' or media_filename contains 'common' %}common{% endif %}"
+							data-variant-image="{% if variant_image_srcs contains media_src %}yes{% else %}no{% endif %}"
+						>
+							<img class="border" height="100" src="{{- media.src | image_url: width: 75 -}}" width="100" tabindex="0"/>
+						</div>
+					{% endif %}
+				{% endfor %} 
+			</div>
+		</div>
+    <button type="button" class="thumbnail-next-btn flex items-center justify-center w-full h-8 mt-2 bg-gray-100 hover:bg-gray-300 rounded">
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m6 9 6 6 6-6"/>
+  </svg>
+   </button>
+    
+	</div>
+  
+
+</div>
+
+
+<style>
+  .thumbnail-next-btn,
+  .thumbnail-prev-btn {
+    transition: background-color 0.2s ease;
+  }
+
+  /* Your other existing styles remain the same */
+  .product-main__media-thumbs {
+    transition: height 0.3s ease;
+    overflow-y: auto;
+    scrollbar-width: none;
+    min-width: 80px !important;
+  }
+
+  .product-main__media-thumbs::-webkit-scrollbar {
+    display: none;
+  }
+
+  div#thumbnail-slider-wrapper .swiper-slide {
+    width: 80px !important;
+    height: 80px;
+  }
+
+  
+</style>
+
+ <script>
+document.addEventListener('DOMContentLoaded', () => {
+  let resizeTimeout;
+  const mainWrapper = document.querySelector("#main-slider-wrapper");
+  const thumbnailWrapper = document.querySelector("#thumbnail-slider-wrapper");
+  const sideWrapper = document.querySelector("#side-thumnail-priWrapper");
+  const nextButton = document.querySelector(".thumbnail-next-btn");
+  const prevButton = document.querySelector(".thumbnail-prev-btn");
+
+  let mainSwiper;
+  let thumbnailSwiper;
+
+  // Check if navigation buttons should be visible
+  const updateButtonVisibility = () => {
+    if (!sideWrapper || !thumbnailWrapper || !mainWrapper) return;
+
+    const thumbnailTotalHeight = thumbnailWrapper.scrollHeight;
+    const visibleHeight = sideWrapper.clientHeight;
+    const shouldShowButtons = thumbnailTotalHeight > visibleHeight;
+
+    if (nextButton) nextButton.style.display = shouldShowButtons ? 'flex' : 'none';
+    if (prevButton) prevButton.style.display = shouldShowButtons ? 'flex' : 'none';
+
+    console.log('Thumbnail height:', thumbnailTotalHeight, 'Visible height:', visibleHeight);
+  };
+
+  // Initialize Swiper instances
+  const initializeSwipers = () => {
+    // Thumbnail slider initialization first
+    thumbnailSwiper = new Swiper('.thumbnail-slider', {
+      spaceBetween: 10,
+      slidesPerView: 'auto',
+      direction: 'vertical',
+      watchSlidesProgress: true,
+    });
+
+    // Main slider
+    mainSwiper = new Swiper('.main-slider', {
+      spaceBetween: 10,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      pagination: {
+        el: '.swiper-pagination',
+      },
+      thumbs: {
+        swiper: thumbnailSwiper
+      }
+    });
+  };
+
+  // Handle next button click with looping
+  const handleNextClick = () => {
+    if (mainSwiper && thumbnailSwiper) {
+      const nextIndex = (mainSwiper.activeIndex + 1) % mainSwiper.slides.length;
+      if (nextIndex === 0) {
+        // If we're going back to the start, scroll thumbnails to top
+        thumbnailWrapper.scrollTop = 0;
+      }
+      mainSwiper.slideTo(nextIndex);
+      thumbnailSwiper.slideTo(nextIndex);
+    }
+  };
+
+  // Handle prev button click
+  const handlePrevClick = () => {
+    if (mainSwiper && thumbnailSwiper) {
+      const lastIndex = mainSwiper.slides.length - 1;
+      const prevIndex = mainSwiper.activeIndex === 0 ? lastIndex : mainSwiper.activeIndex - 1;
+      mainSwiper.slideTo(prevIndex);
+      thumbnailSwiper.slideTo(prevIndex);
+    }
+  };
+
+  const updateMeasurements = () => {
+    if (!mainWrapper || !thumbnailWrapper || !sideWrapper) return;
+    const mainHeight = mainWrapper.offsetHeight;
+    sideWrapper.style.height = `${mainHeight}px`;
+    updateButtonVisibility(); // Check button visibility after updating heights
+  };
+
+  // Debounced resize handler
+  const debouncedResize = () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      updateMeasurements();
+    }, 150);
+  };
+
+  // Add click handlers for navigation buttons
+  if (nextButton) {
+    nextButton.addEventListener('click', handleNextClick);
+  }
+  if (prevButton) {
+    prevButton.addEventListener('click', handlePrevClick);
+  }
+
+  // Initial setup
+  window.addEventListener('load', () => {
+    updateMeasurements();
+    initializeSwipers();
+    // Check again after a short delay to ensure images are loaded
+    setTimeout(updateButtonVisibility, 500);
+  });
+  
+  window.addEventListener('resize', debouncedResize);
+  
+  // Run initial measurement
+  updateMeasurements();
+});
+</script>

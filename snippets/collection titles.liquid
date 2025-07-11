@@ -1,0 +1,47 @@
+      {% if current_tags %}
+    	{% assign collection-filter = current_tags | join: ', ' %} 
+			{% case collection-filter%}
+   		  {% when 'eyebrow'%}Eyebrow
+          {% when 'eyeliner'%}Eyeliner
+          {% when 'eyeshadow'%}Eyeshadow
+          {% when 'mascara'%}Mascara
+
+   		  {% when 'lip care'%}Lip Care
+          {% when 'lipgloss'%}Lipgloss
+          {% when 'lipliner'%}Lipliner
+          {% when 'lipstick'%}Lipstick
+
+   		  {% when 'blush'%}Blush
+          {% when 'concealer'%}Concealer
+          {% when 'contour-highlight'%}Contour & Highlighter
+          {% when 'foundation'%}Foundation
+          {% when 'Powder'%} Powder 
+          {% when 'prime & set'%} Prime & Set
+          {% when 'face-body-palette'%} Face/Body Palette
+          
+  		  {% when 'polish'%}Polish
+  		  {% when 'treatment'%}Nail Treatments
+          {% when 'nail-tips'%}Nail Tips
+
+		  {% when 'bags'%}Cosmetic Bags
+          {% when 'brushes'%}Makeup Brushes
+          {% when 'tools'%}Tools
+    	  {% when 'whats-new'%}What's New
+
+        {% else %}
+        	 {{collection-filter}}
+   		{% endcase %}
+     {% else %}
+  
+      	{% case collection.handle%}
+          {% when 'eyes'%}Eyes
+          {% when 'lips'%}Lips
+          {% when 'face'%}Face 
+          {% when 'nails'%}Nails
+          {% when 'accessories'%}Accessories 
+          {% when 'reverie-collection'%}Reverie Collection
+    	  {% when 'whats-new'%}What's New
+      	{% else %}
+          {{collection.title}}
+       	{% endcase %}
+    {% endif %}

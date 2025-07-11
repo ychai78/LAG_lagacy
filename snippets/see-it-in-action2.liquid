@@ -1,0 +1,583 @@
+{% assign has_videos = false %}
+{% assign video_count = 0 %}
+
+{% for media in product.media %}
+	{% if media.media_type == 'video' or media.media_type == 'external_video' %}
+		{% assign video_count = video_count | plus: 1 %}
+		{% assign has_videos = true %}
+	{% endif %}
+{% endfor %}
+
+{% if has_videos %}
+	<div class="mb-4 product-info__see-it-in-action" id="see-it-in-action">
+		<h5 class="mb-4">See it in Action</h5>
+
+		{% capture slides_content %}
+        {% for media in product.media %}
+          {% assign video_container_class = 'shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out card-slider_video-container group grid cursor-pointer overflow-hidden aspect-[2/3] max-w-[120px] max-h-[180px] bg-white relative rounded-md pointer-events-auto' %}
+          {% assign button_class = 'media-play-icon flex col-span-1 row-span-1 p-0 absolute bg-white self-center justify-self-center justify-center items-center size-9 rounded-full transition-transform duration-300 ease-in border-0 border-solid border-transparent group-hover:scale-125' %}
+          {% assign image_class = 'absolute inset-0 w-full h-full object-cover' %}
+          {% assign wrapper_class = 'cardContainer w-[120px] h-[180px] shrink-0' %}
+
+          {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
+            {%- case media.media_type -%}
+              {%- when 'external_video', 'video' -%}
+                {% if media.media_type == 'external_video' %}
+                  {% capture youtube_img_tag %}https://img.youtube.com/vi/{{ media.external_id }}/maxres2.jpg{% endcapture %}
+                  {% assign media_link = 'https://www.youtube.com/watch?v=' | append: media.external_id %}
+                {% else %}
+                  {% assign video_upload = media.sources | last %}
+                  {% assign media_link = video_upload.url %}
+                {% endif %}
+
+                <div class="{{ wrapper_class }}" role="group" aria-label="Stories">
+                  <div aria-label="" role="button" class="grid auto-rows-min gap-1 cursor-pointer w-full flex-shrink-0 relative max-w-[120px]" hasclickevent="true">
+                    <div class="storyVideoImage grid w-full max-w-[120px] col-start-1 row-start-1 aspect-[120/180]">
+                      <a href="{{ media_link }}" class="glightbox" data-glightbox="gallery1">
+                        <div class="{{ video_container_class }}">
+                          {% if media.media_type == 'external_video' %}
+                            <img class="{{ image_class }}" src="{{ youtube_img_tag }}" alt="{{ media.alt | escape }}" width="160" height="90" loading="lazy">
+                          {% else %}
+                            {%- render 'responsive-image',
+                              image: media.preview_image,
+                              lazyload: true,
+                              width: 200,
+                              alt: media.alt,
+                              class: image_class
+                            -%}
+                          {% endif %}
+
+                          <button aria-label="Open video" type="button" class="{{ button_class }}">
+                             {% render 'icon-play' %}
+                          </button>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+            {%- endcase -%}
+          {%- endif -%}
+        {% endfor %}
+    {% endcapture %}
+
+		{% render 'scroll-slider', slides: slides_content, class: '', style: 'solid' %}
+	</div>
+
+	<script>
+		const customLightboxHTML = `<div id="glightbox-body" class="glightbox-container">
+      <div class="visible gloader"></div>
+      <div class="goverlay-custom absolute bottom-0 left-0 m-0 box-border h-full w-full overflow-hidden border-none bg-[rgba(0,0,0,0.8)] p-0 backdrop-blur-[20px]"></div>
+      <div class="gcontainer">
+      <div id="glightbox-slider" class="gslider"></div>
+
+      <div class="absolute right-0 flex justify-center transform -translate-y-1/2 gnext navigationArrows_position z-12 top-1/2">
+  <div class="navigationArrowsContainer">
+    <div role="button" aria-label="Move to previous video" tabindex="0" class="relative cursor-pointer pointer-events-auto gprev backdropButton tap-highlight-transparent">
+      <div class="backdropButton_badgeContainer z-1 absolute right-0 top-0 -translate-y-[20%] translate-x-[20%] transform"></div>
+      <div class="backdropButton_iconContainer ease flex h-10 w-10 items-center rounded-[100px] backdrop-blur-[10px] transition-all duration-300">
+        <div class="flex rotate-[270deg] transform flex-col items-center transition-transform duration-200 ease-in-out">
+          <svg width="24" height="24" viewBox="0 0 44.308 44.308" fill="#fff" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M31.767 20.849 16.727 5.809a0.923 0.923 0 0 0 -1.305 0l-1.305 1.305a0.923 0.923 0 0 0 0 1.305L27.851 22.154l-13.735 13.734a0.923 0.923 0 0 0 0 1.305l1.306 1.305a0.923 0.923 0 0 0 1.305 0l15.04 -15.04a1.846 1.846 0 0 0 0 -2.61Z"></path></svg>
+        </div>
+      </div>
+    </div>
+    <div role="button" aria-label="Move to next video" tabindex="0" class="relative cursor-pointer pointer-events-auto gnext backdropButton tap-highlight-transparent">
+      <div class="backdropButton_badgeContainer z-1 absolute right-0 top-0 -translate-y-[20%] translate-x-[20%] transform"></div>
+       <div class="backdropButton_iconContainer ease flex h-10 w-10 items-center rounded-[100px] backdrop-blur-[10px] transition-all duration-300">
+        <div class="flex flex-col items-center transition-transform duration-200 ease-in-out transform rotate-90">
+         <svg width="24" height="24" viewBox="0 0 44.308 44.308" fill="#fff" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M31.767 20.849 16.727 5.809a0.923 0.923 0 0 0 -1.305 0l-1.305 1.305a0.923 0.923 0 0 0 0 1.305L27.851 22.154l-13.735 13.734a0.923 0.923 0 0 0 0 1.305l1.306 1.305a0.923 0.923 0 0 0 1.305 0l15.04 -15.04a1.846 1.846 0 0 0 0 -2.61Z"></path></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+      <button aria-label="Close modal" role="button" tabindex="0" 
+      class="gclose feedCloseButton absolute left-4 top-4 z-[1000000] flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-[rgba(0,0,0,0.2)] p-2.5">
+      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.055 16.594a.662.662 0 0 1-.899 0L10 11.398l-5.195 5.196a0.662 0.662 0 0 1-.899 0 .662.662 0 0 1 0-.899L9.102 10.5 3.906 5.344a0.662 0.662 0 0 1 0-.899.662.662 0 0 1 .899 0L10 9.641l5.156-5.196a.662.662 0 0 1 .899 0 .662.662 0 0 1 0 .899L10.859 10.5l5.196 5.195a.662.662 0 0 1 0 .899Z" style="fill: #FFFFFF !important;"></path></svg>
+      </button>
+      
+  </div>
+  </div>`;
+
+		let customSlideHTML = `<div class="gslide">
+      <div class="gslide-inner-content">
+          <div class="ginner-container">
+              <div class="gslide-media">
+              </div>
+              <div class="gslide-description">
+                  <div class="gdesc-inner">
+                      <h4 class="gslide-title"></h4>
+                      <div class="gslide-desc"></div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>`;
+
+		function initializeGlightbox(selector) {
+			const lightbox = GLightbox({
+				selector: selector,
+				lightboxHTML: customLightboxHTML,
+				slideHTML: customSlideHTML,
+				skin: 'supercool',
+				loop: true,
+				autoplayVideos: true,
+				plyr: {
+					css: 'https://cdn.plyr.io/3.5.6/plyr.css',
+					js: 'https://cdn.plyr.io/3.5.6/plyr.js',
+					config: {
+						ratio: '9:16',
+						muted: false,
+						hideControls: true,
+						youtube: {
+							noCookie: true,
+							rel: 0,
+							showinfo: 0,
+							iv_load_policy: 3,
+                            autoplay: 1
+						},
+					},
+				},
+			});
+
+			lightbox.on('open', () => {
+				// Adding event listeners after the lightbox is opened
+				document.querySelectorAll('.gnext').forEach((button) => {
+					button.addEventListener('click', (e) => {
+						e.preventDefault();
+						e.stopPropagation(); // Prevents the lightbox from closing
+						lightbox.nextSlide();
+					});
+				});
+
+				document.querySelectorAll('.gprev').forEach((button) => {
+					button.addEventListener('click', (e) => {
+						e.preventDefault();
+						e.stopPropagation(); // Prevents the lightbox from closing
+						lightbox.prevSlide();
+					});
+				});
+
+				// Add event listener for the close button
+				document.querySelector('.gclose').addEventListener('click', (e) => {
+					e.preventDefault();
+					e.stopPropagation();
+					lightbox.close();
+				});
+			});
+
+			return lightbox;
+		}
+
+		// Initialize GLightbox for each slider
+		const lightbox = initializeGlightbox('#see-it-in-action .glightbox');
+
+		// Example of reinitializing GLightbox after content update
+		document.addEventListener('contentUpdated', function () {
+			initializeGlightbox('#see-it-in-action .glightbox');
+		});
+	</script>
+	<style>
+		.glightbox-container .ginner-container.gvideo-container {
+			width: 100%;
+			align-items: center;
+		}
+		.hide-scroll-bar {
+			-ms-overflow-style: none;
+			scrollbar-width: none;
+		}
+		.hide-scroll-bar::-webkit-scrollbar {
+			display: none;
+		}
+
+		.sliderbtn:hover:not(:disabled) {
+			background-color: #ec4899;
+		}
+
+		.sliderbtn:hover:not(:disabled) svg {
+			color: white;
+		}
+
+		.sliderbtn:disabled {
+			opacity: 0.3;
+			cursor: not-allowed;
+		}
+	</style>
+
+	<script>
+		//temporary way to remove the duplicated entries for youtube videos
+		document.addEventListener('DOMContentLoaded', function () {
+			const cardContainers = document.querySelectorAll('.card-slider_container');
+			const seenVideoIds = new Set();
+
+			cardContainers.forEach((card) => {
+				const videoLink = card.querySelector('a');
+				const videoUrl = videoLink ? videoLink.href : null;
+				const videoId = videoUrl ? extractVideoId(videoUrl) : null;
+
+				if (videoId) {
+					if (seenVideoIds.has(videoId)) {
+						console.log('Duplicate found, removing card with video ID:', videoId); // Log the duplicate video ID
+						card.remove();
+					} else {
+						seenVideoIds.add(videoId);
+					}
+				}
+			});
+
+			function extractVideoId(url) {
+				const youtubeRegex =
+					/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+				const match = url.match(youtubeRegex);
+				return match ? match[1] : null;
+			}
+		});
+	</script>
+{% endif %}
+
+{% comment %}
+	{% assign has_videos = false %}
+
+	{% for media in product.media %}
+	  {% if media.media_type == 'video' or media.media_type == 'external_video' %}
+	    {% assign has_videos = true %}
+	    {% break %}
+	  {% endif %}
+	{% endfor %}
+
+	{% if has_videos %}
+	  <div
+	    class="product-info__see-it-in-action"
+	    id="see-it-in-action"
+	  >
+	    <summary class="accordion__heading relative flex cursor-pointer list-none items-center justify-between p-4 text-[.88rem]">
+	      <h5>See it in Action</h5>
+	    </summary>
+
+
+	       {% capture slides_content %}
+	        {% for media in product.media %}
+	          {% assign video_container_class = 'shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out card-slider_video-container group grid cursor-pointer overflow-hidden aspect-[9/16] max-h-[800px] bg-white relative rounded-md pointer-events-auto' %}
+	          {% assign button_class = 'media-play-icon flex col-span-1 row-span-1 p-0 bg-black self-center justify-self-center justify-center items-center size-12 rounded-full transition-transform duration-300 ease-in z-[1] opacity-65 border-0 border-solid border-transparent group-hover:scale-125' %}
+	          {% assign image_class = 'absolute responsive-image w-full h-full object-cover rounded-lg' %}
+	          {% assign wrapper_class = 'cardContainer w-96 shrink-0' %}
+
+	          {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
+	            {%- case media.media_type -%}
+	              {%- when 'external_video' -%}
+	                {% capture youtube_img_tag %}https://img.youtube.com/vi/{{ media.external_id }}/maxres2.jpg{% endcapture %}
+	                {% assign media_link = 'https://www.youtube.com/watch?v=' | append: media.external_id %}
+
+	                <div
+	                  class="{{  wrapper_class }}"
+	                  role="group"
+	                  aria-label="Stories"
+	                >
+	                  <div
+	                    aria-label=""
+	                    role="button"
+	                    class="grid auto-rows-min gap-1 cursor-pointer w-full flex-shrink-0 relative max-w-[180px]"
+	                    hasclickevent="true"
+	                  >
+	                    <div class="storyVideoImage grid w-full max-w-[180px] col-start-1 row-start-1 aspect-[120/180]">
+	                      <a href="{{ media_link }}" class="glightbox" data-glightbox="gallery1">
+	                        <div class="{{ video_container_class }}">
+	                          <img
+	                            class="{{ image_class }}"
+	                            src="{{ youtube_img_tag }}"
+	                            alt="{{ media.alt | escape }}"
+	                            width="160"
+	                            height="90"
+	                            loading="lazy"
+	                          >
+	                          <button
+	                            aria-label="Open video"
+	                            type="button"
+	                            class="{{ button_class }}"
+	                          >
+	                            {%- render 'icon-play', class: 'size-9 text-white' -%}
+	                          </button>
+	                        </div>
+	                      </a>
+	                    </div>
+	                    <div
+	                      class="storyVideo bg-transparent flex w-full h-full max-w-[180px] aspect-[120/180] col-start-1 row-start-1 z-[2] object-cover box-border"
+	                    ></div>
+	                  </div>
+	                </div>
+	              {%- when 'video' -%}
+	                {%- assign video_upload = media.sources | last -%}
+	                <div
+	                  class="{{  wrapper_class }}"
+	                  role="group"
+	                  aria-label="Stories"
+	                >
+	                  <div
+	                    aria-label=""
+	                    role="button"
+	                    class="grid auto-rows-min gap-1 cursor-pointer w-full flex-shrink-0 relative max-w-[180px]"
+	                    hasclickevent="true"
+	                  >
+	                    <div class="storyVideoImage grid w-full max-w-[180px] col-start-1 row-start-1 aspect-[120/180]">
+	                      <a href="{{ video_upload.url }}" class="glightbox" data-glightbox="gallery1">
+	                        <div class="{{ video_container_class }}">
+	                          {%- render 'responsive-image',
+	                            image: media.preview_image,
+	                            lazyload: true,
+	                            width: 1440,
+	                            alt: media.alt,
+	                            class: image_class
+	                          -%}
+
+	                          <button
+	                            aria-label="Open video"
+	                            type="button"
+	                            class="{{ button_class }}"
+	                          >
+	                            {%- render 'icon-play', class: 'size-9 text-white' -%}
+	                          </button>
+	                        </div>
+	                      </a>
+	                    </div>
+	                    <div
+	                      class="storyVideo bg-transparent flex w-full h-full max-w-[180px] aspect-[120/180] col-start-1 row-start-1 z-[2] object-cover box-border"
+	                    ></div>
+	                  </div>
+	                </div>
+	            {%- endcase -%}
+
+	          {%- endif -%}
+	        {% endfor %}
+
+	        {% if product.metafields.custom.promo_video %}
+	          {% assign youtube_links = product.metafields.custom.promo_video | split: ',' %}
+	          {% for youtube_link in youtube_links %}
+	            <div class="{{  wrapper_class }}" role="group" aria-label="Stories">
+	              <div
+	                aria-label=""
+	                role="button"
+	                class="grid auto-rows-min gap-1 cursor-pointer w-full flex-shrink-0 relative max-w-[180px]"
+	                hasclickevent="true"
+	              >
+	                <div class="storyVideoImage grid w-full max-w-[180px] col-start-1 row-start-1 aspect-[120/180]">
+	                  {% capture url %}https://www.youtube.com/embed/{{- youtube_link | strip -}}&showinfo=0&rel=0{% endcapture %}
+	                  <a href="{{ url }}" class="glightbox" data-glightbox="gallery1">
+	                    <div class="{{ video_container_class }}">
+	                      <img
+	                        class="{{ image_class }}"
+	                        src="//img.youtube.com/vi/{{- youtube_link | strip -}}/maxres2.jpg"
+	                        alt="{{ product.title }} video"
+	                        width="160"
+	                        height="90"
+	                        loading="lazy"
+	                      >
+	                      <button
+	                        aria-label="Open video"
+	                        type="button"
+	                        class="{{ button_class }}"
+	                      >
+	                        {%- render 'icon-play', class: 'size-9 text-white' -%}
+	                      </button>
+	                    </div>
+	                  </a>
+	                </div>
+	                <div
+	                  class="storyVideo bg-transparent flex w-full h-full max-w-[180px] aspect-[120/180] col-start-1 row-start-1 z-[2] object-cover box-border"
+	                ></div>
+	              </div>
+	            </div>
+	          {% endfor %}
+	        {%- endif -%}
+	         {% endcapture %}
+
+	    {% render 'scroll-slider', slides: slides_content %}
+
+
+	  </div>
+
+
+
+	  <style>
+	    .arrowButtonContainer[data-visibility=hidden]{
+	      visibility: hidden;
+	      opacity: 0;
+	      pointer-events: none;
+	    }
+	    .arrowButtonContainer[data-visibility=visible]{
+	      visibility: visible;
+	      opacity: 1;
+	      pointer-events: all;
+	    }
+	  </style>
+
+
+
+	  <script>
+	  const customLightboxHTML = `<div id="glightbox-body" class="glightbox-container">
+	      <div class="visible gloader"></div>
+	      <div class="goverlay-custom absolute bottom-0 left-0 m-0 box-border h-full w-full overflow-hidden border-none bg-[rgba(0,0,0,0.8)] p-0 backdrop-blur-[20px]"></div>
+	      <div class="gcontainer">
+	      <div id="glightbox-slider" class="gslider"></div>
+
+	      <div class="absolute right-0 flex justify-center transform -translate-y-1/2 gnext navigationArrows_position z-12 top-1/2">
+	  <div class="navigationArrowsContainer">
+	    <div role="button" aria-label="Move to previous video" tabindex="0" class="relative cursor-pointer pointer-events-auto gprev backdropButton tap-highlight-transparent">
+	      <div class="backdropButton_badgeContainer z-1 absolute right-0 top-0 -translate-y-[20%] translate-x-[20%] transform"></div>
+	      <div class="backdropButton_iconContainer ease flex h-10 w-10 items-center rounded-[100px] backdrop-blur-[10px] transition-all duration-300">
+	        <div class="flex rotate-[270deg] transform flex-col items-center transition-transform duration-200 ease-in-out">
+	          <svg width="24" height="24" viewBox="0 0 44.308 44.308" fill="#fff" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M31.767 20.849 16.727 5.809a0.923 0.923 0 0 0 -1.305 0l-1.305 1.305a0.923 0.923 0 0 0 0 1.305L27.851 22.154l-13.735 13.734a0.923 0.923 0 0 0 0 1.305l1.306 1.305a0.923 0.923 0 0 0 1.305 0l15.04 -15.04a1.846 1.846 0 0 0 0 -2.61Z"></path></svg>
+	        </div>
+	      </div>
+	    </div>
+	    <div role="button" aria-label="Move to next video" tabindex="0" class="relative cursor-pointer pointer-events-auto gnext backdropButton tap-highlight-transparent">
+	      <div class="backdropButton_badgeContainer z-1 absolute right-0 top-0 -translate-y-[20%] translate-x-[20%] transform"></div>
+	       <div class="backdropButton_iconContainer ease flex h-10 w-10 items-center rounded-[100px] backdrop-blur-[10px] transition-all duration-300">
+	        <div class="flex flex-col items-center transition-transform duration-200 ease-in-out transform rotate-90">
+	         <svg width="24" height="24" viewBox="0 0 44.308 44.308" fill="#fff" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M31.767 20.849 16.727 5.809a0.923 0.923 0 0 0 -1.305 0l-1.305 1.305a0.923 0.923 0 0 0 0 1.305L27.851 22.154l-13.735 13.734a0.923 0.923 0 0 0 0 1.305l1.306 1.305a0.923 0.923 0 0 0 1.305 0l15.04 -15.04a1.846 1.846 0 0 0 0 -2.61Z"></path></svg>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	  </div>
+
+	      <div aria-label="modal close" role="button" tabindex="0"
+	      class="feedCloseButton absolute left-4 top-4 z-[1000000] flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-[rgba(0,0,0,0.2)] p-2.5">
+	      <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.055 16.594a.662.662 0 0 1-.899 0L10 11.398l-5.195 5.196a0.662 0.662 0 0 1-.899 0 .662.662 0 0 1 0-.899L9.102 10.5 3.906 5.344a0.662 0.662 0 0 1 0-.899.662.662 0 0 1 .899 0L10 9.641l5.156-5.196a.662.662 0 0 1 .899 0 .662.662 0 0 1 0 .899L10.859 10.5l5.196 5.195a.662.662 0 0 1 0 .899Z" style="fill: #FFFFFF !important;"></path></svg>
+	      </div>
+
+	  </div>
+	  </div>`;
+
+	  let customSlideHTML = `<div class="gslide">
+	      <div class="gslide-inner-content">
+	          <div class="ginner-container">
+	              <div class="gslide-media">
+	              </div>
+	              <div class="gslide-description">
+	                  <div class="gdesc-inner">
+	                      <h4 class="gslide-title"></h4>
+	                      <div class="gslide-desc"></div>
+	                  </div>
+	              </div>
+	          </div>
+	      </div>
+	  </div>`;
+
+	  function initializeGlightbox(selector) {
+	    const lightbox = GLightbox({
+	      selector: selector,
+	      lightboxHTML: customLightboxHTML,
+	      slideHTML: customSlideHTML,
+	      skin: 'supercool',
+	      loop: true,
+	      autoplayVideos: true,
+	      plyr: {
+	        css: 'https://cdn.plyr.io/3.5.6/plyr.css',
+	        js: 'https://cdn.plyr.io/3.5.6/plyr.js',
+	        config: {
+	          ratio: '9:16',
+	          muted: false,
+	          hideControls: true,
+	          youtube: {
+	            noCookie: true,
+	            rel: 0,
+	            showinfo: 0,
+	            iv_load_policy: 3
+	          }
+	        }
+	      }
+	    });
+
+	    lightbox.on('open', () => {
+	      // Adding event listeners after the lightbox is opened
+	      document.querySelectorAll('.gnext').forEach(button => {
+	        button.addEventListener('click', (e) => {
+	          e.preventDefault();
+	          e.stopPropagation(); // Prevents the lightbox from closing
+	          lightbox.nextSlide();
+	        });
+	      });
+
+	      document.querySelectorAll('.gprev').forEach(button => {
+	        button.addEventListener('click', (e) => {
+	          e.preventDefault();
+	          e.stopPropagation(); // Prevents the lightbox from closing
+	          lightbox.prevSlide();
+	        });
+	      });
+	    });
+
+	    return lightbox;
+	  }
+
+	  // Initialize GLightbox for each slider
+	  const lightbox = initializeGlightbox('#see-it-in-action .glightbox');
+
+	  // Example of reinitializing GLightbox after content update
+	  document.addEventListener('contentUpdated', function() {
+	    initializeGlightbox('#see-it-in-action .glightbox');
+	  });
+	  </script>
+	  <style>
+	      .glightbox-container .ginner-container.gvideo-container {
+	        width: 100%;
+	        align-items: center;
+	    }
+	        .hide-scroll-bar {
+	          -ms-overflow-style: none;
+	          scrollbar-width: none;
+	        }
+	        .hide-scroll-bar::-webkit-scrollbar {
+	          display: none;
+	        }
+
+
+
+	      .sliderbtn:hover:not(:disabled) {
+	          background-color: #ec4899;
+	      }
+
+	      .sliderbtn:hover:not(:disabled) svg {
+	          color: white;
+	      }
+
+	      .sliderbtn:disabled {
+	          opacity: 0.3;
+	          cursor: not-allowed;
+	      }
+	  </style>
+
+	  <script>
+	      //temporary way to remove the duplicated enties for youtube videos
+	    document.addEventListener("DOMContentLoaded", function() {
+	      const cardContainers = document.querySelectorAll('.card-slider_container');
+	      const seenVideoIds = new Set();
+
+	      cardContainers.forEach(card => {
+	        const videoLink = card.querySelector('a');
+	        const videoUrl = videoLink ? videoLink.href : null;
+	        const videoId = videoUrl ? extractVideoId(videoUrl) : null;
+
+
+
+	        if (videoId) {
+	          if (seenVideoIds.has(videoId)) {
+	            console.log('Duplicate found, removing card with video ID:', videoId);  // Log the duplicate video ID
+	            card.remove();
+	          } else {
+	            seenVideoIds.add(videoId);
+	          }
+	        }
+	      });
+
+
+
+	      function extractVideoId(url) {
+	        const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+	        const match = url.match(youtubeRegex);
+	        return match ? match[1] : null;
+	      }
+	    });
+	  </script>
+	{% endif %}
+{% endcomment %}

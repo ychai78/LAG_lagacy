@@ -1,0 +1,93 @@
+{% if customer %}
+
+{% assign admin_mail = shop.metafields.wishlist.sw_enable_mail%}
+{% assign admin_rmail = shop.metafields.wishlist.sw_enable_rmail %}
+
+{% if customer.metafields.wishlist.sw_receive_mail %}
+{% assign receive_mail = customer.metafields.wishlist.sw_receive_mail %}
+{%endif%}
+
+{% if customer.metafields.wishlist.sw_receive_rmail %}
+{% assign receive_rmail = customer.metafields.wishlist.sw_receive_rmail %}
+<input type="hidden" value="{{receive_rmail}}" id="receive_rmail" />
+{%endif%}
+{% if admin_mail == 1 or admin_mail == null%}
+<div>
+  <input type="checkbox"  id="receiveEmail" value="receiveEmail" name="receiveEmail" {% if receive_mail == 1 or receive_mail == null%}checked="true"{%endif%}> Receive email when your wishlist product is on sale?
+  <span class="mail_msg_loader"></span>
+  <br />
+  <span class="mail_msg"></span>
+</div>
+{% endif %}
+{% if admin_rmail == 1 or admin_rmail == null%}
+<div>
+  <input type="checkbox"  id="receiveREmail" value="receiveREmail" name="receiveREmail" {% if receive_rmail == 1 or receive_rmail == null%}checked="true"{%endif%}> Receive reminder email for your wishlist?
+  <span class="mail_msg_loader"></span>
+  <br />
+  <span class="mail_msg"></span>
+</div>
+{% endif %}
+<script>
+  $(document).ready(function(){
+    var c_id = {{customer.id}};
+    $('#receiveEmail').change(function () {
+      var chk = $(this);
+      
+      var receive_mail = "";
+
+      if ($(this).is(':checked')) { 
+        receive_mail  = '1';  
+      } else {
+        receive_mail  = '0';
+      }
+      var data = {'page':'cust_mail','receive_mail':receive_mail,'c_id':c_id,'shop':Shopify.shop};
+      var url = 'https://shopiapps.in/wishlistapp/save_settings.php?shop='+Shopify.shop;
+	  $(this).parent().find(".mail_msg_loader").text("Saving...").show();
+      $.ajax({
+        url: url,
+        type: "POST",
+        data: data,
+        success : function(data){
+          chk.parent().find(".mail_msg_loader").hide();
+          chk.parent().find(".mail_msg").html("Your request is submitted successfully.");
+          setTimeout(function () {
+            chk.parent().find(".mail_msg").html("");
+          }, 3000);
+        }
+      });
+
+    });
+    
+    $('#receiveREmail').change(function () {
+      var check = $(this);      
+      var receive_rmail = "";
+
+      if ($(this).is(':checked')) { 
+        receive_rmail  = '1';  
+      } else {
+        receive_rmail  = '0';
+      }
+      var data = {'page':'cust_rmail','receive_rmail':receive_rmail,'c_id':c_id,'shop':Shopify.shop};
+      var url = 'https://shopiapps.in/wishlistapp/save_settings.php?shop='+Shopify.shop;
+      $(this).parent().find(".mail_msg_loader").text("Saving...").show();
+      $.ajax({
+        url: url,
+        type: "POST",
+        data: data,
+        success : function(data){
+          check.parent().find(".mail_msg_loader").hide();
+          check.parent().find(".mail_msg").html("Your request is submitted successfully.");
+          setTimeout(function () {
+            check.parent().find(".mail_msg").html("");
+          }, 3000);
+        }
+      });
+
+    });
+  });
+</script>
+<style>
+  .mail_msg{color:green;}
+  .mail_msg_loader{display:none;color:red;}
+</style>
+{% endif %}

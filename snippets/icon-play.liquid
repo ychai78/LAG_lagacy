@@ -1,0 +1,21 @@
+
+{% comment %}
+    Renders a play icon
+
+    Usage:
+       {% render 'icon-play',  class: 'w-[75px] h-[75px]' %}
+    %}
+{% endcomment %}
+
+
+
+{%- liquid
+   if class == nil
+   assign class =  'size-9' 
+   else
+    assign class = class 
+endif
+-%}
+ 
+<svg width="12" height="12"><path stroke="currentColor" d="M11 6l-9 5V1z" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+

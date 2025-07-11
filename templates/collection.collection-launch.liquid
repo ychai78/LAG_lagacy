@@ -1,0 +1,277 @@
+<style>
+.collection-banner {
+    max-width: 1200px;
+    margin: auto;
+}
+  .category-header {
+    background: gray;
+    width: 100%;
+    height: auto;
+    padding-top: 0;
+    margin-bottom: 0;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.experience-top-header {
+    width: 70%;
+    margin: 0 auto;
+    max-width: 70rem;
+}
+main.main-content.site-wrap {
+    max-width: 100%;
+    background-image: url();
+    background-size: cover;
+}
+  
+.grid-product__image-wrapper {
+    background: white;
+}
+  section.grid-product__meta {
+    padding-bottom: 2rem;
+}
+  .grid-product__review-badge {
+    display: none!important;
+}
+  a.grid-product__image-link {
+    border: none;
+    border-bottom: 1px solid #ececec;
+}
+  section.grid-product__swatch {
+    padding-top: 2rem;
+    height: 60px;
+}
+  .site-footer {
+    margin-top: 0;
+}
+  side.customer-service-sidemenu.visible-xs.visible-sm {
+    display: none!important;
+  }
+  
+  
+  
+  @media (min-width: 722px){
+  .products-grid.col-xs-12>div {
+    float: left;
+    width: 33%;
+  }
+  .category.product-grid .products-grid.col-xs-12 {
+    justify-content: center;
+}
+  }  
+  
+  
+  @media (max-width: 1024px){
+.category-header {
+    background-position: center;
+}
+.grid-product__image-wrapper {
+    min-height: 300px;
+}
+  }
+  
+</style>
+
+
+
+
+
+<script>
+ $(document).ready(function () {
+   $('#collection-header').prependTo("#main-content");
+   $('#collection-header').removeClass("hide");
+   $('aside.customer-service-sidemenu').remove();   
+  });
+</script>
+<section class="category-top hide" id="collection-header"> 		
+{% capture imgUrls %}{{ collection.description }}{% endcapture %}
+{% assign splitContent = imgUrls | split:',' %}        
+<div class="collection-banner">
+  <picture>
+      <source srcset="{{splitContent[1]}}" type="image/webp">
+      <img src="{{splitContent[1]}}" alt="">
+    </picture>
+  </div>
+
+</section>
+
+{% assign product_per_page = 50 %}
+
+<div class="collection-wrapper site-wrap">
+
+  
+<div class="main-content-layout collections">
+ 
+
+  
+  <div class="category product-grid">
+   
+
+    {% paginate collection.products by product_per_page %}
+    
+    <div class="sortByOptions col-xs-12">
+  	{% include 'toolbar-list' %}
+  	</div>
+    
+    <div class="products-grid col-xs-12">
+      {% if collection.products.size > 0 %}      
+      {% paginate collection.products by product_per_page %}  
+  
+      
+  
+        {% assign three_row_index__product = 0 %}
+        {% assign collection_product_count__product = collection.products_count %}
+        {% assign divisible_by_three__product = collection_product_count__product | modulo:3 %}
+        {% assign grid_item_width = 'col-xs-6 col-md-4' %}
+      		
+      {%comment%} Display the new products first {%endcomment%}  
+         
+      {% for product in collection.products %}
+          
+          {%- comment %}<locksmith:a057>{% endcomment -%}
+            {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: collection, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+          {%- comment %}</locksmith:a057>{% endcomment -%}
+          
+          {% if product.tags contains 'new'%}
+         	{% unless product.tags contains 'd'%}
+            {% include 'product-grid-item' %}
+            {%endunless %}
+      	  {%endif %}
+       {% endfor %}
+      
+      
+      {%comment%} Display all products that are not new and not coming soon{%endcomment%}  
+      {% for product in collection.products %}
+      {%- comment %}<locksmith:6ae4>{% endcomment -%}
+        {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: collection, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+      {%- comment %}</locksmith:6ae4>{% endcomment -%}
+      {% unless product.tags contains 'freebies' or  product.tags contains 'new'%}
+		{% include 'product-grid-item' %}
+      {%endunless %}
+      
+
+      
+
+      
+      {% endfor %}
+      {% endpaginate %}
+      {% else %}
+      <p style="text-align: center;" {% if settings.enable_multilang %}data-translate="collections.general.no_matches"{%endif%}>{{ 'collections.general.no_matches' | t }}</p>
+      {% endif %}
+
+
+
+        
+
+    </div>
+    
+    {% if paginate.pages > 1 %}
+    <div class="padding">
+      {% include 'pagination-page' %}
+    </div>
+    {% endif %}
+    
+    {% endpaginate %}    
+  </div>
+</div>
+</div>
+
+<script> 
+ $(document).ready(function () {
+    //initialize swiper when document ready  
+   
+
+ $('.product-swatch-link').on({
+  mouseenter: function () {
+    var swatchTitle = $(this).attr('title');
+      var imageSpan = $(this).closest( ".grid-product__wrapper").find('[data-varient-id="' + swatchTitle + '"]');
+      var hoverImage = $(this).closest( ".grid-product__wrapper").find('img.first.grid-product__image');
+     
+      var imageLink =  $(imageSpan).attr('data-image-link');
+      var imageLinkHighRes =  $(imageSpan).attr('data-image-link');
+   // replace our img url
+      $(hoverImage).attr("src",imageLink);
+      $(hoverImage).attr("srcset",imageLinkHighRes);
+  },
+  mouseleave: function () {
+    	var originalSwatch = $(this).closest( ".grid-product__wrapper").find('img.first.grid-product__image').attr("data-original-image");
+    	var hoverImage = $(this).closest( ".grid-product__wrapper").find('img.first.grid-product__image');
+        $(hoverImage).attr("src",imageLink);
+    
+  }
+});
+
+   
+
+
+   
+   
+   
+   
+   
+   
+   
+   
+  });
+
+  </script>
+<script>
+  /* Product Tag Filters - Good for any number of filters on any type of collection page.
+     Give you product tag filter select element a class of coll-filter.
+     Give your collection select a class of coll-picker.
+     Brought to you by Caroline Schnapp. */
+  Shopify.queryParams = {};
+  if (location.search.length) {
+    for (var aKeyValue, i = 0, aCouples = location.search.substr(1).split('&'); i < aCouples.length; i++) {
+      aKeyValue = aCouples[i].split('=');
+      if (aKeyValue.length > 1) {
+        Shopify.queryParams[decodeURIComponent(aKeyValue[0])] = decodeURIComponent(aKeyValue[1]);
+      }
+    }
+  }
+  jQuery('.coll-picker').change(function() {
+    if (jQuery(this).val()) {
+      location.href = '/collections/' + jQuery(this).val();
+    }
+    else {
+      location.href = '/collections/all';
+    }
+  });
+  var collFilters = jQuery('.coll-filter');
+  collFilters.change(function() {
+    delete Shopify.queryParams.page;
+    var newTags = [];
+    collFilters.each(function() {
+      if (jQuery(this).val()) {
+        newTags.push(jQuery(this).val());
+      }
+    });
+    {% if collection.handle %}
+    var newURL = '/collections/{{ collection.handle }}';
+    if (newTags.length) {
+      newURL += '/' + newTags.join('+');
+    }
+    var search = jQuery.param(Shopify.queryParams);
+    if (search.length) {
+      newURL += '?' + search;
+    }
+    location.href = newURL;
+    {% else %}
+    if (newTags.length) {
+      Shopify.queryParams.constraint = newTags.join('+');
+    }
+    else {
+      delete Shopify.queryParams.constraint;
+    }
+    location.search = jQuery.param(Shopify.queryParams);
+    {% endif %}
+  });
+</script>
+
+<style>
+
+.filters { list-style-type: none; }
+.filter { float: left; margin-right: 15px; }
+.filter label { display: block; margin: 10px 0; }
+.filter select { max-width: 200px; }
+</style>

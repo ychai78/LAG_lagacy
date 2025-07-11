@@ -1,0 +1,42 @@
+{% if customer %}
+
+<div class="main-wrapper">
+
+ {% include 'customer_account_side_menu' %}   
+<div class="customer-service-main col-xs-12 col-md-9">  
+  <div class="col-xs-12">   
+ <div class="grid">
+    <div class="page-title">
+    <header class="page-header">
+      <h2>ORDER HISTORY</h2>
+    </header>
+    
+  </div>
+  <div class="order-history-grid grid-item two-thirds medium-down--one-whole">
+    
+
+    {% comment %}
+      If we have past orders, loop through each one
+    {% endcomment %}
+   
+
+      {% include 'customer_order_table' %}   
+
+  </div>
+
+
+</div>
+    
+    
+    
+  </div>
+  
+  
+<div class="rte">{{ page.content }}</div>
+
+  {%else%}
+  <script>
+    window.location = "/account/login";
+    </script>
+{% endif %}
+  

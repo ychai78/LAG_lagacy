@@ -1,0 +1,59 @@
+{%- assign current_banners = shop.metaobjects.current_banners.values | first -%}
+
+{% assign banners = current_banners.menu_promo_images.value %}
+{% if template == 'page.homepage-test' %}
+	{% assign banners = current_banners.upcoming_homepage_promos.value %}
+{% endif %}
+
+{% for banner in banners limit: 3 %}
+	{% comment %}
+		This code loops through each banner in the `current_banners.homepage.value` array.
+		For each banner, it assigns the desktop and mobile images to variables.
+		It then checks if the banner is linked to a product or a collection, assigning the respective URL to the `banner_url` variable.
+		The code formats both the banner's launch date and the current date into a comparable string (in the format YYYYMMDDHHMM),
+		and checks if the current date is within the banner's release period.
+		If a removal date is provided and the current date is past this removal date, the banner is marked as inactive by setting the `within_release_date` variable to false.
+	{% endcomment %}
+
+	{%- liquid
+		assign promo_image = banner.menu_promo_image.value
+
+		assign banner_url = ''
+		if banner.product
+			assign banner_url = banner.product.value.url
+		elsif banner.collection
+			assign banner_url = banner.collection.value.url
+		elsif banner.link
+			assign banner_url = banner.link.value.url
+		endif
+
+		assign launch_date = banner.launch_date | date: '%Y/%m/%d %H:%M' | remove: '/' | remove: ':' | remove: ' '
+		assign current_date = 'now' | date: '%Y/%m/%d %H:%M' | remove: '/' | remove: ':' | remove: ' '
+
+		assign within_release_date = false
+		if current_date >= launch_date
+			assign within_release_date = true
+		endif
+
+		if banner.removal_date
+			assign removal_date = banner.removal_date | date: '%Y/%m/%d %H:%M' | remove: '/' | remove: ':' | remove: ' '
+			if current_date >= removal_date
+				assign within_release_date = false
+			endif
+		endif
+	-%}
+	{% if within_release_date %}
+		<div class="promo">
+			<a href="{{ banner_url}}" class="relative inline-block hover:cursor-pointer">
+				{%- render 'responsive-image',
+					image: promo_image,
+					sizes: '425px',
+					width: 350,
+					alt: banner.name,
+					class: 'aspect-[2/3]'
+				-%}
+				<h4 class="pt-2 mb-2 text-sm text-base text-bold">{{ banner.name }}</h4>
+			</a>
+		</div>
+	{% endif %}
+{% endfor %}

@@ -1,0 +1,14 @@
+{% comment %}
+  Snippet: content-block.liquid
+  Usage: {% render 'content-block', section: section %}
+{% endcomment %}
+
+<h2 class="text-3xl font-bold sm:text-4xl">{{ section.settings.heading }}</h2>
+<div class="mt-4 text-gray-800">{{ section.settings.description }}</div>
+{% if section.settings.button_text != blank and section.settings.button_link != blank %}
+  <a href="{{ section.settings.button_link }}" 
+     class="mt-8 inline-block rounded px-12 py-3 text-sm font-medium transition focus:outline-none focus:ring focus:ring-yellow-400"
+     style="background-color: {{ section.settings.button_color }}; color: {{ section.settings.button_text_color }};">
+    {{ section.settings.button_text }}
+  </a>
+{% endif %}

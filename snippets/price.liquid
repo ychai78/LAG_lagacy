@@ -1,0 +1,57 @@
+{% comment %}
+  Accepts:
+  - product: {Object} Product Liquid object
+  - numberOnly: {Boolean} if set to true then only output the price values. Remove html.
+  - price_class: {String} Adds a price class to the price element (optional)
+  - use_variant: {Boolean} Renders selected or first variant price instead of overall product pricing (optional)
+  Usage:
+  {% render 'price', product: product, numberOnly:true %}
+{% endcomment %}
+{%- liquid
+  if use_variant
+    assign current_variant = product.selected_or_first_available_variant
+  else
+    assign current_variant = product
+  endif
+
+  assign hide_price = false
+  assign on_sale = false
+  assign pricing = current_variant.price | money
+  assign compare_pricing = current_variant.compare_at_price | money
+
+  if current_variant.compare_at_price > current_variant.price
+    assign on_sale = true
+  endif
+
+  if current_variant.vendor contains 'NotForSale' or current_variant.tags contains 'hide-price'
+    assign hide_price = true
+    assign pricing = ""
+  endif
+
+  if current_variant.price_varies
+    assign pricing = current_variant.price_min | money | append: ' - ' | append: current_variant.price_max | money
+  endif
+-%}
+
+{% if numberOnly %}
+  {{ pricing }}
+{% elsif price_class != blank %}
+  <div class="{{ price_class }}">{{ pricing }}</div>
+{% else %}
+  <div class="grid-product__price-wrap">
+    <div class="grid-product__price" data-price-wrapper>
+      {% unless hide_price %}
+        {% if on_sale %}
+          <span class="text-red-600" data-product-price>{{ pricing }}</span>
+          <span class="ml-1 text-base text-gray-500 line-through" data-compare-price>{{ compare_pricing }}</span>
+        {% else %}
+          {% if current_variant.price_varies %}
+            <span data-product-price>{{ pricing }}</span>
+          {% else %}
+            <span data-product-price>{{ pricing }}</span>
+          {% endif %}
+        {% endif %}
+      {% endunless %}
+    </div>
+  </div>
+{% endif %}

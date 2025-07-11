@@ -1,0 +1,108 @@
+ {% if page.metafields.c_f.top_header_image %}
+          	 {% assign header_image =  page.metafields.c_f.top_header_image  %}       
+
+
+<div class="header-image">
+<img src="{{header_image}}" alt="">
+</div>
+ {% endif %}
+<section class="page-instagram-gallery widespan gradient">
+<header class="page-header center">
+<h2 style="color:white;">Are you a L.A. Girl?</h2>   
+  <h5>Addicted to L.A. Girl Cosmetics?  Looking for new ideas? Don't know where to start?<br>Follow us on <a href="http://instagram.com/lagirlcosmetics" target="_blank" alt="http://instagram.com/lagirlcosmetics" title="http://instagram.com/lagirlcosmetics"><span style="color:white;text-decoration: underline;">instagram</span></a> to keep up with everything we got!</h5>
+</header> 
+<div class="home-instagram-gallery">
+	<div class="socialphotos-com-gallery slpht-clearfix" data-id="569617"></div>
+  	<style>
+  
+  section.page-instagram-gallery.widespan {
+    margin-top: -2em;
+}
+  div#socialphotos-gallery-569617 li.spw-thumbnail:nth-child(4) {
+    width: 33.33%!important;
+    float: right;
+}
+    div#socialphotos-gallery-569617 li.spw-thumbnail:nth-child(n+7) {
+   display:none;
+}
+
+  
+  </style>
+</div>
+</section>
+
+<div class="main-wrapper row">
+
+<header class="page-header center">
+  
+ 
+  
+  <h2>Ready to view our freshest ads?</h2>   
+
+  <h5>View where we've been featured in magazines, all in one place.    </h5>
+  
+  <select name="sort-magazines" id="sort-magazines">
+	<option value="All">All</option>
+	<option value="InTouch">InTouch</option>
+	<option value="J14">J14</option>
+	<option value="LifeStyle">LifeStyle</option>
+
+  </select>   
+ 
+</header>
+
+
+{% assign imageUrl = {{page.metafields.c_f.lookbookImages }}  %}       
+{% assign urlArray = imageUrl | split: ", " %}
+  
+  <section class="media-gallery">
+  <ul>
+    {% for image in urlArray %}
+    {% assign image_text = image | split: "_" %}
+    {% assign id = image_text[1] %}
+    {% assign publish_month = image_text[2] %}
+    {% assign publish_year = image_text[3] %}  
+    {% assign magazine = image_text[4] | replace: '.jpg', '' %} 
+    
+    <li class="media-image-{{ forloop.index }} col-xs-12 col-md-4" data-id="{{id}}"data-category="{{magazine}}">
+      <a class="thumbnail gallery" href="{{ image | append: '_1024x1024.jpg'| file_url }}"data-lity>
+        <div style="background-image:url('{{image | append: '_large.jpg'| file_url' }}')" class="bg"data-alt="{{magazine}}_{{publish_month}}_{{publish_year}}"></div>
+         <span class="rectangle"></span><span class="overlay-effect"></span>
+        <span class="info hover">
+        	<span class="media-image-title">{{magazine}} - {{publish_month}} {{publish_year}}</span>
+        </span>
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  </section>
+
+
+
+
+</div>
+
+<script>
+//Filter News
+$('select#sort-magazines').change(function() {
+	var filter = $(this).val()
+	filterList(filter);
+});
+
+//News filter function
+function filterList(value) {
+	var list = $(".media-gallery ul li");
+	$(list).fadeOut("fast");
+	if (value == "All") {
+		$(".media-gallery").find("li").each(function (i) {
+			$(this).delay(200).slideDown("fast");
+		});
+	} else {
+		//Notice this *=" <- This means that if the data-category contains multiple options, it will find them
+		//Ex: data-category="Cat1, Cat2"
+		$(".media-gallery").find("li[data-category*=" + value + "]").each(function (i) {
+			$(this).delay(200).slideDown("fast");
+		});
+	}
+}
+</script>

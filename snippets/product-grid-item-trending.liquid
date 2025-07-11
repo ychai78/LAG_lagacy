@@ -1,0 +1,109 @@
+{% comment %}
+  This snippet is used to showcase each product during the loop,
+  'for product in collection.products' in collection.liquid.
+
+  This example has three products per column on desktop, two on
+  our medium breakpoint, and a single row on small screens.
+{% endcomment %}
+
+{% comment %}
+  Check if the product is on sale and set a variable to be used below.
+{% endcomment %}
+
+{% assign on_sale = false %}
+{% if product.compare_at_price_min > product.price_min %}
+  {% assign on_sale = true %}
+{% endif %}
+
+{% comment %}
+  Check if the product is sold out and set a variable to be used below.
+{% endcomment %}
+
+{% assign sold_out = true %}
+{% if product.available  %}
+  {% assign sold_out = false %}
+{% endif %}
+
+{% comment %}
+  Set a class for sold-out and on-sale items
+{% endcomment %}
+
+{% assign productIndex = forloop.index | minus:1 %}
+{% assign delayTime = settings.time_lazy_load | times : productIndex %}
+
+<div class="swiper-slide  {% if settings.product_image_border%} col-xs-5 col-md-3 grid-item-border {% endif %} {% if settings.product_image_crop%} crop_image {% else %} no_crop_image {% endif %} grid-item product-item {% if sold_out %} sold-out{% endif %}{% if on_sale %} on-sale{% endif %} wow fadeIn" data-wow-delay="{{delayTime}}ms" id="product-{{ product.id }}">
+
+
+
+
+  
+  <div class="grid__item grid-product {{ grid_item_width }}{% if sold_out %} is-sold-out{% endif %}">
+  <div class="grid-product__wrapper">
+    <div class="grid-product__image-wrapper">
+      <a class="grid-product__image-link" href="{{ product.url | within: collection }}">
+       
+        
+        <img alt="{{ product.featured_image.alt | escape }}" class="grid-product__image" src="{{ product | img_url: 'medium' }}"/>
+      </a>
+       
+      
+      
+
+  
+      {% if sold_out %}
+        <div class="grid-product__sold-out">
+          <p>Sold Out</p>
+        </div>
+      {% elsif on_sale %}
+       
+      {% endif %}
+    </div>
+    <section class="product-name-section">
+
+      
+    	
+      
+    
+      {% assign new_tag = product.tags |downcase %}
+      
+     
+       <div class="product_tile-info_wrapper">
+        <div class="grid-product__title"> <a href="{{ product.url | within: collection }}" class="grid-product__meta">{{ product.title }}</a></div>
+         
+        
+         <div class="grid-product__item-note">
+        {% if product.variants.size > 1%} {{product.variants.size }} {{ product.options.first }}s {% endif %}
+      </div>
+        
+         <div class="grid-product__review-badge">
+           {% if settings.display_product_reviews %}
+           <span class="k_product_rating" id="{{product.id}}"></span>
+           {% endif %}
+         </div>
+         {% comment %}
+         <div class="grid-product__price-wrap">      
+           <span class="grid-product__price">
+		{% if product.price < product.compare_at_price_min %}
+          <span class="onsale"> {{ product.price | money }} <del>{{ product.compare_at_price_min | money }}</del> <span>On sale!</span></span>
+          {% else %}
+            {% if product.price_varies %}
+            {{ product.price_min | money}} - {{ product.price_max | money}}
+            {% else %}
+          	{{ product.price | money }}
+          	{% endif %}
+          {% endif %}
+         
+        </span>
+         </div>
+{% endcomment %}
+        
+      </div>
+      
+      
+      
+    </section>
+  </div>
+</div>
+
+  
+</div>

@@ -1,0 +1,469 @@
+{% if section.settings.show_announcement and section.blocks.size > 0 %}
+  {% assign visible_blocks = 0 %}
+  {% assign current_datetime = 'now' | date: '%Y%m%d%H%M' | plus: 0 %}
+  
+  {% for block in section.blocks %}
+    {% assign show_announcement = true %}
+    
+    {% if block.settings.enable_schedule %}
+      {% assign schedule_datetime = block.settings.schedule_datetime | date: '%Y%m%d%H%M' | plus: 0 %}
+      {% assign removal_datetime = block.settings.removal_datetime | date: '%Y%m%d%H%M' | plus: 0 %}
+      
+      {% if block.settings.removal_datetime != blank %}
+        {% unless current_datetime >= schedule_datetime and current_datetime < removal_datetime %}
+          {% assign show_announcement = false %}
+        {% endunless %}
+      {% else %}
+        {% unless current_datetime >= schedule_datetime %}
+          {% assign show_announcement = false %}
+        {% endunless %}
+      {% endif %}
+    {% endif %}
+
+    {% if show_announcement %}
+      {% assign visible_blocks = visible_blocks | plus: 1 %}
+    {% endif %}
+  {% endfor %}
+
+  {% if visible_blocks > 0 %}
+    {% assign banner_color = section.settings.banner_color %}
+    {% assign text_color = section.settings.text_color %}
+    {% assign slide_interval = section.settings.slide_interval | times: 1000 %}
+    {% assign border_color = section.settings.border_color %}
+    {% assign arrow_color = section.settings.arrow_color %}
+    {% assign close_button_color = section.settings.close_button_color %}
+    <div
+      id="announcementBanner"
+      class="relative w-full py-2 overflow-hidden font-medium text-center container-grid"
+      style="background-color: {{ banner_color }}; color: {{ text_color }}; border-bottom: 1px solid {{ border_color }};"
+    >
+      <div id="announcementSlider" class="flex transition-transform duration-300 ease-in-out text-balance">
+        {% comment %}Add last slide clone at the beginning{% endcomment %}
+        {% if visible_blocks > 1 %}
+          {% assign last_visible = nil %}
+          {% for block in section.blocks reversed %}
+            {% assign show_announcement = true %}
+            {% if block.settings.enable_schedule %}
+              {% assign schedule_datetime = block.settings.schedule_datetime | date: '%Y%m%d%H%M' | plus: 0 %}
+              {% assign removal_datetime = block.settings.removal_datetime | date: '%Y%m%d%H%M' | plus: 0 %}
+              
+              {% if block.settings.removal_datetime != blank %}
+                {% unless current_datetime >= schedule_datetime and current_datetime < removal_datetime %}
+                  {% assign show_announcement = false %}
+                {% endunless %}
+              {% else %}
+                {% unless current_datetime >= schedule_datetime %}
+                  {% assign show_announcement = false %}
+                {% endunless %}
+              {% endif %}
+            {% endif %}
+
+            {% if show_announcement %}
+              {% assign last_visible = block %}
+              {% break %}
+            {% endif %}
+          {% endfor %}
+
+          {% if last_visible != nil %}
+            <div class="flex items-center justify-center flex-shrink-0 w-full text-xs announcement-slide md:text-sm">
+              <div>{{ last_visible.settings.announcement_text }}</div>
+            </div>
+          {% endif %}
+        {% endif %}
+
+        {% comment %}Regular slides{% endcomment %}
+        {% for block in section.blocks %}
+          {% assign show_announcement = true %}
+          {% if block.settings.enable_schedule %}
+            {% assign schedule_datetime = block.settings.schedule_datetime | date: '%Y%m%d%H%M' | plus: 0 %}
+            {% assign removal_datetime = block.settings.removal_datetime | date: '%Y%m%d%H%M' | plus: 0 %}
+            
+            {% if block.settings.removal_datetime != blank %}
+              {% unless current_datetime >= schedule_datetime and current_datetime < removal_datetime %}
+                {% assign show_announcement = false %}
+              {% endunless %}
+            {% else %}
+              {% unless current_datetime >= schedule_datetime %}
+                {% assign show_announcement = false %}
+              {% endunless %}
+            {% endif %}
+          {% endif %}
+
+          {% if show_announcement %}
+            <div class="flex items-center justify-center flex-shrink-0 w-full text-xs announcement-slide md:text-sm">
+              <div>{{ block.settings.announcement_text }}</div>
+              {% if block.settings.show_details_link and block.settings.details_link != blank %}
+                <a
+                  href="{{ block.settings.details_link }}"
+                  class="ml-2 underline hover:opacity-80"
+                  style="color: {{ block.settings.details_link_color }};"
+                >
+                  {{ block.settings.details_link_text | default: 'Details' }}
+                </a>
+              {% endif %}
+              {% if block.settings.show_modal and block.settings.additional_text != blank %}
+                <a
+                  href="#"
+                  class="ml-2 underline hover:opacity-80"
+                  onclick="announcement_modal_{{ block.id }}.showModal(); return false;"
+                  style="color: {{ block.settings.details_link_color }};"
+                >
+                  Details
+                </a>
+                <dialog
+                  id="announcement_modal_{{ block.id }}"
+                  class="fixed flex w-4/5 p-4 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-sm modal top-1/2 left-1/2 md:w-1/2 max-w-[500px] opacity-0 [&[open]]:opacity-100 transition-opacity duration-300"
+                >
+                  <div class="relative flex flex-col justify-center w-full p-4 m-4 modal-box">
+                    <!-- Modal Body -->
+                    <div class="relative p-4">
+                      {{ block.settings.additional_text }}
+                    </div>
+                    <!-- Modal close -->
+                    <form method="dialog">
+                      <button class="px-4 py-2 ml-2 text-sm text-center text-white transition-all bg-pink-600 border border-transparent rounded-md shadow-md hover:shadow-lg focus:bg-pink-700 focus:shadow-none active:bg-pink-700 hover:bg-pink-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+                        Close
+                      </button>
+                    </form>
+                  </div>
+                </dialog>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        {% comment %}Add first slide clone at the end{% endcomment %}
+        {% if visible_blocks > 1 %}
+          {% assign first_visible = nil %}
+          {% for block in section.blocks %}
+            {% assign show_announcement = true %}
+            {% if block.settings.enable_schedule %}
+              {% assign schedule_datetime = block.settings.schedule_datetime | date: '%Y%m%d%H%M' | plus: 0 %}
+              {% assign removal_datetime = block.settings.removal_datetime | date: '%Y%m%d%H%M' | plus: 0 %}
+              
+              {% if block.settings.removal_datetime != blank %}
+                {% unless current_datetime >= schedule_datetime and current_datetime < removal_datetime %}
+                  {% assign show_announcement = false %}
+                {% endunless %}
+              {% else %}
+                {% unless current_datetime >= schedule_datetime %}
+                  {% assign show_announcement = false %}
+                {% endunless %}
+              {% endif %}
+            {% endif %}
+
+            {% if show_announcement %}
+              {% assign first_visible = block %}
+              {% break %}
+            {% endif %}
+          {% endfor %}
+
+          {% if first_visible != nil %}
+            <div class="flex-shrink-0 w-full text-xs announcement-slide md:text-sm">
+              {{ first_visible.settings.announcement_text }}
+            </div>
+          {% endif %}
+        {% endif %}
+      </div>
+
+      {% if visible_blocks > 1 %}
+        <button
+          id="prevAnnouncement"
+          class="absolute left-0 text-current transform -translate-y-1/2 top-1/2 hover:opacity-75 focus:outline-none"
+          style="color: {{ arrow_color }};"
+          aria-label="Previous announcement"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+        </button>
+        <button
+          id="nextAnnouncement"
+          class="absolute {% if section.settings.show_close_button %}right-12{% else %}right-0{% endif %} top-1/2 transform -translate-y-1/2 text-current hover:opacity-75 focus:outline-none"
+          style="color: {{ arrow_color }};"
+          aria-label="Next announcement"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
+      {% endif %}
+
+      {% if section.settings.show_close_button %}
+        <button
+          id="closeAnnouncement"
+          class="absolute right-0 text-current transform -translate-y-1/2 top-1/2 hover:opacity-75 focus:outline-none"
+          style="color: {{ close_button_color }};"
+          aria-label="Close announcement banner"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      {% endif %}
+    </div>
+
+    <script>
+      (function() {
+        const slider = document.getElementById('announcementSlider');
+        const slides = document.querySelectorAll('.announcement-slide');
+        const prevBtn = document.getElementById('prevAnnouncement');
+        const nextBtn = document.getElementById('nextAnnouncement');
+        const closeBtn = document.getElementById('closeAnnouncement');
+        const banner = document.getElementById('announcementBanner');
+
+        const totalSlides = slides.length;
+        let currentSlide = 1; // Start at first real slide (after clone)
+        let isAnimating = false;
+        let autoSlideInterval = null; // Initialize as null
+
+        // Initialize position
+        updateSlidePosition();
+
+        function updateSlidePosition(transition = true) {
+          slider.style.transition = transition ? 'transform 300ms ease-in-out' : 'none';
+          slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        function stopAutoSlide() {
+          clearInterval(autoSlideInterval);
+          autoSlideInterval = null;
+        }
+
+        function moveToSlide(direction) {
+          if (isAnimating) return;
+          isAnimating = true;
+
+          currentSlide += direction;
+          updateSlidePosition();
+        }
+
+        function handleTransitionEnd() {
+          isAnimating = false;
+
+          // If we've moved past the last slide (to the first clone)
+          if (currentSlide >= totalSlides - 1) {
+            currentSlide = 1;
+            updateSlidePosition(false);
+          }
+          // If we've moved before the first slide (to the last clone)
+          if (currentSlide <= 0) {
+            currentSlide = totalSlides - 2;
+            updateSlidePosition(false);
+          }
+        }
+
+        function startAutoSlide() {
+          // Only start if not already running
+          if (!autoSlideInterval && totalSlides > 2) {
+            autoSlideInterval = setInterval(() => {
+              if (!isAnimating) {
+                moveToSlide(1);
+              }
+            }, {{ slide_interval }});
+          }
+        }
+
+        // Event Listeners
+        slider.addEventListener('transitionend', handleTransitionEnd);
+
+        if (prevBtn) {
+          prevBtn.addEventListener('click', () => {
+            stopAutoSlide(); // Stop auto-sliding
+            moveToSlide(-1);
+          });
+        }
+
+        if (nextBtn) {
+          nextBtn.addEventListener('click', () => {
+            stopAutoSlide(); // Stop auto-sliding
+            moveToSlide(1);
+          });
+        }
+
+        if (closeBtn) {
+          closeBtn.addEventListener('click', () => {
+            banner.style.display = 'none';
+          });
+        }
+
+        // Start auto-advance slides only if more than one real slide
+        startAutoSlide();
+      })();
+    </script>
+    {% endif %}
+  {% endif %}
+{% schema %}
+{
+  "name": "Announcement Banner",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show Announcement Banner",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_close_button",
+      "label": "Show Close Button",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "banner_color",
+      "label": "Banner Color",
+      "default": "#ea0389"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#45474A"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Bottom Border Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "arrow_color",
+      "label": "Arrow Color",
+      "default": "#45474A"
+    },
+    {
+      "type": "color",
+      "id": "close_button_color",
+      "label": "Close Button Color",
+      "default": "#45474A"
+    },
+    {
+      "type": "range",
+      "id": "slide_interval",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "sec",
+      "label": "Slide Interval",
+      "default": 5
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "Announcement",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Scheduling",
+          "info": "When enabled, the announcement will only be visible between the start and end dates"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_schedule",
+          "label": "Enable Scheduling",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "schedule_datetime",
+          "label": "Start Date and Time",
+          "info": "Format: YYYY-MM-DD HH:MM (e.g., 2024-03-15 09:00). Leave empty to show immediately"
+        },
+        {
+          "type": "text",
+          "id": "removal_datetime",
+          "label": "End Date and Time",
+          "info": "Format: YYYY-MM-DD HH:MM (e.g., 2024-03-20 23:59). Leave empty for no end date"
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "html",
+          "id": "announcement_text",
+          "label": "Announcement Text",
+          "default": "Free Shipping on Orders $35+"
+        },
+        {
+          "type": "header",
+          "content": "Details Link Settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_details_link",
+          "label": "Show Details Link",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "details_link_text",
+          "label": "Details Link Text",
+          "default": "Details"
+        },
+        {
+          "type": "url",
+          "id": "details_link",
+          "label": "Details Link URL"
+        },
+        {
+          "type": "color",
+          "id": "details_link_color",
+          "label": "Details Link Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "header",
+          "content": "Modal Settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_modal",
+          "label": "Show Modal Link",
+          "default": false
+        },
+        {
+          "type": "html",
+          "id": "additional_text",
+          "label": "Additional Text (Modal Content)",
+          "default": "Replace with your modal content"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement Banner",
+      "blocks": [
+        {
+          "type": "announcement"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

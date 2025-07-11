@@ -1,0 +1,113 @@
+<!-- This checks to see if product is on sale or sold out -->
+{%- liquid   
+  assign on_sale = false
+  assign sold_out = true
+   
+  if product.compare_at_price_min > product.price_min
+    assign on_sale = true
+  endif 
+  if product.available
+    assign sold_out = false
+  endif   
+-%}
+<div class="grid__item grid-product 
+{%- if sold_out %} sold-out{% endif -%}
+{%- if on_sale %} on-sale{% endif -%}" 
+  id="product-{{ product.id }}"
+  data-type="{{product.type}}">
+  <div class="grid-product__wrapper wow fadeIn animated"  >
+    <div class="grid-product__image-wrapper">
+       
+   
+      <div class= "grid-product__image-link-wrapper">
+
+        <a class="grid-product__image-link lazy-trigger" href="{% if product.variants.size >= 1 %}{{ product.url | within: collection }}{% else %}{{ product.url | within: collection }}{% endif %}">
+        
+        
+        {% for image in product.images %}
+        	
+              {% if forloop.first == true %}
+               <img alt="{{ image.alt | escape }}" class="first grid-product__image" data-original-image="{{ image.src |img_url: '400x' }}" src="{{ image.src | img_url: '400x' }}" srcset="{{ image.src | img_url: '400x' , scale: 2 }} 2x"/>
+          
+              {% else %}
+              {% for variant in image.variants %}
+                    <span data-image-link="{{ image.src | img_url: '400x' }}" 
+                          data-image-link-highres="{{ image.src | img_url: '400x' , scale: 2 }} 2x" 
+                          data-varient-id="{{variant.title}}"></span>
+              {% endfor %}
+              {% endif %}
+        	 
+        {% endfor %}
+          
+
+        
+        </a>
+
+   
+      </div>
+     
+      
+      
+      
+      
+     
+      
+    
+
+<section class="grid-product__meta">
+    {% if on_sale %}
+        <div class="grid-product__on-sale">
+          {% capture saved_amount %}{{ product.compare_at_price | minus: product.price | money }}{% endcapture %}
+          <p></p>
+        </div>
+      {% endif %}
+      {% for tags in product.tags  %}
+      {% case tags %}
+      	{% when 'new' %}
+     		 <div class="grid-product__highlight" data-type="new">NEW</div>
+      	{% when 'new shades' %}
+      		<div class="grid-product__highlight" data-type="new-shades">NEW SHADES</div>
+      {% else %}
+      {% endcase %}
+   		{% endfor %}
+     
+  
+
+  
+  <div class="grid-product__title"><a href="{{ product.url | within: collection }}" >{{ product.title }}</a></div>
+ {% comment %} This is new inject code from bzvoice, 032025{% endcomment %}
+    <div data-bv-show="inline_rating" data-bv-product-id="{{product.id}}" data-bv-redirect-url="{{ product.url }}" data-bv-seo="false"> </div>
+
+
+  
+    <div class="grid-product__review-badge">
+        {% comment %}
+      <!-- /snippets/bv-inline-ratings.liquid -->
+      <!-- Bazaarvoice Inline Rating -->
+      {% endcomment %}
+      {% render 'bv-inline-ratings', product: product %}
+      {% comment %}
+      <!-- End Bazaarvoice Inline Rating -->
+      {% endcomment %}   
+    </div>  
+
+  
+{% unless product.price <1 %} 
+   {% render 'price', product: product %}
+   
+ {% endunless %} 
+ 	{% if sold_out %}
+    <div class="grid-product__sold-out">        
+            <div class="grid-product__highlight" data-type="soldout">Out of Stock</div>
+    </div>
+    {% endif %}  
+ 
+  <section class="grid-product__swatch">
+      {% include 'collection-product-swatch' %}   
+    </section>           
+ </section>
+
+    </div> 
+  </div>
+</div>
+

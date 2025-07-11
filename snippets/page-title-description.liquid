@@ -1,0 +1,52 @@
+ {%- comment -%}  Add title tags to pages {%- endcomment -%}
+
+{%- case template.name -%}
+  {%- when 'index' -%}	{%- assign title = 'L.A. Girl Cosmetics - Makeup & Beauty Products'-%}
+  {%- when 'product' -%}	{%- assign title =  page_title -%} 
+  {%- when 'article' -%}	{%- assign title =  page_title -%} 
+
+  {%- when 'collection' -%}
+
+  {%- comment -%}
+  Open the Metafields Guru App --> Shop  to configure the json data for collection page SEO info
+  {%- endcomment -%}
+
+    {%- assign collectionData =  shop.metafields.global.collectionData.value -%}
+    {%- assign pageHandle = canonical_url | split: "/" | last  -%}
+    {%- for menuItem in collectionData -%}
+    {%- if menuItem.handle == pageHandle -%}
+    
+	{%- assign title = menuItem.title -%}
+    {%- assign currentHandle   = menuItem.handle -%}
+    {%- assign metaDescription = menuItem.metaDescription -%}
+    {%- assign pageDescription = menuItem.pageDescription -%}
+    {%- assign metaTitle       = menuItem.title -%}
+    {%- assign metaKeywords    = menuItem.keywords -%}
+    
+
+
+
+    {%- break -%}
+    {%- endif -%}
+    {%- endfor -%} 
+ 
+{%- endcase -%}
+
+{%- if title == blank -%}{%- assign title = page_title-%}{%- endif -%}
+
+{%- if metaDescription == blank and pageDescription == blank  -%}
+	{%- assign metaDescription = page_description -%}
+{%- elsif metaDescription == blank and pageDescription != blank  -%}
+	{%- assign metaDescription = pageDescription -%}
+
+{%- endif -%}
+
+
+
+<title>{{title}} | L.A. Girl Cosmetics</title>
+
+{%- comment -%}  Add page description to pages {%- endcomment -%}
+{%- comment %}<locksmith:633a>{% endcomment -%}
+  {%- capture var %}{% render 'locksmith-variables', variable: 'transparent', hiding_scope: 'resource' %}{% endcapture %}{% if var == 'true' %}<meta name="description" content="{{metaDescription | strip_html }}">{% endif -%}
+  {%- comment %}original: <meta name="description" content="{{metaDescription | strip_html }}">{%- endcomment %}
+{%- comment %}</locksmith:633a>{% endcomment -%}

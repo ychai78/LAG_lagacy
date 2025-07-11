@@ -1,0 +1,65 @@
+{% if collection.metafields.custom.promo_banner.value %}
+	{% assign promo_banners = collection.metafields.custom.promo_banner.value %}
+	{%- liquid
+		assign desktop_image = promo_banners.desktop_collection_image
+		if promo_banners.mobile_image
+			assign mobile_image = promo_banners.mobile_collection_image
+		else
+			assign mobile_image = desktop_image
+		endif
+	-%}
+
+	<picture class="flex justify-center mb-8 collection_image_promo">
+		<source
+			media="(max-width: 768px)"
+			srcset="
+				{%- assign w = 100 -%}
+				{%- assign max_w = 2048 -%}
+				{%- for width in (0..100) -%}
+				  {{ mobile_image | image_url: width: w }} {{ w }}w{%- if w >= max_w -%}{%- break -%}{%- endif -%},
+				  {%- assign w = w | times: 1.5 | round: 0 -%}
+				{%- endfor -%}
+			"
+		>
+		<source
+			srcset="
+				{%- assign w = 100 -%}
+				{%- assign max_w = 2048 -%}
+				{%- for width in (0..100) -%}
+				  {{ desktop_image | image_url: width: w }} {{ w }}w{%- if w >= max_w -%}{%- break -%}{%- endif -%},
+				  {%- assign w = w | times: 1.5 | round: 0 -%}
+				{%- endfor -%}
+			"
+		>
+		{%- liquid
+			assign loading = 'lazy'
+			assign fetchpriority = 'auto'
+			if forloop.first
+				assign fetchpriority = 'high'
+				assign loading = 'eager'
+			endif
+		-%}
+		{{
+			desktop_image
+			| image_url: width: 1600
+			| image_tag: alt: promo_banners.alt
+			| default: 'Promotional banner',
+				loading: loading,
+				fetchpriority: fetchpriority,
+				sizes: '(max-width: 768px) 100vw, 1080px'
+		}}
+	</picture>
+{% endif %}
+
+{% comment %}
+
+
+	 	{% if collection.metafields.custom.collection_banner %}
+		<div class="collection_product__image_promo">
+			{% assign array_of_images = collection.metafields.custom.collection_banner.value %}
+			{% for images in array_of_images %}
+				{% render 'image', images: images, class: 'collection_image_promo' %}
+			{% endfor %}
+		</div>
+	{% endif %}
+{% endcomment %}

@@ -1,0 +1,583 @@
+{% schema %}
+{
+  "name": "Navigation Menu",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Promotional Schedule Settings"
+    },
+    {
+      "type": "text",
+      "id": "schedule_datetime",
+      "label": "Schedule Date and Time",
+      "info": "Enter the publish date and time in the format YYYY-MM-DD HH:MM (e.g., 2023-10-12 09:00)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_schedule",
+      "label": "Enable Scheduled Promos",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu_item",
+      "name": "Menu Item",
+      "limit": 10,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Menu Item Title",
+          "default": "Menu Item"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Menu Item Link"
+        },
+        {
+          "type": "select",
+          "id": "submenu_format",
+          "label": "Submenu Format",
+          "options": [
+            {
+              "value": "wide",
+              "label": "Wide"
+            },
+            {
+              "value": "dropdown",
+              "label": "Dropdown"
+            }
+          ],
+          "default": "wide"
+        },
+        {
+          "type": "link_list",
+          "id": "submenu",
+          "label": "Submenu",
+          "info": "Choose a menu for the submenu items"
+        }
+      ]
+    },
+    {
+      "type": "whats_new_menu",
+      "name": "What's New Menu",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Menu Item Title",
+          "default": "What's New"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Menu Item Link"
+        },
+        {
+          "type": "link_list",
+          "id": "featured_menu",
+          "label": "Featured Menu",
+          "info": "Choose a menu for the featured items"
+        },
+        {
+          "type": "text",
+          "id": "featured_title",
+          "label": "Featured Section Title",
+          "default": "Featured"
+        },
+        {
+          "type": "header",
+          "content": "Promotional Images"
+        }
+      ]
+    },
+    {
+      "type": "promo_image",
+      "name": "Promotional Image",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Current Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Promo"
+        },
+        {
+          "type": "header",
+          "content": "Scheduled Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "scheduled_image",
+          "label": "Scheduled Image"
+        },
+        {
+          "type": "url",
+          "id": "scheduled_link",
+          "label": "Scheduled Link"
+        },
+        {
+          "type": "text",
+          "id": "scheduled_title",
+          "label": "Scheduled Title",
+          "default": "Scheduled Promo"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Navigation Menu",
+      "blocks": [
+        {
+          "type": "whats_new_menu"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+<style>
+  #shopify-section-navigation-menu {
+      width: 100%;
+  }
+</style>
+
+
+<div class="container-grid bg-secondary-pink relative ">
+  {% if template == 'page.marketing-resources-home'  or template == 'metaobject/display' %}
+    <div class="flex flex-col items-center justify-center py-2 sm:py-4 relative">
+              {% if template == 'page.marketing-resources-home' or template == 'metaobject/display' %}
+                <a
+    				id="logout_portal"
+      				class="hover-underline-animation center text-[#45474A] 
+                           whitespace-nowrap
+                            font-bold
+                           absolute top-4 right-2 sm:right-4 md:right-8 lg:right-16
+                           flex items-center
+                           hover:cursor-pointer
+                           focus:outline-none
+                          text-sm md:text-xl lg:text-2xl xl:text-4xl"
+                        
+    			>
+    				Sign Out
+    			</a>
+              {% endif %}
+      <div class="logo w-[13ch] lg:w-[16ch] mx-auto mt-2">
+    <a href="/pages/marketing-resources-home" aria-current="page" class="block mx-auto">
+      {%- render 'logo-lagirl' -%}
+      <span class="sr-only">L.A. Girl Cosmetics</span>
+    </a>
+    </div>
+    <h3 class="uppercase font-bold tracking-tight  text-center text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-4xl 2xl:text-4xl pt-2">Distributor Resources</h3>
+  </div>
+    {% else %}
+    <div class="grid grid-cols-[1fr_2fr_1fr] lg:grid-cols-[20ch_1fr_20ch] items-center py-3">
+    {% if template != 'page.marketing-resources-home' and template != 'metaobject/display' %}
+      <div class="brand-nav-left  flex gap-4 items-center lg:!hidden">
+    
+      <button type="button" role="button" aria-label="menu" class="burger block h-[26.66px] w-[26.66px] lg:hidden">
+        <label for="mobile-drawer" class="cursor-pointer">
+          <svg
+            role="img"
+            class="text-black"
+            aria-labelledby="Hamburger"
+            width="24"
+            height="18"
+            viewBox="0 0 24 18"
+            fill="none"
+          >
+            <title id="Hamburger">Hamburger</title>
+            <path id="icon-hamburger" d="M1 1.25H23" stroke="currentColor" stroke-miterlimit="10" stroke-linecap="round"></path>
+            <path d="M1 9H23" stroke="currentColor" stroke-miterlimit="10" stroke-linecap="round"></path>
+            <path d="M1 16.75H23" stroke="currentColor" stroke-miterlimit="10" stroke-linecap="round"></path>
+          </svg>
+        </label>
+      </button>
+
+      <a href="/account" class="icon svg-item lg:hidden" aria-expanded="true" role="button">
+        <span class="sr-only">Login</span>
+        {% render 'icon-account', class: 'size-4 block text-black' %}
+      </a>
+    </div>
+    {% endif %}
+    {% if template == 'page.marketing-resources-home' or template == 'metaobject/display' %}
+      <div class="logo w-[13ch] lg:w-[20ch] mx-auto">
+        <a href="/pages/marketing-resources-home" aria-current="page" class="block mx-auto">
+          {%- render 'logo-lagirl' -%}
+          <span class="sr-only">L.A. Girl Cosmetics</span>
+        </a>
+      </div>
+    {% else %}
+      <div class="logo w-[13ch] lg:w-[20ch] mx-auto">
+        <a href="/" aria-current="page" class="block mx-auto">
+          {%- render 'logo-lagirl' -%}
+          <span class="sr-only">L.A. Girl Cosmetics</span>
+        </a>
+      </div>
+    
+    {% endif %}
+      {% if template != 'page.marketing-resources-home' and template != 'metaobject/display'%}
+        <div role="navigation" aria-label="Main Navigation" class="full-width bg-secondary-pink w-full hidden lg:flex">
+          <nav
+            aria-label="Main"
+            class="nav-banner full-width lex hide-scrollbar hidden h-[39px] w-full items-center overflow-x-auto lg:flex"
+          >
+            {% for block in section.blocks %}
+              {% if block.type == 'menu_item' %}
+                <div class="nav-banner-item group shrink-0 px-4 first-of-type:ml-auto last-of-type:mr-auto">
+                  <div class="relative">
+                    <a
+                      href="{{ block.settings.link }}"
+                      class="peer flex flex-wrap items-center gap-2 font-bold uppercase transition-colors lg:hover:text-pink-600"
+                    >
+                      {{ block.settings.title }}
+                      {% if block.settings.submenu != blank %}
+                         {% render 'icon-arrow-down',  class: 'icon icon-arrow-down size-4 block text-black' %}
+                      {% endif %}
+                    </a>
+                    {% if block.settings.submenu != blank %}
+                      <button
+                        aria-label="show submenu for {{ block.settings.title }}"
+                        aria-expanded="false"
+                        class="peer pointer-events-none absolute left-full top-1/2 z-10 ml-[1px] -translate-y-1/2 opacity-0 transition-opacity focus-visible:pointer-events-auto focus-visible:opacity-100 focus-visible:outline-offset-1 peer-focus-visible:pointer-events-auto peer-focus-visible:opacity-100"
+                      ></button>
+                    {% endif %}
+                  </div>
+    
+                  {% if block.settings.submenu != blank %}
+                    {% if block.settings.submenu_format == 'wide' %}
+                      <!-- Wide submenu format -->
+                      <div class="submenu before:bg-transparent absolute left-0 top-[46px] hidden w-full shadow-[0px_20px_20px_0px_rgba(0,0,0,0.15)] before:mb-8 before:block group-hover:block">
+                        <div class="container-grid bg-white">
+                          <div class="mt-6 mb-6 flex">
+                            <div class="mx-auto grid grid-cols-[repeat(5,minmax(170px,1fr))] gap-8">
+                              {% for link in linklists[block.settings.submenu].links %}
+                                {%- comment %}<locksmith:cc84>{% endcomment -%}
+                                  {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists[block.settings.submenu], variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+                                {%- comment %}</locksmith:cc84>{% endcomment -%}
+                                <div class="menu__items_collection">
+                                  <div class="menu__item">
+                                    <h3 class="menu__item-header text-black-800 text-bold inline-block text-xl font-bold">
+                                      <a class="relative" href="{{ link.url }}">{{ link.title }}</a>
+                                    </h3>
+                                  </div>
+                                  {% if link.links != blank %}
+                                    {% for childlink in link.links %}
+                                      {%- comment %}<locksmith:176d>{% endcomment -%}
+                                        {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: childlink, subject_parent: link, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+                                      {%- comment %}</locksmith:176d>{% endcomment -%}
+                                      <div class="menu__item">
+                                        <span class="menu__link-text" data-link="{{ childlink.title | downcase }}">
+                                          <a href="{{ childlink.url }}" class="text-black-800 relative inline-block py-2">
+                                            {{ childlink.title }}
+                                          </a>
+                                        </span>
+                                      </div>
+                                    {% endfor %}
+                                  {% endif %}
+                                </div>
+                              {% endfor %}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    {% else %}
+                      <!-- Dropdown submenu format -->
+                      <div class="submenu before:bg-transparent absolute lg:w-[20ch] top-[46px] hidden before:mb-8 before:block group-hover:block">
+                        <div class="megamenu absolute bg-white w-full p-4 shadow-xl">
+                          <ul class="flex flex-col">
+                            {% for link in linklists[block.settings.submenu].links %}
+                              {%- comment %}<locksmith:dab0>{% endcomment -%}
+                                {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists[block.settings.submenu], variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+                              {%- comment %}</locksmith:dab0>{% endcomment -%}
+                              <li class="max-w-[16ch]">
+                                <a href="{{ link.url }}" class="relative mb-2 inline-block text-balance text-sm">
+                                  {{- link.title -}}
+                                </a>
+                              </li>
+                            {% endfor %}
+                          </ul>
+                        </div>
+                      </div>
+                    {% endif %}
+                  {% endif %}
+                </div>
+              {% elsif block.type == 'whats_new_menu' %}
+                <div class="nav-banner-item group shrink-0 px-4 first-of-type:ml-auto last-of-type:mr-auto">
+                  <div class="relative">
+                    <a
+                      href="{{ block.settings.link }}"
+                      class="peer flex flex-wrap items-center gap-2 font-bold uppercase transition-colors lg:hover:text-pink-600"
+                    >
+                      {{ block.settings.title }}
+                       {% render 'icon-arrow-down',  class: 'icon icon-arrow-down size-4 block text-black' %}
+                    </a>
+                    <button
+                      aria-label="show submenu for {{ block.settings.title }}"
+                      aria-expanded="false"
+                      class="peer pointer-events-none absolute left-full top-1/2 z-10 ml-[1px] -translate-y-1/2 opacity-0 transition-opacity focus-visible:pointer-events-auto focus-visible:opacity-100 focus-visible:outline-offset-1 peer-focus-visible:pointer-events-auto peer-focus-visible:opacity-100"
+                    ></button>
+                  </div>
+    
+                  <!-- What's New menu format -->
+                  <div class="submenu before:bg-transparent absolute left-0 top-[46px] hidden w-full shadow-[0px_20px_20px_0px_rgba(0,0,0,0.15)] before:mb-8 before:block group-hover:block">
+                    <div class="container-grid megamenu absolute bg-white w-full shadow-xl">
+                      <div class="mt-6 mb-6 flex">
+                        <div class="mx-auto grid grid-cols-[200px_1fr] gap-4 gap-x-8">
+                          <div class="">
+                            <div class="w-full">
+                              <h4 class="mb-4 font-bold uppercase">{{ block.settings.featured_title }}</h4>
+                              <ul class="grid gap-1">
+                                {%- comment %}<locksmith:ee5e>{% endcomment -%}
+                                  {%- assign locksmith_80a3_forloop__size = 0 %}{% for link in linklists[block.settings.featured_menu].links %}{% capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists[block.settings.featured_menu], variable: 'transparent' %}{% endcapture %}{% if var == 'true' %}{% assign locksmith_80a3_forloop__size = locksmith_80a3_forloop__size | plus: 1 %}{% endif %}{% endfor %}{% assign locksmith_80a3_forloop__index = nil -%}
+                                {%- comment %}</locksmith:ee5e>{% endcomment -%}
+                                {% for link in linklists[block.settings.featured_menu].links %}
+                                  {%- comment %}<locksmith:c1fb>{% endcomment -%}
+                                    {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists[block.settings.featured_menu], variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% if locksmith_80a3_forloop__index == nil %}{% assign locksmith_80a3_forloop__index = 1 %}{% assign locksmith_80a3_forloop__index0 = 0 %}{% else %}{% assign locksmith_80a3_forloop__index = locksmith_80a3_forloop__index | plus: 1 %}{% assign locksmith_80a3_forloop__index0 = locksmith_80a3_forloop__index0 | plus: 1 %}{% endif %}{% if locksmith_80a3_forloop__index == 1 %}{% assign locksmith_80a3_forloop__first = true %}{% else %}{% assign locksmith_80a3_forloop__first = false %}{% endif %}{% if locksmith_80a3_forloop__index == locksmith_80a3_forloop__size %}{% assign locksmith_80a3_forloop__last = true %}{% else %}{% assign locksmith_80a3_forloop__last = false %}{% endif %}{% assign locksmith_80a3_forloop__rindex = locksmith_80a3_forloop__size | minus: locksmith_80a3_forloop__index | minus: 1 %}{% assign locksmith_80a3_forloop__rindex0 = locksmith_80a3_forloop__size | minus: locksmith_80a3_forloop__index0 | minus: 1 %}{% else %}{% continue %}{% endif -%}
+                                  {%- comment %}</locksmith:c1fb>{% endcomment -%}
+                                  <li class="max-w-[20ch]">
+                                    <a
+                                      href="{{ link.url }}"
+                                      class="relative mb-2 inline-block text-balance text-sm {% if locksmith_80a3_forloop__first %}font-bold uppercase{% endif %}"
+                                    >
+                                      {{- link.title -}}
+                                    </a>
+                                  </li>
+                                {% endfor %}
+                              </ul>
+                            </div>
+                          </div>
+                          <div class="">
+                            {% render 'promotional-images' %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </nav>
+        </div>
+        <div class="flex items-center justify-end gap-4 text-right">
+          <a href="/account" class="icon svg-item hidden lg:block" aria-expanded="true" role="button">
+            <span class="sr-only">Login</span>
+            {% render 'icon-account', class: 'size-4 block text-black' %}
+          </a>
+    
+          <button
+            aria-expanded="false"
+            role="button"
+            type="button"
+            class="search-open icon svg-item"
+            data-message="search-message"
+            data-search-target="desktop-search-modal"
+          >
+            {% render 'icon-search', class: 'size-4 block text-black' %}
+          </button>
+          <a href="/cart" class="indicator relative inline-flex w-max-content  site-header__icon site-header__cart">
+            {% render 'icon-bag', class: 'size-6 block text-black' %}
+            <div id="CartCount" class="site-header__cart-count cursor-pointer">
+              <span class="cartCount indicator-item badge-sm">{{ cart.item_count }}</span>
+            </div>
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+
+<div class="container-grid bg-secondary-pink">
+  {% render 'search-bar', class: 'desktop-search-modal hidden' %}
+</div>
+
+{% if template != 'page.marketing-resources-home' and template != 'metaobject/display'%}
+      <div class="bg-secondary-pink ">
+      <nav class="sm:hidden">
+        {% assign menuclass = 'text-gray-900 px-3 py-2 rounded-md font-semibold text-md ' %}
+        <div>
+          <div class="overflow-x-auto whitespace-nowrap flex no-scrollbar">
+            <div class="group inline-block">
+              <details class="group submenu-details">
+                <summary class="{{ menuclass }}  list-none cursor-pointer">
+                  What's New
+                  <svg
+                    class="stroke-black fill-current size-3 inline-block transform group-open:rotate-180 transition-transform duration-200"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></path>
+                  </svg>
+                </summary>
+                <div class="absolute w-[100vw] max-w-full left-0 z-30 shadow-md overflow-hidden transition-[height,opacity] duration-[300ms] ease-in-out h-[0px] opacity-0 group-open:h-[150px] group-open:opacity-100 bg-white border border-gray-200">
+                  <div class="flex max-w-full gap-2 py-4 collection-quicklink align-center">
+                    <div class="max-w-full w-[100vw]">
+                      <div class="overflow-x-auto grid grid-flow-col auto-cols-[5rem] gap-4 no-scrollbar mx-4">
+                        {% for link in linklists.featured.links %}
+                          {%- comment %}<locksmith:e696>{% endcomment -%}
+                            {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists.featured, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+                          {%- comment %}</locksmith:e696>{% endcomment -%}
+                          <div class="inline-block">
+                            <a
+                              href="{{ link.url }}"
+                              class="flex flex-col items-center justify-center gap-2 text-center cursor-pointer"
+                            >
+                              <div class="collectionLinks text-xs font-medium text-balance bg-[#fcdeed] tracking-[normal] h-20 w-20 rounded-full grid place-items-center p-2">
+                                {{ link.title }}
+                              </div>
+                            </a>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </details>
+            </div>
+    
+            {% for link in linklists['main-menu'].links %}
+              {%- comment %}<locksmith:8d57>{% endcomment -%}
+                {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists.main-menu, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+              {%- comment %}</locksmith:8d57>{% endcomment -%}
+              {% if link.links != blank %}
+                <div class="group inline-block">
+                  <details class="group submenu-details">
+                    <summary class="{{ menuclass }}  list-none cursor-pointer">
+                      {{ link.title }}
+                      <svg
+                        class="stroke-black fill-current size-3 inline-block transform group-open:rotate-180 transition-transform duration-200"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></path>
+                      </svg>
+                    </summary>
+                    <div class="absolute w-[100vw] max-w-full left-0 z-30 shadow-md overflow-hidden transition-[height,opacity] duration-[300ms] ease-in-out h-[0px] opacity-0 group-open:h-[150px] group-open:opacity-100 bg-white border border-gray-200">
+                      {% render 'collection-horz-menu', links: link.links %}
+                    </div>
+                  </details>
+                </div>
+              {% else %}
+                <a href="{{ link.url }}" class="{{ menuclass }}">{{ link.title | upcase }}</a>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+        <div
+          class="fixed inset-0 bg-black opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out z-10"
+          id="submenu-overlay"
+        ></div>
+      </nav>
+    
+    {% comment %}
+      Script
+      ------------------------------------------------
+    {% endcomment %}
+        
+      <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const submenus = document.querySelectorAll('.submenu-details');
+        const overlay = document.getElementById('submenu-overlay');
+        const header = document.querySelector('header'); // Assuming there's a header element
+    
+        function updateOverlay() {
+          const anyOpen = Array.from(submenus).some(submenu => submenu.open);
+          if (anyOpen) {
+            overlay.style.opacity = '0.5';
+            overlay.style.pointerEvents = 'auto';
+            const headerHeight = header.offsetHeight;
+            overlay.style.top = `${headerHeight}px`;
+          } else {
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'none';
+            overlay.style.top = '0';
+          }
+        }
+    
+        submenus.forEach(submenu => {
+          submenu.addEventListener('toggle', function() {
+            if (this.open) {
+              submenus.forEach(otherSubmenu => {
+                if (otherSubmenu !== this && otherSubmenu.open) {
+                  otherSubmenu.open = false;
+                }
+              });
+            }
+            updateOverlay();
+          });
+        });
+    
+        // Close all submenus when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!event.target.closest('.submenu-details')) {
+            submenus.forEach(submenu => {
+              submenu.open = false;
+            });
+            updateOverlay();
+          }
+        });
+      });
+      </script>
+    </div>
+    {% render 'left-drawer' %}
+{% endif %}
+
+
+{% comment %}
+  Style
+  ------------------------------------------------
+{% endcomment %}
+
+<style>
+#shopify-section-navigation-menu > div:nth-child(4) > nav > div:nth-child(1) > div > div:nth-child(1) > details > div {
+  height:fit-content !important;
+}
+#shopify-section-navigation-menu > div:nth-child(4) > nav > div:nth-child(1) > div > div:nth-child(1) > details > div > div > div > div{
+  display:flex;
+  flex-direction: column;
+  gap:1 !important;
+
+}
+ .collectionLinks{
+    width:100% !important;
+   height:fit-content !important;
+   font-size:1em;
+  }
+  .card__badges {
+  display: flex;
+  text-size:2em ;
+  min-width: fit-content;
+  white-space: nowrap;
+  font-weight:900;
+    transform: skew(-12deg);
+    justify-content: center;    /* Horizontal center */
+  align-items: center; 
+  /* font-style: italic; */
+}
+  .card__badges--new{
+    line-height: 1.5;
+    /* min-height:1.8em; */
+    height:2em;
+    display: inline-block;  
+    text-align: center;    
+  }
+  
+</style>

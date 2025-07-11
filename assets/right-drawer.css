@@ -1,0 +1,100 @@
+#curtain {
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=85);
+    opacity: 1;
+    background: black;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+    visibility: hidden;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    background-color: #000000d6;
+}
+.header-bottom.active {
+    z-index: 10000;
+}
+.header-bottom {
+    z-index: 9998;
+}
+#cart-panel .cart-header {
+    height: auto;
+}
+#cart-panel .cart-header button{
+  background-color: #efefef;
+}
+div#cart-panel {
+  font-family: "Jost";
+}
+#cart-panel .no-items {
+    font-size: 2rem;
+    font-weight: 700;
+}
+#cart-panel .mini-products-list .product-name a {
+  text-transform: capitalize;
+  padding-right: 0;
+}
+#cart-panel .cart-collateral.item-price {
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  align-items: end;
+}
+#cart-panel .mini-products-list .option-title {
+  font-size: 1.2rem;
+  color: #6e6e6e;
+}
+#cart-panel .mini-products-list .btn-remove.-item {
+  background: none;
+  position: relative;
+  font-size: 1.2rem;
+  text-decoration: underline;
+  margin-left: 0.5rem;
+  color: #6e6e6e;
+}
+#cart-panel .mini-products-list .item {
+    display: flex;
+    padding: 1rem 0;
+}
+#cart-panel .mini-products-list .cart-collateral.item-price .price {
+  width: 80px;
+}
+#cart-panel .mini-products-list span.unitPrice {
+  color: #6e6e6e;
+  font-size: 1.1rem;
+}
+
+#cart-panel .mini-products-list .product-image {
+  margin-right: 0;
+  width: 70px;
+}
+#cart-panel .mini-products-list .item-img {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 1rem;
+}
+.mini-products-list .product-details {
+  overflow: hidden;
+  position: relative;
+  padding-right: 1rem;
+  flex-grow: 1;
+}
+#cart-panel .cart-footer .calculation {
+  margin: 0;
+  padding: 0.5rem 1.7rem;
+  text-transform: capitalize;
+}
+#cart-panel .cart-footer .calculation.total {
+  text-transform: none;
+  margin: 0;
+  padding: 10px 20px;
+  color: #333;
+  font-weight: 700;
+}
+#cart-panel .cart-footer .calculation.total dt {
+  font-weight: 700;
+}

@@ -1,0 +1,59 @@
+{% comment %}
+  Accepts:
+    - slides: {Object} Liquid object
+    - style: {string} gradient (optional)
+    - class: {string} class used for scroll-slider (optional)
+    - id: {string} class used for scroll-slider (optional)
+    - spacing: {string} class used for spacing between slides (optional)
+
+    - lazyload: {Boolean} Image should be lazy loaded. Default: true (optional)
+    - height: {string} different height for the image (optional)
+    - width: {string} base width for the image (optional)
+    - alt: {string} the alt tag for the image (optional)
+    - no_wrap: {Boolean} set no_wrap to false to add a wrapper class around image
+    - fetchpriority: {string} fetch priority for the image. Default: 'auto' (optional), fetchpriority: 'high'
+    - decoding: {string} decoding method for the image. Default: 'async' (optional)
+    - rounded: {Boolean} default images are rounded.  Apply false to have them with sharp edges. (optional)
+
+
+    Usage: {% render 'scroll-slider', slides: slides_content, style: 'gradient', class:'', id:'',spacing:'',  color: '######' %}
+{% endcomment %}
+
+{% assign default_class = 'scroll-slider flex justify-items-start relative' %}
+{% assign scroll_slider_class = default_class %}
+
+{% if class != blank %}
+  {% assign scroll_slider_class = scroll_slider_class | append: ' ' | append: class %}
+{% endif %}
+
+{% assign gap = 'gap-4' %}
+{% if spacing != blank %}
+  {% assign gap = spacing %}
+{% endif %}
+
+<scroll-slider
+  class="{{ scroll_slider_class }}"
+  {% if id != blank %}
+    id="{{ id }}"
+  {% endif %}
+>
+  <button
+    aria-label="Previous slide"
+    class="scroll-slider__button--prev z-10 absolute left-2 solid flex justify-center items-center rounded-full border border-black p-2 text-black transition hover:bg-black hover:text-white size-9 self-center"
+  >
+    {% render 'icon-arrow-left-circle' %}
+  </button>
+
+  <div class="scroll-slider__wrapper relative overflow-x-scroll scrollbar-none flex flex-nowrap {{ gap }}">
+    {{ slides }}
+  </div>
+
+  <button
+    aria-label="Next slide"
+    class="scroll-slider__button--next z-10 absolute right-2 solid flex justify-center items-center rounded-full border border-black p-2 text-black transition hover:bg-black hover:text-white size-9 self-center"
+  >
+    {% render 'icon-arrow-right-circle' %}
+  </button>
+</scroll-slider>
+
+

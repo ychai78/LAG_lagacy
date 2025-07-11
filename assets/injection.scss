@@ -1,0 +1,113 @@
+.radio-wrapper[data-shipping-method*="Flats"] {
+    display: none;
+}
+
+option[data-code="AS"],option[data-code="FM"],option[data-code="GU"],
+option[data-code="MH"],option[data-code="MP"],option[data-code="PW"],
+option[data-code="AA"],option[data-code="AE"],option[data-code="AP"] {
+    display: none;
+}
+.section.section--billing-address {
+    display: none;
+}
+.section.section--shipping-address h2.section__title {
+    display: none;
+}
+.section.section--shipping-address .section__header:before {
+    content: 'Billing address';
+    color: #333333;
+    font-size: 1.28571em;
+}
+.section.section--shipping-address .section__header:after {
+    content: 'Please note: order will be shipped to billing address.';
+    display: block;
+    line-height: 2;
+    font-style: italic;
+}
+
+.section.section--shipping-method h2.section__title:after {
+    content: 'Our business hours are Monday through Friday, 8am-5pm Pacific Standard Time, excluding holidays. Any orders submitted on Saturday and Sunday will be processed on the following business day. Please allow up to 2 full business days for your order to be processed, picked, packed, and shipped. Please allow 5-7 business days for standard ground shipping delivery.';
+    display: block;
+    font-size: .9rem;
+    font-style: italic;
+    padding-top: 1rem;
+    font-weight: 400;
+}
+*///*/********   FEDEX SHIPPING ON CHECKOUT  -////////*/
+span.radio__label__primary {
+    float: left;
+    width: auto!important;
+}
+span.radio__label__accessory.content-box__emphasis {    float: right; }
+[data-shipping-method*="fedex-FEDEX_2_DAY"] label.radio__label:before {
+    content: 'FedEx 2 Day';
+    display: table-cell;
+    vertical-align: middle;
+    float: left;
+}
+
+[data-shipping-method*="Shipping-GROUND_HOME_DELIVERY"] span.radio__label__primary{display:none;}
+.radio-wrapper[data-shipping-method*="Shipping-GROUND_HOME_DELIVERY"] {display:none;}
+[data-shipping-method*="fedex-FEDEX_2_DAY"] span.radio__label__primary{display:none;}
+
+[data-shipping-method*="fedex-GROUND_HOME"] label.radio__label:before {
+    content: 'FedEx Ground Home Delivery';
+    display: table-cell;
+    vertical-align: middle;
+    float: left;
+}
+[data-shipping-method*="fedex-FEDEX_GROUND"] span.radio__label__primary{display:none;}
+
+[data-shipping-method*="fedex-FEDEX_GROUND"] label.radio__label:before {
+    content: 'FedEx Ground';
+    display: table-cell;
+    vertical-align: middle;
+    float: left;
+}
+[data-shipping-method*="fedex-GROUND_HOME"] span.radio__label__primary{display:none;}
+
+
+[data-shipping-method*="fedex-STANDARD_OVERNIGHT"] label.radio__label:before {
+    content: 'FedEx Standard Overnight';
+    display: table-cell;
+    vertical-align: middle;
+    float: left;
+}
+[data-shipping-method*="fedex-STANDARD_OVERNIGHT"] span.radio__label__primary{display:none;}
+table.total-line-table {
+    position: relative;
+}
+tfoot.total-line-table__footer:after {
+    content: 'Please note to qualify for free shipping, your total before tax and after all discounts must be $35 or more. ';
+    position: absolute;
+    padding-top: 1rem;
+    border-top: 1px solid black;
+    width: 100%;
+    margin-top: 1rem;
+    color: red;
+}
+
+
+span.payment-due-label__total {
+    color: black;
+}
+span.payment-due__price {
+    color: black;
+}
+.total-line-table__tbody+.total-line-table__footer .total-line td::before {
+  background-color: black;}
+
+.order-summary.order-summary--is-expanded {
+    padding-bottom: 5rem;
+}
+
+
+fieldset.content-box .content-box__row {
+    padding: 0;
+}
+label.radio__label {
+    padding: 1rem;
+}
+.display-table .radio__input {
+    padding: 1rem;
+}

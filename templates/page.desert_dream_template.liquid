@@ -1,0 +1,223 @@
+<style>
+
+
+  
+.desert-dream-header {
+    font-size: 4rem;
+    display: inline-block;
+    width: 100%;
+    padding: 5rem 0;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 700;
+    line-height: normal;
+}
+.desert-dream-header h1 {
+    font-size: 4rem;
+    max-width: 50rem;
+    font-weight: 700;
+    margin: 0 auto;
+}
+.desert-dream-header h2 {
+    display: block;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 4rem;
+    font-family: lagfont;
+    color: black;
+    letter-spacing: 4px;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 45px;
+}
+.desert-dream-header p {
+    font-size: 1.75rem;
+    text-transform: initial;
+    font-weight: 600;
+    max-width: 72rem;
+    margin: 0 auto;
+    margin-top: 2rem;
+    line-height: 36px;
+    backdrop-filter: blur(10px) opacity(0.6);
+}
+  h2.quiz-subheader {
+    margin: 3rem auto;
+}
+body[data-page-handle="page.desert_dream_template"] #main-content {
+    background: url(https://cdn.shopify.com/s/files/1/0944/0398/files/desert_dream_collection_backdrop_1.webp) no-repeat bottom;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-position: 30%;
+    background-attachment: fixed;
+}
+  
+body[data-page-handle="page.desert_dream_template"]  main.main-content {
+    margin-top: 0;
+    background: transparent;
+}
+.credits {
+    display: inline-block;
+    font-size: 1.5rem;
+    line-height: 25px;
+    margin: 5rem 0 -4rem;
+    backdrop-filter: blur(10px) opacity(0.6);
+}
+  .desert-dream-scenes {
+    margin: 5rem 0;
+}
+  .backastage-video-promo {
+    margin-top: 10rem;
+    margin-bottom: 10rem;
+}
+.desert-dream-tutorials h2, .desert-dream-scenes h2 {
+    display: block;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 6rem;
+    font-family: lagfont;
+    color: black;
+    letter-spacing: 4px;
+}
+  .desert-dream-tutorials {
+    margin: 3rem auto;
+}
+  .desert-dream-tutorials .slick-button-next, .desert-dream-tutorials .slick-button-prev {
+    top: 50%;
+}
+.desert-dream-tutorials .slick-active button {
+    background: #eb008b;
+}
+.desert-dream-tutorials   .slick-dots button {
+    border: 1px solid;
+}
+.desert-dream-tutorials   .slick-slide {
+    background: transparent;
+
+}
+  
+  .desert-dream-tutorials {
+    margin: 0 auto;
+
+}
+.desert-dream-tutorials-wrapper {
+    width: 100%;
+}
+
+
+  .desert-dream-tutorials  .slick-button-next {
+    right: -40px;
+}
+  .desert-dream-tutorials .slick-button-prev {  
+           left: -40px;
+}
+.playlist-section {
+    display: flex;
+    justify-content: space-between;
+}
+.spotify-playlist a >img, .apple-playlist a >img {
+    width: 190px;
+    margin-bottom: 1rem;
+}
+.spotify-playlist {
+    margin-right: 2rem;
+}
+.explicit-disclaimer {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 4rem;
+}
+.explicit-disclaimer p {
+    font-size: 1.25rem;
+    font-weight: 600;
+    max-width: 72rem;
+    margin: 0 auto;
+    margin-top: 2rem;
+    line-height: 36px;
+    backdrop-filter: blur(10px) opacity(0.6);
+    display: inline-block;
+    text-align: center;
+    margin: 0 auto;
+}  
+  
+  @media only screen and (min-width: 300px) and (max-width: 768px) {
+    .spotify-playlist {
+    margin-right: 0rem;
+}
+    .desert-dream-header h2 {
+    font-size: 2.5rem;
+    line-height: 2.5rem;
+}
+    
+    .desert-dream-tutorials h2, .desert-dream-scenes h2 {
+    font-size: 3.5rem;
+}
+ .desert-dream-tutorials-wrapper {
+    width: 350px;    margin: 0 auto;
+} 
+    .backastage-video-promo {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+.desert-dream-header p {
+    font-size: 1.25rem;
+    line-height: 25px;
+  max-width: 330px;
+} 
+    .playlist-section {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+  
+  }
+</style>
+
+<div class="rte">{{ page.content | split: '[lang2]' | first }}</div>
+
+
+
+
+
+<script>
+  
+  $( document ).ready(function() {
+            var $slickSlider = $('#desert-dream-tutorials.slick-container');
+            
+            $slickSlider.on('init', function() {
+              $(this).removeClass("hidden-visibility");
+            });
+            
+            $slickSlider.slick({
+            dots: true,
+            infinite: true,
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            arrows: false,
+            nextArrow: '<div class="slick-button-next"></div>',
+            prevArrow: '<div class="slick-button-prev"></div>',
+            responsive: [
+
+              {
+                breakpoint: 720,
+                settings: {
+                  slidesToShow: 1,
+                  slidesToScroll: 1,
+                  arrows: false,
+
+
+                }
+              }
+              
+              // You can unslick at a given breakpoint now by adding:
+              // settings: "unslick"
+              // instead of a settings object
+            ]
+          });
+});
+
+</script>

@@ -1,0 +1,20 @@
+
+{% comment %}
+    Renders a play icon
+
+    Usage:
+       {% render 'icon-play',  class: 'w-[75px] h-[75px]' %}
+    %}
+{% endcomment %}
+
+{%- liquid
+   if class == nil
+   assign class =  ' ' 
+   else
+    assign class = class
+    endif
+-%}
+
+
+
+<svg aria-hidden="true" tabindex="-1" role="presentation" class="icon icon-arrow-down {{ class }}" viewBox="0 0 32 32"><path fill="" d="M26.985,8.5l1.516,1.617L16.001,23.5l-12.5-13.383L5.009,8.5l10.992,11.758L26.985,8.5z"></path></svg>

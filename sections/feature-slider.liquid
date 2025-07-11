@@ -1,0 +1,516 @@
+{% schema %}
+{ 
+  "name": "Feature Slider",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section Background Color",
+      "default": "#ffffff",
+      "info": "Choose the background color for the entire Feature Slider section."
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Content Background Color",
+      "default": "#f3f4f6"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#111827"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "header",
+      "name": "Header",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Featured Collection"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Explore our featured collection of products."
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text Alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Shop All"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "color",
+          "id": "button_bg_color",
+          "label": "Button Background Color",
+          "default": "#111827"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button Text Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_nav_buttons",
+          "label": "Show Navigation Buttons",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "left_section",
+      "name": "Left Section",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "desktop_image",
+          "label": "Desktop Image",
+          "info": "Choose an image to display above the title. This image will span the full width of the left section."
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image",
+          "info": "Choose an image to display for mobile."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Featured Collection",
+          "info": "Enter the main title for the left section."
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Title Color",
+          "default": "#111827",
+          "info": "Choose the color for the title text."
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Explore our featured collection of products.",
+          "info": "Provide a brief description or subtitle for the left section."
+        },
+        {
+          "type": "color",
+          "id": "description_color",
+          "label": "Description Color",
+          "default": "#374151",
+          "info": "Choose the color for the description text."
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Shop All",
+          "info": "Enter the text to display on the CTA button."
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link",
+          "info": "Choose the page or URL the button should link to."
+        },
+        {
+          "type": "color",
+          "id": "button_bg_color",
+          "label": "Button Background Color",
+          "default": "#111827",
+          "info": "Select the background color for the CTA button."
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button Text Color",
+          "default": "#ffffff",
+          "info": "Choose the text color for the CTA button."
+        },
+        {
+          "type": "color",
+          "id": "left_section_bg_color",
+          "label": "Left Section Background Color",
+          "default": "#f3f4f6",
+          "info": "Choose the background color for the left section."
+        },
+        {
+          "type": "range",
+          "id": "left_section_corner_radius",
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "unit": "px",
+          "label": "Corner Radius",
+          "default": 0,
+          "info": "Set the corner radius for the left section."
+        }
+      ]
+    },
+    {
+      "type": "slider",
+      "name": "Product Slider",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "product_source",
+          "label": "Product Source",
+          "options": [
+            {
+              "value": "collection",
+              "label": "Collection"
+            },
+            {
+              "value": "manual",
+              "label": "Manual selection"
+            }
+          ],
+          "default": "collection",
+          "info": "Choose how to populate the slider. Select 'Collection' to use products from a specific collection, or 'Manual selection' to individually choose products."
+        },
+        {
+          "type": "collection",
+          "id": "featured_collection",
+          "label": "Featured Collection",
+          "info": "Select a collection to display its products. This is used when 'Collection' is chosen as the Product Source."
+        },
+        {
+          "type": "product_list",
+          "id": "manual_products",
+          "label": "Select Products",
+          "limit": 36,
+          "info": "Manually select up to 36 products to display. This is used when 'Manual selection' is chosen as the Product Source."
+        },
+        {
+          "type": "range",
+          "id": "slide_width",
+          "min": 200,
+          "max": 400,
+          "step": 10,
+          "unit": "px",
+          "label": "Slide Width",
+          "default": 300,
+          "info": "Set the width of each product slide."
+        },
+        {
+          "type": "range",
+          "id": "slide_gap",
+          "min": 10,
+          "max": 50,
+          "step": 5,
+          "unit": "px",
+          "label": "Gap Between Slides",
+          "default": 20,
+          "info": "Set the gap between each product slide."
+        },
+        {
+          "type": "select",
+          "id": "scroll_behavior",
+          "label": "Scroll Behavior",
+          "options": [
+            {
+              "value": "single",
+              "label": "Scroll one slide at a time"
+            },
+            {
+              "value": "full",
+              "label": "Scroll by fully visible slides"
+            }
+          ],
+          "default": "single",
+          "info": "Choose how the slider should scroll when using navigation buttons."
+        },
+        {
+          "type": "header",
+          "content": "Autoplay Settings"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_autoplay",
+          "label": "Enable autoplay",
+          "default": false,
+          "info": "When enabled, the slider will automatically scroll through products."
+        },
+        {
+          "type": "range",
+          "id": "autoplay_duration",
+          "min": 2000,
+          "max": 8000,
+          "step": 500,
+          "unit": "ms",
+          "label": "Autoplay duration",
+          "default": 3000,
+          "info": "Set the time between each automatic slide change (in milliseconds)."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Feature Slider",
+      "blocks": [
+        {
+          "type": "header"
+        },
+        {
+          "type": "left_section"
+        },
+        {
+          "type": "slider"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+{% assign slider_block = section.blocks | where: "type", "slider" | first %}
+{% assign left_section_block = section.blocks | where: "type", "left_section" | first %}
+{% assign header_block = section.blocks | where: "type", "header" | first %}
+
+<feature-slider
+  id="feature-slider-{{ section.id }}"
+  class="feature-slider"
+  style="background-color: {{ section.settings.section_bg_color }};"
+  data-slide-width="{{ slider_block.settings.slide_width }}"
+  data-slide-gap="{{ slider_block.settings.slide_gap }}"
+  data-scroll-behavior="{{ slider_block.settings.scroll_behavior }}"
+  data-enable-autoplay="{{ slider_block.settings.enable_autoplay }}"
+  data-autoplay-duration="{{ slider_block.settings.autoplay_duration }}"
+>
+  
+  <div class="py-8 sm:py-12" style="background-color: {{ section.settings.bg_color }}; color: {{ section.settings.text_color }}; padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+    {% if header_block %}
+      <div class="flex items-center {% if header_block.settings.show_nav_buttons %}justify-between{% else %}justify-{{ header_block.settings.text_alignment }}{% endif %} mb-8">
+        <div class="{% if header_block.settings.show_nav_buttons %}text-{{ header_block.settings.text_alignment }}{% else %}w-full text-{{ header_block.settings.text_alignment }}{% endif %}">
+          <h2 class="text-3xl lg:text-4xl font-bold">{{ header_block.settings.title }}</h2>
+          {% if header_block.settings.description %}
+          <p class="mt-4">{{ header_block.settings.description }}</p>
+          {% endif %}
+          {% if header_block.settings.button_link != blank %}
+            <a
+              href="{{ header_block.settings.button_link }}"
+              class="inline-block px-12 py-3 mt-8 text-sm font-medium transition rounded hover:shadow focus:outline-none focus:ring"
+              style="background-color: {{ header_block.settings.button_bg_color }}; color: {{ header_block.settings.button_text_color }};"
+            >
+              {{ header_block.settings.button_text }}
+            </a>
+          {% endif %}
+        </div>
+        {% if header_block.settings.show_nav_buttons %}
+          <div class="flex gap-4">
+            <button aria-label="Previous slide" data-action="prev" 
+              class="p-3 transition border border-black rounded-full text-black bg-white hover:text-white hover:bg-black disabled:cursor-not-allowed disabled:opacity-30">
+               {% render 'icon-arrow-left-circle' %}
+            </button>
+            <button aria-label="Next slide" data-action="next" 
+              class="p-3 transition border border-black rounded-full text-black bg-white hover:text-white hover:bg-black disabled:cursor-not-allowed disabled:opacity-30">
+              {% render 'icon-arrow-right-circle' %}
+            </button>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+  <div class="grid grid-cols-1 gap-4 {% if left_section_block %}lg:grid-cols-3{% endif %} lg:items-stretch">
+      {% if left_section_block %}
+        <div class="grid p-6 rounded place-content-center sm:p-8"
+             style="background-color: {{ left_section_block.settings.left_section_bg_color }}; border-radius: {{ left_section_block.settings.left_section_corner_radius }}px;">
+          {% if left_section_block.settings.desktop_image %}
+            <div class="w-full mb-6">           
+              {% assign desktop_image = left_section_block.settings.desktop_image %}    
+              {% if left_section_block.settings.mobile_image %}
+                {% assign mobile_image = left_section_block.settings.mobile_image %}
+              {% else %}
+                {% assign mobile_image = left_section_block.settings.desktop_image %}
+              {% endif %}
+              
+              {% render 'responsive-picture',
+                mobile_image: mobile_image,
+                desktop_image: desktop_image,
+                alt: left_section_block.settings.title,
+                class: 'responsive-image mx-auto'
+              %}
+            </div>
+          {% endif %}
+          <div class="w-80 mx-auto text-center lg:text-left">
+            <header>
+              <h3 class="text-3xl lg:text-4xl font-bold" style="color: {{ left_section_block.settings.title_color }};">{{ left_section_block.settings.title }}</h3>
+              {% if left_section_block.settings.description %}
+              <p class="mt-4" style="color: {{ left_section_block.settings.description_color }};">{{ left_section_block.settings.description }}</p>
+              {% endif %}
+            </header>
+            {% if left_section_block.settings.button_link != blank %}
+              <a
+                href="{{ left_section_block.settings.button_link }}"
+                class="inline-block px-12 py-3 mt-8 text-sm font-bold transition rounded hover:shadow focus:outline-none focus:ring"
+                style="background-color: {{ left_section_block.settings.button_bg_color }}; color: {{ left_section_block.settings.button_text_color }};"
+              >
+                {{ left_section_block.settings.button_text }}
+              </a>
+            {% endif %}
+           <div class="mt-8 flex gap-4 justify-center lg:justify-start">
+            <button aria-label="Previous slide" data-action="prev" 
+              class="p-3 transition border border-black rounded-full text-black bg-white hover:text-white hover:bg-black disabled:cursor-not-allowed disabled:opacity-30">
+               {% render 'icon-arrow-left-circle' %}
+            </button>
+            
+            <button aria-label="Next slide" data-action="next" 
+              class="p-3 transition border border-black rounded-full text-black bg-white hover:text-white hover:bg-black disabled:cursor-not-allowed disabled:opacity-30">
+              {% render 'icon-arrow-right-circle' %}
+            </button>
+          </div>
+          </div>
+
+
+        </div>
+      {% endif %}
+
+      <div class="{% if left_section_block %}lg:col-span-2{% else %}w-full{% endif %}">
+        <div class="scroll-snap-slider-wrapper">
+          <div class="scroll-snap-slider">
+            {% if slider_block.settings.product_source == 'collection' %}
+              {% for product in collections[slider_block.settings.featured_collection].products limit: 36 %}
+                {%- comment %}<locksmith:5c9c>{% endcomment -%}
+                  {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: collections[slider_block.settings.featured_collection], variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+                {%- comment %}</locksmith:5c9c>{% endcomment -%}
+                {% unless product.tags contains 'coming soon' %}                
+                <div class="scroll-snap-slide">
+                  {% render 'card-product-3',
+                    card_product: product,
+                    media_aspect_ratio: section.settings.image_ratio,
+                    image_shape: section.settings.image_shape,
+                    show_secondary_image: section.settings.show_secondary_image,
+                    show_vendor: section.settings.show_vendor,
+                    show_rating: section.settings.show_rating,
+                    section_id: section.id
+                  %}
+                </div>
+                {% endunless %}
+              {% endfor %}
+            {% else %}
+              {% for product in slider_block.settings.manual_products %}
+                {%- comment %}<locksmith:c3ea>{% endcomment -%}
+                  {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: slider_block.settings, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+                {%- comment %}</locksmith:c3ea>{% endcomment -%}
+                {% unless product.tags contains 'coming soon' %}         
+                <div class="scroll-snap-slide">
+                  {% render 'card-product-3',
+                    card_product: product,
+                    media_aspect_ratio: section.settings.image_ratio,
+                    image_shape: section.settings.image_shape,
+                    show_secondary_image: section.settings.show_secondary_image,
+                    show_vendor: section.settings.show_vendor,
+                    show_rating: section.settings.show_rating,
+                    section_id: section.id
+                  %}
+                </div>
+                {% endunless %}
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+        {% unless left_section_block %}
+          {% unless header_block.settings.show_nav_buttons %}
+            <div class="flex justify-center gap-4 mt-8">
+              <button aria-label="Previous slide" data-action="prev" 
+                class="p-3 transition border border-black rounded-full text-black bg-white hover:text-white hover:bg-black disabled:cursor-not-allowed disabled:opacity-30">
+                 {% render 'icon-arrow-left-circle' %}
+              </button>
+              <button aria-label="Next slide" data-action="next" 
+                class="p-3 transition border border-black rounded-full text-black bg-white hover:text-white hover:bg-black disabled:cursor-not-allowed disabled:opacity-30">
+                {% render 'icon-arrow-right-circle' %}
+              </button>
+            </div>
+          {% endunless %}
+        {% endunless %}
+      </div>
+    </div>
+  </div>
+</feature-slider>
+
+<style>
+  #feature-slider-{{ section.id }} .scroll-snap-slider-wrapper {
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-right: 0;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  }
+  #feature-slider-{{ section.id }} .scroll-snap-slider-wrapper::-webkit-scrollbar { /* WebKit */
+    width: 0;
+    height: 0;
+  }
+  #feature-slider-{{ section.id }} .scroll-snap-slider {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: {{ slider_block.settings.slide_width }}px;
+    gap: {{ slider_block.settings.slide_gap }}px;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+     max-height: 620px;
+    
+  }
+  #feature-slider-{{ section.id }} .scroll-snap-slide {
+    scroll-snap-align: start;
+  }
+ #feature-slider-{{ section.id }} .card {
+     border-radius: 1rem;
+}
+.flex:has(button[disabled]:first-child):has(button[disabled]:last-child) {
+  display: none;
+}
+</style>

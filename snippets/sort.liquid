@@ -1,0 +1,172 @@
+<button
+	class="flex items-center justify-center gap-2 px-5 py-2 text-sm font-bold text-black transition-colors duration-300 ease-in-out"
+	type="button"
+	data-drawer-target="drawer-right-filter-sort"
+	data-drawer-show="drawer-right-filter-sort"
+	data-drawer-placement="right"
+	aria-controls="drawer-right-filter-sort"
+>
+	<span>Sort By</span>
+	<svg class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<path d="M3 7H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></path>
+		<path d="M6 12H18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></path>
+		<path d="M10 17H14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></path>
+	</svg>
+</button>
+
+<div
+	id="drawer-right-filter-sort"
+	class="fixed top-0 right-0 z-[9999] h-screen w-80 bg-white p-6 overflow-y-auto transition-transform translate-x-full shadow-xl"
+>
+	<div class="flex items-center justify-between mb-6">
+		<h5 id="drawer-right-label" class="text-xl font-semibold text-gray-900">SORT BY</h5>
+		<button type="button" data-drawer-hide="drawer-right-filter-sort" class="text-gray-400 hover:text-gray-900">
+			<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+			</svg>
+			<span class="sr-only">Close menu</span>
+		</button>
+	</div>
+
+	<ul class="space-y-4">
+		<li>
+			<label class="flex items-center cursor-pointer">
+				<input
+					type="radio"
+					name="sort"
+					value="manual"
+					class="hidden"
+					data-url="{{ collection.url | sort_by: 'manual' }}"
+				>
+				<span class="inline-block w-5 h-5 mr-3 border rounded-full border-grey flex-no-shrink"></span>
+				<span class="text-base font-medium text-gray-900">Featured</span>
+			</label>
+		</li>
+		<li>
+			<label class="flex items-center cursor-pointer">
+				<input
+					type="radio"
+					name="sort"
+					value="best-selling"
+					class="hidden"
+					data-url="{{ collection.url | sort_by: 'best-selling' }}"
+				>
+				<span class="inline-block w-5 h-5 mr-3 border rounded-full border-grey flex-no-shrink"></span>
+				<span class="text-base font-medium text-gray-900">Best selling</span>
+			</label>
+		</li>
+		<li>
+			<label class="flex items-center cursor-pointer">
+				<input
+					type="radio"
+					name="sort"
+					value="price-ascending"
+					class="hidden"
+					data-url="{{ collection.url | sort_by: 'price-ascending' }}"
+				>
+				<span class="inline-block w-5 h-5 mr-3 border rounded-full border-grey flex-no-shrink"></span>
+				<span class="text-base font-medium text-gray-900">Price, low to high</span>
+			</label>
+		</li>
+		<li>
+			<label class="flex items-center cursor-pointer">
+				<input
+					type="radio"
+					name="sort"
+					value="price-descending"
+					class="hidden"
+					data-url="{{ collection.url | sort_by: 'price-descending' }}"
+				>
+				<span class="inline-block w-5 h-5 mr-3 border rounded-full border-grey flex-no-shrink"></span>
+				<span class="text-base font-medium text-gray-900">Price, high to low</span>
+			</label>
+		</li>
+		<li>
+			<label class="flex items-center cursor-pointer">
+				<input
+					type="radio"
+					name="sort"
+					value="title-ascending"
+					class="hidden"
+					data-url="{{ collection.url | sort_by: 'title-ascending' }}"
+				>
+				<span class="inline-block w-5 h-5 mr-3 border rounded-full border-grey flex-no-shrink"></span>
+				<span class="text-base font-medium text-gray-900">Alphabetically, A-Z</span>
+			</label>
+		</li>
+		<li>
+			<label class="flex items-center cursor-pointer">
+				<input
+					type="radio"
+					name="sort"
+					value="title-descending"
+					class="hidden"
+					data-url="{{ collection.url | sort_by: 'title-descending' }}"
+				>
+				<span class="inline-block w-5 h-5 mr-3 border rounded-full border-grey flex-no-shrink"></span>
+				<span class="text-base font-medium text-gray-900">Alphabetically, Z-A</span>
+			</label>
+		</li>
+	</ul>
+</div>
+<style>
+	/* Custom styles for radio buttons */
+	input[type='radio'] + span {
+		transition: all 0.2s ease;
+	}
+	input[type='radio']:checked + span {
+		background-color: #45474a;
+		border-color: #45474a;
+		box-shadow: 0 0 0 2px white inset;
+	}
+</style>
+
+<script>
+	// Ensure the drawer is a direct child of the body
+	document.addEventListener('DOMContentLoaded', function () {
+		const drawer = document.getElementById('drawer-right-filter-sort');
+		if (drawer && drawer.parentElement !== document.body) {
+			document.body.appendChild(drawer);
+		}
+	});
+
+	document.addEventListener('DOMContentLoaded', function () {
+		const sortOptions = document.querySelectorAll('input[name="sort"]');
+		const currentSortBy = new URLSearchParams(window.location.search).get('sort_by') || 'manual';
+
+		function updateSelectedOption() {
+			sortOptions.forEach((radio) => {
+				if (currentSortBy === radio.value) {
+					radio.checked = true;
+				}
+			});
+		}
+
+		// Update selected option when the page loads
+		updateSelectedOption();
+
+		// Update selected option when the drawer opens
+		const drawerElement = document.getElementById('drawer-right-filter-sort');
+		const observer = new MutationObserver(function (mutations) {
+			mutations.forEach(function (mutation) {
+				if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+					if (!drawerElement.classList.contains('translate-x-full')) {
+						updateSelectedOption();
+					}
+				}
+			});
+		});
+
+		observer.observe(drawerElement, { attributes: true });
+
+		// Handle radio button changes
+		sortOptions.forEach((radio) => {
+			radio.addEventListener('change', function () {
+				if (this.checked) {
+					window.location.href = this.dataset.url;
+				}
+			});
+		});
+	});
+</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>

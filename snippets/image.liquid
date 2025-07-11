@@ -1,0 +1,81 @@
+{% comment %}
+  Renders an image
+  
+  Accepts:
+  - images: {Object} Liquid object
+  - class: {string} class used for the image tag (optional)
+  - lazy_load: {Boolean} Image should be lazy loaded. Default: true (optional)
+  - widths: {string} different widths for the image (optional)
+  - width: {string} base width for the image (optional)
+  - sizes: {string} different sizes for the image at different view width (optional)
+  - alt_tag: {string} the alt tag for the image (optional)
+  - fetchpriority: {string} fetch priority for the image. Default: 'auto' (optional)
+  - decoding: {string} decoding method for the image. Default: 'async' (optional)
+
+  Usage:
+  {% render 'image',
+    images: images, 
+    class: 'image-class', 
+    lazy_load: false, 
+    widths: '200, 600',
+    width: '100', 
+    sizes: '100vw',         
+    alt_tag: 'image-alt-tag', 
+    fetchpriority: 'high' 
+  %}
+{% endcomment %}
+
+{%- liquid
+  assign aspect_ratio = images.aspect_ratio
+   
+  assign base_width = basewidth | default: 100 
+  assign image_width = images.width   
+   
+  assign widths = widths | default: '480, 640, 768, 1024, 1280, 1920'
+  assign width = width | default: '1920'
+  assign height = width | divided_by: aspect_ratio | round
+  assign sizes = sizes | default: '(max-width: 479px) 480px, (max-width: 639px) 640px, (max-width: 767px) 768px, (max-width: 1023px) 1024px, (max-width: 1279px) 1280px, 100vw'
+  assign class = class | default: 'responsive-image object-cover w-full'
+  assign alt_tag = alt_tag | default: images.alt 
+  assign fetchpriority = fetchpriority | default: 'auto'
+  assign decoding = decoding | default: 'async'
+-%}
+
+{%- capture widths -%}
+  {%- assign w = base_width -%}
+        {%- for width in (0..100) -%}
+          {{ w }} {%- if w >= image_width -%}{%- break -%}{%- endif -%},     
+          {%- assign w = w | times: 1.53 | round: 0 -%}
+        {%- endfor -%}  
+  {%- endcapture -%}
+
+{% if lazy_load == false %}
+  {{
+    images
+    | image_url: width: width
+    | image_tag: 
+      class: class, 
+      sizes: sizes, 
+      widths: widths, 
+      width: width, 
+      height: height, 
+      alt: alt_tag,
+      fetchpriority: fetchpriority,
+      decoding: decoding
+  }}
+{% else %}
+  {{
+    images
+    | image_url: width: width
+    | image_tag: 
+      class: class, 
+      loading: 'lazy', 
+      sizes: sizes, 
+      widths: widths, 
+      width: width, 
+      height: height, 
+      alt: alt_tag,
+      fetchpriority: fetchpriority,
+      decoding: decoding
+  }}
+{% endif %}

@@ -1,0 +1,325 @@
+{% comment %}used on homepage for featured video section{% endcomment %}
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div
+  class="collection section-{{ section.id }}-padding{% if section.settings.full_width %} collection--full-width{% endif %}"
+  data-transition-enabled="true"
+  data-scroll-transition="fade"
+>
+  <div class="container-grid">
+    <div class="collection__title title-wrapper title-wrapper--no-top-margin page-width max-w-screen-xl mx-auto">
+      {%- if section.settings.title != blank -%}
+        <h3 class="mb-6 text-3xl font-bold lg:text-4xl font-display left">
+          {{ section.settings.title }}
+        </h3>
+      {%- endif -%}
+      {%- if section.settings.description != blank -%}
+        <div class="collection__description {{ section.settings.description_style }} rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          {{ section.settings.description -}}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <card-slider class="full">
+    <div class="relative">
+      <div class="flex pb-10 pl-8 overflow-x-scroll card-slider_card-container hide-scroll-bar" aria-label="Card slider">
+        <div class="flex card-slider_wrapper flex-nowrap">
+          <div
+            class="carouselContainer grid gap-4 mr-4 overflow-x-auto whitespace-nowrap [grid-auto-columns:300px] [grid-auto-flow:column]"
+            aria-label="Card slider"
+          >
+            {%- assign videos = shop.metaobjects.videos.values | first -%}
+
+            {% for video in videos.featured_videos.value %}
+              {% assign thumbnail = video.preview_image %}
+              {% assign video_drop = video %}
+              {% assign video_url = null %}
+
+              {% for source in video_drop.sources %}
+                {% if source.format == 'mp4' and source.height >= 720 %}
+                  {% assign video_url = source.url %}
+                  {% break %}
+                {% endif %}
+              {% endfor %}
+
+              {% if video_url %}
+                <div class="card-slider_container flex min-h-[120px] flex-col gap-2">
+                  <a href="{{ video_url }}" class="glightbox" data-glightbox="gallery1">
+                    <div class="card-slider_video-container pointer-events-auto relative grid aspect-[9/16] max-h-[800px] w-full cursor-pointer overflow-hidden rounded-md bg-white">
+            
+                    
+                       <img alt="{{ video.title | escape }}" class="card-slider_thumbnail absolute block col-span-1 row-span-1 object-cover max-h-[800px] h-full w-full m-0 aspect-[9/16] z-[1] rounded-md transform transition-transform duration-500 ease-in-out hover:scale-110" decoding="async" fetchpriority="low" height="533" loading="lazy" sizes="300px" src="{{ thumbnail | image_url: width: 300 }}" srcset="{{ thumbnail | image_url: width: 320 }} 320w,
+                                  {{ thumbnail | image_url: width: 400 }} 400w,
+                                  {{ thumbnail | image_url: width: 640 }} 640w" width="300"/>           
+
+                      <button
+                        aria-label="Open video"
+                        type="button"
+                        class="media-play-icon z-[1] absolute col-span-1 row-span-1 flex h-16 w-16 items-center justify-center self-center justify-self-center rounded-full border-0 border-solid border-transparent bg-white p-0 transition-opacity duration-300 opacity-75 shadow-lg"
+                      >
+                        {%- render 'icon-play' -%}
+                      </button>
+                    </div>
+                  </a>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+          
+          {% render 'sliderbtns', class: 'new-scroll-btn no-js-hidden flex gap-2 absolute top-[-4rem] right-4 z-10' %}
+        </div>
+      </div>
+    </div>
+  </card-slider>
+</div>
+
+<script>
+  class CardSlider extends HTMLElement {
+    constructor() {
+      super();
+      this.init();
+    }
+
+    init() {
+      this.cardContainer = this.querySelector('.card-slider_card-container');
+      this.cardsWrapper = this.querySelector('.card-slider_wrapper');
+      this.carouselContainer = this.querySelector('.carouselContainer');
+      this.cards = this.carouselContainer.querySelectorAll('.card-slider_container');
+      this.prevBtn = this.querySelector('.sliderbtn-prev');
+      this.nextBtn = this.querySelector('.sliderbtn-next');
+      this.currentCardIndex = 0;
+      this.fullyVisibleCards = 0;
+
+      if (!this.cards.length) return;
+      
+      this.setupEventListeners();
+      this.updateFullyVisibleCards();
+    }
+
+    setupEventListeners() {
+      this.prevBtn?.addEventListener('click', () => this.scroll(-1));
+      this.nextBtn?.addEventListener('click', () => this.scroll(1));
+      
+      const debouncedResize = this.debounce(() => this.updateFullyVisibleCards(), 250);
+      window.addEventListener('resize', debouncedResize);
+      
+      this.cardContainer?.addEventListener('scroll', () => this.updateButtonState());
+    }
+
+    debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+
+    updateFullyVisibleCards() {
+      if (!this.cardContainer || !this.cards[0]) return;
+      
+      const containerWidth = this.cardContainer.offsetWidth;
+      const cardWidth = this.cards[0].offsetWidth;
+      this.fullyVisibleCards = Math.max(1, Math.floor(containerWidth / cardWidth));
+      this.updateButtonState();
+    }
+
+    scroll(direction) {
+      if (!this.cardContainer || !this.cards[0]) return;
+      
+      const cardWidth = this.cards[0].offsetWidth;
+      const scrollAmount = direction * this.fullyVisibleCards * cardWidth;
+      
+      this.cardContainer.scrollBy({
+        left: scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+
+    updateButtonState() {
+      if (!this.cardContainer || !this.cardsWrapper) return;
+      
+      const isAtStart = this.cardContainer.scrollLeft <= 0;
+      const isAtEnd = this.cardContainer.scrollLeft + this.cardContainer.offsetWidth >= this.cardsWrapper.offsetWidth;
+
+      if (this.prevBtn) this.prevBtn.disabled = isAtStart;
+      if (this.nextBtn) this.nextBtn.disabled = isAtEnd;
+    }
+  }
+
+  customElements.define('card-slider', CardSlider);
+</script>
+
+<style>
+  .hide-scroll-bar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scroll-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sliderbtn:hover:not(:disabled) {
+    background-color: #ec4899;
+  }
+
+  .sliderbtn:hover:not(:disabled) svg {
+    color: white;
+  }
+
+  .sliderbtn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const initGLightboxWithRetry = () => {
+      if (typeof GLightbox !== 'undefined') {
+        const lightbox = GLightbox({
+          selector: '.glightbox',
+          loop: true,
+          autoplayVideos: true,
+          videosWidth: '100vw',
+          plyr: {
+            css: 'https://cdn.plyr.io/3.5.6/plyr.css',
+            js: 'https://cdn.plyr.io/3.5.6/plyr.js',
+            config: {
+              ratio: '9:16',
+              muted: false,
+              hideControls: true,
+              youtube: {
+                noCookie: true,
+                rel: 0,
+                showinfo: 0,
+                iv_load_policy: 3
+              }
+            }
+          }
+        });
+        return true;
+      }
+      return false;
+    };
+
+    if (!initGLightboxWithRetry()) {
+      const maxRetries = 50;
+      let retries = 0;
+      const retryInterval = setInterval(() => {
+        if (initGLightboxWithRetry() || retries >= maxRetries) {
+          clearInterval(retryInterval);
+        }
+        retries++;
+      }, 100);
+    }
+  });
+
+  document.addEventListener('contentUpdated', function() {
+    if (typeof GLightbox !== 'undefined') {
+      initGLightboxWithRetry();
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Homepage Featured Videos",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "Featured video",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "header",
+      "content": "Contain Images"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "9/16",
+          "label": "9/16 Vertical"
+        },
+        {
+          "value": "16/9",
+          "label": "16/9 horizontal"
+        }
+      ],
+      "default": "none",
+      "label": "None"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Homepage Featured Videos"
+    }
+  ]
+}
+{% endschema %}

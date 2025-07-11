@@ -1,0 +1,124 @@
+{% comment %}
+  This snippet is used to showcase each product during the loop,
+  'for product in collection.products' in collection.liquid.
+
+  This example has three products per column on desktop, two on
+  our medium breakpoint, and a single row on small screens.
+{% endcomment %}
+
+{% comment %}
+  Check if the product is on sale and set a variable to be used below.
+{% endcomment %}
+
+{% assign on_sale = false %}
+{% if product.compare_at_price_min > product.price_min %}
+  {% assign on_sale = true %}
+{% endif %}
+
+{% comment %}
+  Check if the product is sold out and set a variable to be used below.
+{% endcomment %}
+
+{% assign sold_out = true %}
+{% if product.available  %}
+  {% assign sold_out = false %}
+{% endif %}
+
+{% comment %}
+  Set a class for sold-out and on-sale items
+{% endcomment %}
+
+{% assign productIndex = forloop.index | minus:1 %}
+{% assign delayTime = settings.time_lazy_load | times : productIndex %}
+
+<div class="ff-product-grid-shade-finder col-xs-12 col-md-6 {% if settings.product_image_crop%} crop_image {% else %} no_crop_image {% endif %} grid-item product-item{% if sold_out %} sold-out{% endif %}{% if on_sale %} on-sale{% endif %}wow fadeIn" data-wow-delay="{{delayTime}}ms" id="{{variant.sku}}" style="display:none;">
+
+
+
+
+  
+  <div class="ff-grid__item ff-grid-product {{ grid_item_width }}{% if sold_out %} is-sold-out{% endif %}">
+  <div class="ff-grid-product__wrapper">
+    <div class="ff-grid-product__image-wrapper  col-xs-12  col-md-6">
+      <a class="ff-grid-product__image-link" href="{{ variant.url }}">
+       
+        
+        <img alt="{{ variant.image.alt | escape }}" class="ff-grid-product__image" src="{{ variant.image.src | img_url: 'large' }}"/>
+        
+      </a>
+       
+      
+      
+
+  
+      {% if sold_out %}
+        <div class="ff-grid-product__sold-out">
+          <p>Sold Out</p>
+        </div>
+      {% elsif on_sale %}
+       
+      {% endif %}
+    </div>
+    <section class="ff-product-name-section col-xs-12  col-md-6">
+
+      
+    	
+      
+    
+      {% assign new_tag = product.tags |downcase %}
+      
+     
+       <div class="product_tile-info_wrapper">
+        <div class="grid-product__title">
+         <a href="{{ variant.url }}" class="grid-product__meta">{{ product.title }}</a></div>
+         <a href="{{ variant.url }}" class="grid-product__sku"><span>Shade:</span> {{ variant.title }}</a>
+               
+         
+  <div class="grid-product__price-wrap__review-badge">
+       
+		 <div class="grid-product__review-badge">
+           <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+         </div>
+      <div class="grid-product__price-wrap">      
+           <span class="grid-product__price">
+		{% if product.price < product.compare_at_price_min %}
+          <span class="onsale"> {{ product.price | money }} <del>{{ product.compare_at_price_min | money }}</del> <span>On sale!</span></span>
+          {% else %}
+            {% if product.price_varies %}
+            {{ product.price_min | money}} - {{ product.price_max | money}}
+            {% else %}
+          	{{ product.price | money }}
+          	{% endif %}
+          {% endif %}
+         
+        </span>
+         </div>
+         </div>
+      </div>
+      
+       <div class="product_description_wrapper">
+         <h2>Description</h2>
+         {{ product.description  }}
+          </div>
+     
+      <form action="https://www.lagirlusa.com/cart/add?id={{variant.id}}&quantity=1" method="post" enctype="multipart/form-data" id="add-to-cart-form" class="ssw-test  wow fadeIn animated" data-wow-duration="2s">
+       {% if variant.available %}
+     <input type="submit" name="add" class="btn button-wide" id="product-add-to-cart" value="add to bag">
+              {% else %}
+  <input type="submit" name="add" class="btn button-wide disabled" id="product-add-to-cart" value="Out of Stock" disabled="disabled">
+{% endif %}
+   
+          </form>
+      
+
+      
+      
+      
+      
+      
+    </section>
+  </div>
+</div>
+
+  
+</div>

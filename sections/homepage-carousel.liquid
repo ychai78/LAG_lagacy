@@ -1,0 +1,252 @@
+{%- assign slide_count = 0 -%}
+{%- assign current_banners = shop.metaobjects.current_banners.values | first -%}
+
+<div class="relative w-full pbs-fix">
+  <div class="relative mb-4 w-full">
+    <div
+      id="swiper-{{ section.id }}"
+      class="swiper multiple-slide-carousel swiper-container relative"
+      data-slide-count="{{ slide_count }}"
+    >
+      <div class="swiper-wrapper">
+        {% assign banners = current_banners.homepage.value %}
+        {% if template == 'page.homepage-test' %}
+          {% assign banners = current_banners.upcoming_homepage.value %}
+        {% endif %}
+        
+       
+        
+        {% for banner in  banners  %}
+          {% comment %}
+            This code loops through each banner in the `current_banners.homepage.value` array.
+            For each banner, it assigns the desktop and mobile images to variables.
+            It then checks if the banner is linked to a product or a collection, assigning the respective URL to the `banner_url` variable.
+            The code formats both the banner's launch date and the current date into a comparable string (in the format YYYYMMDDHHMM),
+            and checks if the current date is within the banner's release period.
+            If a removal date is provided and the current date is past this removal date, the banner is marked as inactive by setting the `within_release_date` variable to false.
+          {% endcomment %}
+
+          {%- liquid
+            assign desktop_image = banner.desktop_image
+            assign mobile_image = banner.mobile_image
+
+            assign banner_url = ''
+            if banner.product
+              assign banner_url = banner.product.value.url
+            elsif banner.collection
+              assign banner_url = banner.collection.value.url
+            elsif banner.link
+              assign banner_url = banner.link.value.url
+            endif
+
+            assign launch_date = banner.launch_date | date: '%Y/%m/%d %H:%M' | remove: '/' | remove: ':' | remove: ' '
+            assign current_date = 'now' | date: '%Y/%m/%d %H:%M' | remove: '/' | remove: ':' | remove: ' '
+
+            assign within_release_date = false
+            if current_date >= launch_date
+              assign within_release_date = true
+            endif
+
+            if banner.removal_date
+              assign removal_date = banner.removal_date | date: '%Y/%m/%d %H:%M' | remove: '/' | remove: ':' | remove: ' '
+              if current_date >= removal_date
+                assign within_release_date = false
+              endif
+            endif
+            
+             if template == 'page.homepage-test'
+             assign within_release_date = true
+            endif
+             
+          -%}
+
+          {% if within_release_date %}
+            {% assign slide_count = slide_count | plus: 1 %}
+            <div class="swiper-slide flex justify-center">
+              <a href="{{ banner_url}}">
+               {% render 'responsive-picture', 
+               mobile_image: mobile_image,
+               desktop_image: desktop_image, 
+               alt: 'banner', 
+               class: 'responsive-image mx-auto', 
+               eager_load: true %}    
+              
+              </a>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div class="flex items-center justify-center gap-8 lg:justify-start">
+        <div class="slideshow__controls flex w-full items-center justify-center border-b border-slate-200">
+          <button
+            type="button"
+            class="sliderbtn-prev flex h-12 w-12 cursor-pointer items-center justify-center border-none"
+            name="previous"
+            aria-label="Previous slide"
+            aria-controls="slider-{{ section.id }}"
+          >
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              role="presentation"
+              class="icon icon-caret h-[.5rem] rotate-90"
+              viewBox="0 0 10 6"
+            >
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
+              </path>
+            </svg>
+          </button>
+          <div class="slider-counter text-xs text-slate-600">
+            <span class="slider-counter--current">1</span>
+            <span aria-hidden="true"> / </span>
+            <span class="visually-hidden">of</span>
+            <span class="slider-counter--total">{{ slide_count }}</span>
+          </div>
+          <button
+            type="button"
+            class="sliderbtn-next flex h-12 w-12 cursor-pointer items-center justify-center border-none"
+            name="next"
+            aria-label="Next slide"
+            aria-controls="slider-{{ section.id }}"
+          >
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              role="presentation"
+              class="icon icon-caret h-[.5rem] rotate-[-90deg]"
+              viewBox="0 0 10 6"
+            >
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
+              </path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var slideCounterElement = document.getElementById("swiper-{{ section.id }}");
+
+
+    var swiperConfig = {
+      loop: true,
+      grabCursor: true,
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+        },
+      navigation: {
+        nextEl: "#swiper-{{ section.id }} .sliderbtn-next",
+        prevEl: "#swiper-{{ section.id }} .sliderbtn-prev",
+      },
+      on: {
+        slideChange: function () {
+          const currentSlide = this.realIndex + 1;
+          document.querySelector('.slider-counter--current').textContent = currentSlide;
+        }
+      }
+    };
+
+
+      swiperConfig.slidesPerView = 1;
+      swiperConfig.spaceBetween = 0;
+
+
+
+    new Swiper("#swiper-{{ section.id }}", swiperConfig);
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Homepage Carousel",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "Title",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Header Alignment"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Homepage Carousel",
+        "settings": [
+    {
+      "type": "header",
+      "content": "Carousel"
+    },
+      {
+      "type": "text",
+      "id": "publish_time",
+      "label": "publish Date",
+      "default": "2023/03/28 23:00",
+      "info": "Format: yyyy/mm/dd hh:mm"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_banner",
+      "label": "Desktop Banner"
+      },
+    {
+      "type": "image_picker",
+      "id": "mobile_banner",
+      "label": "Mobile Banner"
+      },
+
+    {
+      "type": "url",
+      "id": "url_link",
+      "label": "Banner Link"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    }
+  ],
+    }
+  ],
+  "presets": [
+    {
+      "name": "Homepage Carousel"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,300 @@
+
+<link rel="stylesheet" href="https://cdn.shopify.com/s/files/1/0944/0398/files/flickity.css?v=1623953715" type="text/css">  
+
+{{ 'foundationFinder.css' | asset_url | stylesheet_tag }}
+
+<script defer src="{{ 'foundationFinder.js' | asset_url }}"></script>
+<script>
+$( document ).ready(function() {
+initLoadFoundationFinder();     
+ 
+});
+</script>
+
+
+
+<div class="foundationFinderLanding">
+<figcaption class="foundationFinderLanding_caption hide"> 
+  <div class="foundationFinderLanding_caption wrapper">
+    <picture>
+      <source src="{{' meet_your_match.png' | file_img_url: 'original' | split:'?' | first}}" type="image/jpeg">
+      <img src="{{ 'meet_your_match.png'  | file_img_url: 'original' | split:'?' | first}}"/>
+      </picture>
+    
+    <p class="foundationFinderLanding__landing-description">Ready to try the new L.A. Girl Tinted Foundation, but not sure what your perfect shade is, or where to start? Take this quiz to get matched like a PRO. </p> 
+
+    <a class="foundation-btn" id="foundationStart" href="#" aria-label="GET MATCHED" title="GET MATCHED">
+      <span class="button_foundation">GET MATCHED</span></a>
+    
+ 
+  </div>
+  </figcaption>
+  
+  
+
+<div class="foundationFinderImage">
+<a id="foundationStartQuiz" href="#" title="">
+  <picture>
+    <source srcset="https://cdn.shopify.com/s/files/1/0944/0398/files/LAG_foundation_finder_landing_banner_1.webp?v=1626472924" 
+            sizes="100vw" media="(min-width:768px)" data-aspectratio="auto" type="image/webp">
+    <source srcset="https://cdn.shopify.com/s/files/1/0944/0398/files/LAG_foundation_finder_landing_banner_1.jpg?v=1626472925" 
+            sizes="100vw" media="(min-width:768px)" data-aspectratio="auto" type="image/jpeg">
+    <source srcset="https://cdn.shopify.com/s/files/1/0944/0398/files/LAG_foundation_finder_landing_banner_mobile_1.webp?v=1628615000" 
+            sizes="100vw" media="(min-width:0)" data-aspectratio="auto"  type="image/webp">
+    <source srcset="https://cdn.shopify.com/s/files/1/0944/0398/files/LAG_foundation_finder_landing_banner_mobile_1.jpg?v=1628615000" 
+            sizes="100vw" media="(min-width:0)" data-aspectratio="auto" type="image/jpeg">
+    <img alt="" src="https://cdn.shopify.com/s/files/1/0944/0398/files/LAG_foundation_finder_landing_banner_mobile_1.jpg?v=1628615000"/>
+    </picture>
+</a>
+  </div>
+
+  
+</div>
+<div class="foundationFinderMain initial" style="visibility:hidden">  
+  <div class="foundationFinder-header container-grid">
+    
+    <div class="progressBar_wrap">
+    <div class="progressBar">
+      <div class="steps skintone active">
+        <span class="stepNumber">1</span>
+        <span class="stepName">Skin Tone</span>
+      </div>
+      <div class="steps jewelry">
+        <span class="stepNumber">2</span>
+        <span class="stepName">Jewelry</span>
+      </div>
+      <div class="steps veinColor">
+        <span class="stepNumber">3</span>
+        <span class="stepName">Vein Color</span>
+      </div>      
+      <div class="steps undertone">
+        <span class="stepNumber">4</span>
+        <span class="stepName">Undertone</span>
+      </div>      
+      <div class="steps myMatch">
+        <span class="stepNumber">5</span>
+        <span class="stepName">My Match</span>
+      </div>
+         <div class="startOver">
+        <a class="startOver-btn" onClick="window.location.reload();" aria-label="Start Over" title="Start Over" tabindex="0">
+      	<span class="button_foundation">Start Over</span>
+        </a>
+      </div> 
+      </div>
+ 
+    </div>
+  </div>
+
+  <div class="foundationFinder_slide active" id="skintone">
+    <div class="container-grid">
+      <h2 class="text-lg">What is your skintone?</h2>
+      <div class="foundation-shade-slider">
+        <div class="button-group button-group--cells color-range-slider">
+          <button class="dot-button" id="dot-1" data-selection="1"><span class="range-name range-light">light</span></button>
+          <button class="dot-button" id="dot-2" data-selection="2"><span class="range-name range-light-medium">light-medium</span></button>
+          <button class="dot-button  is-selected" id="dot-3" data-selection="3"><span class="range-name range-medium">medium</span></button>
+          <button class="dot-button" id="dot-4" data-selection="4"><span class="range-name range-medium-deep">medium-deep</span></button>
+          <button class="dot-button" id="dot-5" data-selection="5"><span class="range-name range-deep">deep</span></button>
+        </div>
+      </div>
+    </div>  
+    
+    <div class="shade-finder">
+        <div class="carousel" data-flickity='{ "initialIndex": 2 }'>
+			<img alt="light" src="https://cdn.shopify.com/s/files/1/0944/0398/files/tinted_foundation_slider_light.jpg?v=1626478629"/>
+            <img alt="light-medium" src="https://cdn.shopify.com/s/files/1/0944/0398/files/tinted_foundation_slider_lightMedium.jpg?v=1626478629"/>
+            <img alt="medium" src="https://cdn.shopify.com/s/files/1/0944/0398/files/tinted_foundation_slider_medium_1.jpg?v=1626478693"/>
+            <img alt="medium-deep" src="https://cdn.shopify.com/s/files/1/0944/0398/files/tinted_foundation_slider_mediumDeep.jpg?v=1626478629"/>
+            <img alt="deep" src="https://cdn.shopify.com/s/files/1/0944/0398/files/tinted_foundation_slider_deep.jpg?v=1626478629"/>
+        </div>
+      <p class="caption hide">&nbsp;</p>
+      </div>
+	<div class="container-grid">
+      <a class="foundation-btn" id="next-btn-skintone" href="#" aria-label="Next" title="Next">
+        <span class="button_foundation">Next</span>
+      </a>
+      </div>
+
+  </div>
+  <div class="foundationFinder_slide" id="jewelry">
+    <div class="container-grid">
+      <h2 class="text-lg">What kind of jewelry looks best on you?</h2>
+      <p>If you wear both, think about which one overall looks best on you. We promise we are getting somewhere with this, trust the process.</p>
+      <div class="responseSection">
+        <a class="foundation-btn" href="#"><span class="button_foundation">Gold</span></a>
+        <a class="foundation-btn" href="#"><span class="button_foundation">Silver</span></a>
+        <a class="foundation-btn" href="#"><span class="button_foundation">Both</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="foundationFinder_slide" id="veinColor">
+    <div class="container-grid">
+      <h2 class="text-lg">What color do you see most when looking at your veins?</h2>
+      <p>Your wrist is a good place to check!</p>
+      <div class="responseSection">
+        <a class="foundation-btn" href="#"><span class="button_foundation">Purple/Blue</span></a>
+        <a class="foundation-btn" href="#"><span class="button_foundation">Green</span></a>
+        <a class="foundation-btn" href="#"><span class="button_foundation">Not Sure, Maybe a Mix?</span></a>
+      </div>
+    </div>
+  </div>
+  <div class="foundationFinder_slide" id="undertone">
+    <div class="container-grid">
+      <h2 class="text-lg">What is your dominant undertone? Look at your overall face and body tone.</h2>
+      <p>Your undertone is the color that shows through from under the surface of the skin and does not change with seasonal sun exposure. This does not include any redness you may see after a workout or a hot shower. Look at your overall tone including your body.</p>
+      <div class="responseSection undertone gap-8">
+        <div class="undertone-responses">
+          <a class="foundation-btn cool" href="javascript:void(0)">
+            <div class="undertoneImg"> <img alt="cool undertone" src="https://cdn.shopify.com/s/files/1/0944/0398/files/undertone_cool.jpg?v=1626475721"/></div>
+          <span class="button_foundation">Cool</span></a>
+          <div class="description">Cool undertones have shades of pink, red, or blue. Typically, those that have a cool undertone will have blue/purple veins and prefer wearing silver jewelry.</div>
+        </div>
+        <div class="undertone-responses">
+          <a class="foundation-btn neutral"href="javascript:void(0)">
+            <div class="undertoneImg"> <img alt="neutral undertone" src="https://cdn.shopify.com/s/files/1/0944/0398/files/undertone_neutral.jpg?v=1626475722"/></div>
+          <span class="button_foundation">Neutral</span></a>
+          <div class="description">Neutral is neither cool nor warm. If your veins appear both blue and green you may be neutral and can usually pull off silver or gold jewelry.</div>
+        </div>
+        <div class="undertone-responses">
+          <a class="foundation-btn warm" href="javascript:void(0)">
+            <div class="undertoneImg"> <img alt="warm undertone" src="https://cdn.shopify.com/s/files/1/0944/0398/files/undertone_warm.jpg?v=1626475722"/></div>
+          <span class="button_foundation">Warm</span></a>
+          <div class="description">Warm undertones have yellow, golden, or peach undertones. Those with warm undertones have green veins and gold jewelry complements you the best.</div>
+        </div>        
+      </div>
+    </div>
+  </div>
+  <div class="foundationFinder_slide" id="match">
+    <div class="container-grid">
+      <h2>Meet your Match!</h2>
+      <p>Based on your answers, here's what we think will look amazing with your complexion!</p>
+      <div class="results">       
+        <p class="filter-count"></p>
+        <p class="result-output"></p>
+       
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="grid" id="shadeSelector-grid" style="visibility:hidden"></div>
+
+<div id="foundationFinder_results" style="visibility:hidden"></div>
+
+
+
+
+<div class="filters hide">
+
+   <div class="ui-group">
+    <h3>skin tone</h3>
+    <div class="button-group js-radio-button-group" 	id="finder-btn-skintone" data-filter-group="skintone">
+      <button class="button" data-filter=".light" 		id="btn-shade-light">light</button>
+      <button class="button" data-filter=".light-medium"id="btn-shade-light-medium">light medium</button>
+      <button class="button" data-filter=".medium"		id="btn-shade-medium">medium</button>
+      <button class="button" data-filter=".medium-deep"	id="btn-shade-medium-deep">medium deep</button>
+      <button class="button" data-filter=".deep"		id="btn-shade-deep">deep</button>
+    </div>
+  </div>
+  
+  <div class="ui-group">
+    <h3>undertone</h3>
+    <div class="button-group js-radio-button-group" id="finder-btn-undertone" data-filter-group="undertone">
+      <button class="button" data-filter=".cool" 	id="btn-undertone-cool">Cool</button>
+      <button class="button" data-filter=".neutral"	id="btn-undertone-neutral">Neutral</button>
+      <button class="button" data-filter=".warm"  	id="btn-undertone-warm">Warm</button>
+    </div>
+  </div>
+
+  <div class="ui-group">
+    <h3>coverage</h3>
+    <div class="button-group js-radio-button-group"  		id="finder-btn-coverage" data-filter-group="coverage">
+      <button class="button" data-filter=".sheer" 			id="btn-coverage-sheer">sheer</button>
+      <button class="button" data-filter=".medium-buildable"id="btn-coverage-medium-buildable">medium/buildable</button>
+      <button class="button" data-filter=".full"			id="btn-coverage-full">full</button>
+    </div>
+  </div>
+  
+  <div class="ui-group">
+    <h3>finish</h3>
+    <div class="button-group js-radio-button-group" 	 id="finder-btn-finish"data-filter-group="finish">
+      <button class="button" data-filter=".natural" 	id="btn-finish-natural">natural</button>
+      <button class="button" data-filter=".dewy"		id="btn-finish-dewy">dewy</button>
+      <button class="button" data-filter=".matte"		id="btn-finish-matte">matte</button>
+    </div>
+  </div>
+  <div class="restart-section">
+	<button onClick="window.location.reload();">Restart</button>
+  </div>
+
+
+
+
+</div>
+
+
+
+
+
+<script>
+  function initIsotope() { 
+      // external js: isotope.pkgd.js
+
+      // init Isotope
+      var $grid = $('.grid').isotope({
+        itemSelector: '.foundation-element'
+      });
+      function updateFilterCount() {
+        $filterCount.text( iso.filteredItems.length );
+      }
+      // store filter for each group
+      var filters = {};
+
+      $('.filters').on( 'click', '.button', function( event ) {
+        var $button = $( event.currentTarget );
+        // get group key
+        var $buttonGroup = $button.parents('.button-group');
+        var filterGroup = $buttonGroup.attr('data-filter-group');
+        // set filter for group
+        filters[ filterGroup ] = $button.attr('data-filter');
+        // combine filters
+        var filterValue = concatValues( filters );
+        // set filter for Isotope
+        $grid.isotope({ filter: filterValue });
+        updateFilterCount();
+      });
+
+      // change is-checked class on buttons
+      $('.button-group').each( function( i, buttonGroup ) {
+        var $buttonGroup = $( buttonGroup );
+        $buttonGroup.on( 'click', 'button', function( event ) {
+          $buttonGroup.find('.is-checked').removeClass('is-checked');
+          var $button = $( event.currentTarget );
+          $button.addClass('is-checked');
+        });
+      });
+
+      // flatten object by concatting values
+      function concatValues( obj ) {
+        var value = '';
+        for ( var prop in obj ) {
+          value += obj[ prop ];
+        }
+        return value;
+      }
+
+      // run after filter has been completed
+      $grid.isotope( 'on', 'arrangeComplete', function() {
+        //alert('arrange is complete');
+      }); 
+
+    var iso = $grid.data('isotope');
+    var $filterCount = $('.filter-count');  
+    updateFilterCount();
+
+
+  
+  }
+</script>
+

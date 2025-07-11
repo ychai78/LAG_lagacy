@@ -1,0 +1,82 @@
+{% comment %}
+  Variant List Row
+
+  Accepts:
+  - variant: {Object} Variant 
+  - position:  {String} used as a counter for the for loop (optional)
+  Usage:
+  {% render 'card-product-swatches' variant: variant %}
+
+  {% if image %}
+    {%- assign img_height = 43 | divided_by: image.aspect_ratio | ceil -%}
+    {{
+      image
+      | image_url: width: 86
+      | image_tag:
+        loading: 'lazy',
+        fetchpriority: 'low',
+        decoding: 'async',
+        class: 'variant-item__image',
+        width: 43,
+        height: img_height,
+        widths: '86',
+        alt: image.alt
+      | escape
+    }}
+  {% endif %}
+
+
+{% endcomment %}
+{%- capture product_availability -%}
+{%- render 'product-availability-logic', product: product, variant: variant, text: "product_availability" -%}
+{% endcapture%}
+
+{%- capture cta_text -%}
+{%- render 'product-availability-logic', product: product, variant: variant, text: "cta_text" -%}
+{% endcapture%}
+
+{% assign product_availability = product_availability | strip %} 
+{% assign cta_text = cta_text | strip %} 
+
+        
+{% assign hex_code = variant.metafields.custom.hex_code.value %}	
+{% assign hex_image = variant.metafields.custom.hex_image.value %}
+
+
+  
+
+    <li class="product-tile__swatches-item {% if product.variants.size == 1   %} hide {% endif %}">
+      <button
+        class="product-tile__swatches-item-link"
+        aria-label="{{ variant.title}} Thumbnail"
+      >
+        <div class="product-tile__swatches-item-img-wrapper">
+          <label
+            class="product-tile__swatch {% if position == 1 %}active{% endif %}"
+            data-swatch-color="{{ variant.title | handleize }}"
+            data-variant-id="{{ variant.id }}"
+            data-sku="{{ variant.sku }}"
+            data-variant-image="{{variant.image | image_url: width: 1024 }}"
+            data-url="{{ variant.url }}"
+            data-available="{{ product_availability }}"
+            data-cta-text="{{ cta_text }}"
+            data-title="{{ variant.title}}"
+            data-price="{{ variant.price | money_with_currency}}"
+            {% if hex_code %}
+              data-hex-code="{{ hex_code }}"
+              style="--swatch-color: {{ hex_code }};"
+             
+            {% elsif hex_image %}
+              data-hex-image="{{ hex_image | image_url: width: 30  | image_tag: loading: lazy  }}"
+              style="--swatch-bkg: url('{{ hex_image | image_url: width: 30 }}');"
+            {% endif %}
+            >
+            
+          </label>
+        </div>
+      </button>
+    </li>
+
+
+          
+

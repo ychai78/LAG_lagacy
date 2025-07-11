@@ -1,0 +1,96 @@
+
+
+<!-- Add Swiper.js -->
+{{ 'swiper.min.css' | asset_url | stylesheet_tag }}
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js" defer></script>
+
+<!-- Add GLightbox -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
+<script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js" defer></script>
+
+{{ 'product.css' | asset_url | stylesheet_tag }}
+{{ 'product-main-slider.css' | asset_url | stylesheet_tag }}
+{{ 'product-thumbs-slider.css' | asset_url | stylesheet_tag }}
+
+<!-- Add a hidden input to store the referrer URL -->
+<input type="hidden" id="previousPageUrl" value="">
+<div class="max-w-screen-2xl mx-auto product-main">
+  {% section 'product-main' %}
+  
+
+  
+  {% section 'responsive-images-section' %}
+  {% section 'shade-viewer' %}
+  {% section 'product-bottom' %}
+</div>
+<div
+  id="hiddenProductId"
+  style="display:none;"
+  data-product-id="{{product.id}}"
+  data-product-purchasable="{% if product.vendor == 'NotForSale' %}no{% else %}yes{% endif %}"
+></div>
+<script>
+  window.productPageData = {
+    product: {{ product | json }},
+    productVariants: {{ product.variants | json }},
+    productMedia: {{ product.media | json }},
+    previousUrl: document.referrer,
+    currentUrl: window.location.href
+  };
+  
+  // Function to modify URL details
+  function updateUrlIfNeeded() {
+    let currentUrl = window.location.href;
+    const previousUrl = document.referrer;
+
+    if (previousUrl && previousUrl.includes('?review')) {
+      if (!currentUrl.includes('#')) {
+        currentUrl += '#reviews-segment';
+        if (history.pushState) {
+          history.pushState(null, null, currentUrl);
+        } else {
+          window.location.hash = 'reviews-segment';
+        }
+      }
+    }
+  }
+
+  // Update URL on DOMContentLoaded
+  document.addEventListener('DOMContentLoaded', function() {
+    const previousUrl = document.referrer;
+    document.getElementById('previousPageUrl').value = previousUrl;
+    updateUrlIfNeeded();
+  });
+
+  // Handle URL update and scrolling after window load
+  window.addEventListener('load', function() {
+    updateUrlIfNeeded();
+    
+    // Add a small delay to ensure everything is rendered
+    setTimeout(updateUrlIfNeeded, 3000);
+
+    // Scroll to reviews section if coming from review page
+    if (document.referrer && document.referrer.includes('?review')) {
+      const reviewsSection = document.querySelector('#reviews-segment');
+      if (reviewsSection) {
+        reviewsSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  });
+
+  // Update URL when variants change
+  document.addEventListener('variantChanged', function() {
+    updateUrlIfNeeded();
+  });
+
+  // Watch for URL changes
+  let lastUrl = location.href; 
+  new MutationObserver(() => {
+    const url = location.href;
+    if (url !== lastUrl) {
+      lastUrl = url;
+      updateUrlIfNeeded();
+    }
+  }).observe(document, {subtree: true, childList: true});
+</script>
+<script src="{{ 'product.js' | asset_url }}" defer></script>

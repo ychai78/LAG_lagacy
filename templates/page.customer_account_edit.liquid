@@ -1,0 +1,58 @@
+{% if customer %}
+
+<script src="/tools/customr/assets/customr.js"></script>
+<link href="/tools/customr/assets/customr.css" media="screen" rel="stylesheet">
+
+<div class="main-wrapper">
+
+ {% include 'customer_account_side_menu' %}   
+<div class="customer-service-main col-xs-12 col-md-9">  
+  <div class="col-xs-12">   
+  <div class="page-title">
+    <header class="page-header">
+      <h2>EDIT ACCOUNT</h2>
+    </header>
+    
+  </div>
+  <div class="customr-edit" id="customr">
+
+  <p id="customr-message"></p>
+
+    <form accept-charset="UTF-8" action="/tools/customr/token" id="customr-auth-token" method="post">
+      <div style="display:none"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="lgmOUY610ks+x1DDPzx60AzlNDHKA66GLSfvgn6bHS8="></div>
+      <input type="hidden" name="customer[id]" value="{{customer.id}}">
+    </form>
+    
+    <form accept-charset="UTF-8" action="/tools/customr/edit" id="customr-edit" method="post">
+      
+      <div style="display:none"><input name="utf8" type="hidden" value="✓"><input name="_method" type="hidden" value="put"><input name="authenticity_token" type="hidden" value="lgmOUY610ks+x1DDPzx60AzlNDHKA66GLSfvgn6bHS8="></div>
+      <input type="hidden" name="auth_token" id="auth-token" value="">
+      <input type="hidden" name="customer[id]" value="{{customer.id}}">
+    
+      <div class="field first-name-field"><label><span>First Name:</span><input type="text" name="customer[first_name]" value="{{customer.first_name}}"></label></div>
+      <div class="field last-name-field"><label><span>Last Name: </span><input type="text" name="customer[last_name]" value="{{customer.last_name}}"></label></div>
+      <div class="field email-field"><label><span>Email:</span><input type="email" name="customer[email]" value="{{customer.email}}"></label></div>
+
+      <input type="submit" class="cta-button" value="Save Account Details" data-static="Save Account Details" data-processing="Updating...">
+
+    </form>
+    
+    <form method="post" action="/account/recover" class="reset-password" accept-charset="UTF-8">
+      <input type="hidden" value="recover_customer_password" name="form_type"><input type="hidden" name="utf8" value="✓">
+      <div class="field">
+        <input type="hidden" name="email" value="{{customer.email}}">
+        <input type="submit" value="Reset Password">
+      </div>
+    </form>
+  </div>
+  </div>
+  
+  
+<div class="rte">{{ page.content }}</div>
+
+  {%else%}
+  <script>
+    window.location = "/account/login";
+    </script>
+{% endif %}
+  

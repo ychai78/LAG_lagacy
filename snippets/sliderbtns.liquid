@@ -1,0 +1,28 @@
+{% comment %}
+    Renders a slider button group
+
+    Usage:      
+       {% render 'sliderbtns',  class: 'absolute flex justify-center items-center m-auto left-0 right-0 w-fit bottom-12'  %}
+    %}
+{% endcomment %}
+{%- liquid
+  if class == nil
+    assign class = 'absolute flex justify-center items-center m-auto left-0 right-0 w-fit bottom-12'
+  else
+    assign class = class
+  endif
+
+   
+-%}
+
+<div class="{{ class }} hide-on-touch">
+
+  
+  <button class="sliderbtnq sliderbtn-prev p-3 transition border border-black rounded-full text-black bg-white hover:text-white hover:bg-black disabled:cursor-not-allowed disabled:opacity-30" aria-label="Previous slide">
+    {% render 'icon-arrow-left-circle' %}
+  </button>
+  <button class="sliderbtnq sliderbtn-next p-3 transition border border-black rounded-full text-black bg-white hover:text-white hover:bg-black disabled:cursor-not-allowed disabled:opacity-30" aria-label="Next slide">
+     {% render 'icon-arrow-right-circle' %}
+  </button>
+</div>
+

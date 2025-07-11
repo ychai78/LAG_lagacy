@@ -1,0 +1,39 @@
+{% comment %}
+  collection_list = gets you the main collection handle.  ie..lips
+  collection_linklist = gets you all the nav links under the linklist for that category.   ie.. lips gets you lipstick, lipgloss, lipliner
+  collection_of_page = gets you the main collection from a collection page. Removes '-' from the url bar to get the handle.
+  bkg_image = gets you the main collection's banner.  Banner is used for all of its sub-collections.
+{% endcomment %}
+
+{% comment %}
+  This is the nav for collection pages.
+{% endcomment %}
+{% assign category_title = category_title | strip | escape %}
+{% assign alt = category_title | append :" collection header" %}
+{% if template contains 'collection' %}
+  {% if collection.image.src %}
+    <section class="category-top pbs-fix" id="collection-header">
+
+<div class="container-grid">
+   
+  <div class="place-content-center">
+   
+      <h1 class="uppercase text-step-4 mt-4 mb-0" data-title="{{collection.title}}">{{ category_title }}</h1>
+     </div>
+</div>
+    </section>
+  {% elsif collection.metafields.c_f.collection_type %}
+    <section class="category-top md:flex" id="collection-header">
+      <div
+        class="category-header "
+       
+      >
+
+        
+        <div class="category-title" data-title="{{collection.title}}">
+          <h1 class="resetHeader">{{ category_title }}</h1>
+        </div>
+      </div>
+    </section>
+  {% endif %}
+{% endif %}

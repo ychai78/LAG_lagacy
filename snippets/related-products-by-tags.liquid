@@ -1,0 +1,75 @@
+{% assign number_of_related_products_to_show = settings.number_of_related_products | plus:1 %}
+ 
+{% assign current_product = product %}
+{% assign current_product_tags = product.tags %}
+{% assign found_first_match = false %}
+{% assign found_second_match = false %}
+{% assign first_related_product = true %}
+ 
+{% assign product_count = 1 %}
+
+{% paginate collections.all.products by 1000 %}
+{% for product in collections.all.products %}
+  {%- comment %}<locksmith:68df>{% endcomment -%}
+    {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: collections.all, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+  {%- comment %}</locksmith:68df>{% endcomment -%}
+  {% unless product.handle == current_product.handle %}
+    {% for tag in product.tags %}
+      {% if current_product_tags contains tag and tag != 'Made in USA' %}
+        {% if found_first_match == false %}
+          {% assign found_first_match = true %}
+          {% assign first_match = tag %}
+        {% elsif found_second_match == false %}
+          {% assign found_second_match = true %}
+          {% assign second_match = tag %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+ 
+    {% if found_first_match == true %}
+      {% if first_related_product == true %}
+        {% assign first_related_product == false %}
+
+        <section class="related-products">
+          {% if settings.related_products_title != '' %}
+            {% if settings.enable_multilang %}
+            <h2 class="lang1">{{ settings.related_products_title | split: '|' | first }}</h2>
+            <h2 class="lang2">{{ settings.related_products_title | split: '|' | last }}</h2>
+            {% else %}
+            <h2>{{ settings.related_products_title | split: '|' | first }}</h2>
+            {% endif %}
+          {% endif %}
+
+          <div class="products-grid owl-carousel">
+
+            {% if product_count < number_of_related_products_to_show %}    
+              {% if product.tags contains first_match or product.tags contains second_match %}          
+                {% include 'related-product-grid-item' with collection.handle %}
+                {% assign product_count = product_count | plus:1 %}
+              {% endif %}
+            {% endif %}            
+
+            {% if first_related_product == false %} </div> {% endif %}
+        </section>
+	  {% endif %}
+	{% endif %}
+  {% endunless %}
+{% endfor %}
+{% endpaginate %}
+<script>
+$(document).ready(function(){
+   $('.products-grid.owl-carousel').owlCarousel({
+    loop:true,
+    margin:10,
+    responsiveClass:true,
+    responsive:{
+        0:{
+            items:3
+        },
+        992:{
+            items:3
+        }
+    }
+})
+  });
+</script>

@@ -1,0 +1,180 @@
+<!-- OneTrust Cookies Consent Notice start for lagirlusa.com -->
+<script type="text/javascript" src="https://cdn.cookielaw.org/consent/fa59b44e-f21b-4a74-9545-5696740f6778/OtAutoBlock.js" ></script>
+<script src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js"  type="text/javascript" charset="UTF-8" data-domain-script="fa59b44e-f21b-4a74-9545-5696740f6778" ></script>
+<script type="text/javascript">
+function OptanonWrapper() { }
+</script>
+<!-- OneTrust Cookies Consent Notice end for lagirlusa.com -->
+
+<script type="text/javascript">
+// Intercept iframe creation at the deepest level
+(function() {
+  // Store original methods
+  const originalCreateElement = document.createElement;
+  const originalAppendChild = Node.prototype.appendChild;
+  const originalInsertBefore = Node.prototype.insertBefore;
+  const originalSetAttribute = Element.prototype.setAttribute;
+  
+  // Override createElement to fix iframes at creation
+  document.createElement = function(tagName) {
+    const element = originalCreateElement.call(document, tagName);
+    
+    if (tagName.toLowerCase() === 'iframe') {
+      // Override setAttribute for this specific iframe
+      const originalIframeSetAttribute = element.setAttribute;
+      element.setAttribute = function(name, value) {
+        if (name === 'sandbox' && (value === '' || !value.includes('allow-scripts'))) {
+          value = 'allow-scripts allow-same-origin allow-forms allow-popups';
+        }
+        return originalIframeSetAttribute.call(this, name, value);
+      };
+    }
+    return element;
+  };
+  
+  // Override setAttribute globally
+  Element.prototype.setAttribute = function(name, value) {
+    if (this.tagName === 'IFRAME' && name === 'sandbox' && (value === '' || !value.includes('allow-scripts'))) {
+      value = 'allow-scripts allow-same-origin allow-forms allow-popups';
+    }
+    return originalSetAttribute.call(this, name, value);
+  };
+  
+  // Intercept when iframes are added to DOM
+  const fixIframe = function(iframe) {
+    if (iframe.tagName === 'IFRAME') {
+      const sandbox = iframe.getAttribute('sandbox');
+      if (sandbox !== null && (sandbox === '' || !sandbox.includes('allow-scripts'))) {
+        iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-popups');
+      }
+    }
+  };
+  
+  Node.prototype.appendChild = function(child) {
+    fixIframe(child);
+    return originalAppendChild.call(this, child);
+  };
+  
+  Node.prototype.insertBefore = function(newNode, referenceNode) {
+    fixIframe(newNode);
+    return originalInsertBefore.call(this, newNode, referenceNode);
+  };
+  
+  // console.log('OneTrust iframe fix loaded - Deep intercept active');
+})();
+
+// Also try to patch OneTrust's specific method if it exists
+if (typeof OptanonWrapper !== 'undefined') {
+  const originalOptanonWrapper = OptanonWrapper;
+  OptanonWrapper = function() {
+    originalOptanonWrapper();
+    
+    // Try to patch the specific OneTrust method that's causing issues
+    setTimeout(() => {
+      if (window.OneTrust && window.OneTrust.InsertPcHtml) {
+        const originalInsertPcHtml = window.OneTrust.InsertPcHtml;
+        window.OneTrust.InsertPcHtml = function() {
+          const result = originalInsertPcHtml.apply(this, arguments);
+          // Fix any iframes that were just created
+          document.querySelectorAll('iframe[sandbox=""]').forEach(iframe => {
+            iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-popups');
+          });
+          return result;
+        };
+      }
+    }, 0);
+  };
+}
+</script>
+<!--BE IXF: JavaScript begin-->
+<!--Access to and use of BrightEdge AutoPilot - Self Connecting Pages is governed by the
+Infrastructure Product Terms located at: www.brightedge.com / infrastructure - product - terms.
+Customer acknowledges and agrees it has read, understands and agrees to be bound by the
+Infrastructure Product Terms. -->
+<script defer src = "//cdn.bc0a.com/autopilot/f00000000048750/autopilot_sdk.js" ></script> 
+<!--BE IXF: JavaScript end-->
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TEBRNCBKVT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-TEBRNCBKVT');
+</script>
+
+  <script>
+    document.querySelectorAll('.accordion').forEach((accordion) => {
+    	accordion.addEventListener('click', () => {
+    		if (window.innerWidth < 1024) {
+    			const content = accordion.querySelector('.accordion-content');
+    			const icon = accordion.querySelector('.accordion-icon');
+    			if (content.style.display === 'block' || content.style.display === 'flex') {
+    				content.style.display = 'none';
+    				icon.classList.remove('open');
+    			} else {
+    				content.style.display = content.getAttribute('data-display');
+    				icon.classList.add('open');
+    			}
+    		}
+    	});
+    });
+
+    // Ensure content is displayed for screens larger than 1024px
+    window.addEventListener('resize', () => {
+    	document.querySelectorAll('.accordion-content').forEach((content) => {
+    		if (window.innerWidth >= 1024) {
+    			content.style.display = content.getAttribute('data-display');
+    		} else {
+    			content.style.display = 'none';
+    		}
+    	});
+    });
+
+    // Initial check on page load
+    document.addEventListener('DOMContentLoaded', () => {
+    	document.querySelectorAll('.accordion-content').forEach((content) => {
+    		if (window.innerWidth >= 1024) {
+    			content.style.display = content.getAttribute('data-display');
+    		}
+    	});
+    });
+  </script>
+
+<script  data-ot-ignore src="{{ 'jquery.min.js' | asset_url }}"></script>
+<script  data-ot-ignore defer src="{{ 'card-product.js' | asset_url }}"></script>
+<script  data-ot-ignore defer src="{{ 'global.js' | asset_url }}"></script>
+<script  data-ot-ignore src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js" async></script>
+<script  data-ot-ignore src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" async ></script>
+
+
+<script  data-ot-ignore src="{{ 'masonry.pkgd.min.js' | asset_url }}"></script>
+<script  data-ot-ignore src="{{ 'jquery.mixitup.js' | asset_url }}" ></script>
+<script  data-ot-ignore defer src="{{ 'lity.min.js' | asset_url }}"></script>
+
+{% if template contains 'blog' or template contains 'article' %}
+  <script  data-ot-ignore defer src="{{ 'jquery.bxslider.min.js' | asset_url }}" ></script>
+  <script  data-ot-ignore defer src="{{ 'jquery-dateFormat.min.js' | asset_url }}"></script>
+{% endif %}
+
+{% if template contains 'foundation-finder' %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src="https://npmcdn.com/isotope-layout@3/dist/isotope.pkgd.js"></script>
+<script src="https://cdn.shopify.com/s/files/1/0944/0398/files/flickity.pkgd.min.js?v=1623953716"></script>
+{% endif %}
+
+  {% comment %}
+    If you store has customers disabled, you can remove the following JS file
+  {% endcomment %}
+  {% if template contains 'customers' %}
+    <script data-ot-ignore defer src="{{ 'shopify_common.js' | shopify_asset_url }}"></script>
+    <script data-ot-ignore defer src="{{ 'customer_area.js' | shopify_asset_url }}"></script>
+  {% endif %}
+
+
+
+
+
+
+

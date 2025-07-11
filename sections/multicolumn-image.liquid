@@ -1,0 +1,146 @@
+<div class="container-grid">
+  <div class="pt-16 pb-8">
+  <div class="grid md:grid-cols-2 gap-4 max-w-screen-xl mx-auto">
+    {%- for block in section.blocks -%}
+    <div class="column center" data-transition-enabled="true" data-scroll-transition="fade">
+       
+      <div class="img-wrapper aspect-[2/1] overflow-hidden">
+       {%- if block.settings.desktop_banner -%}
+
+          {%- liquid
+            assign sizes = '800px'
+            assign widths = '400, 800, 1200, 1600'         
+            assign height =  block.settings.desktop_banner.width | divided_by:  block.settings.desktop_banner.aspect_ratio  | round
+            assign fetch_priority = 'auto'
+              if block.index == 1
+                assign fetch_priority = 'high'
+              endif             
+          -%}
+
+              {{
+                block.settings.desktop_banner
+                | image_url: width: 800
+                | image_tag: height: height, sizes: sizes, widths: widths, loading: 'lazy',fetchpriority: fetch_priority
+              }}         
+
+         {%- else -%}
+         {{ 'hero-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}
+         {%- endif -%}
+      </div>
+      <div class="content-wrapper">
+        <h3 class="text font-display text-4xl font-bold text-base mx-8 my-5">{{ block.settings.promo_title }}</h3>
+
+        <div class="text font-display font-medium text-base mx-8 my-5"><p>{{ block.settings.promo_subheader }}</p></div>
+
+        <a href="{{ block.settings.url_link }}" aria-label="{{ block.settings.button_cta }}" target="" rel="noreferrer noopener">
+          <button class="inline-flex items-center justify-center h-12 gap-2 px-6 text-base font-bold font-display tracking-wide w-[340px] h-[50px] border border-neutral-600 text-black rounded my-5">
+            <span>{{ block.settings.button_cta }}</span>
+          </button>
+          </a>
+      </div>
+    </div>
+  {%- endfor -%}
+    
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Multicolumn Image",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Hero Banner Section"
+    },    
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }    
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Promo Column",
+      "settings": [
+          {
+            "type": "header",
+            "content": "Hero Banner Section"
+          },    
+          {
+            "type": "image_picker",
+            "id": "desktop_banner",
+            "label": "Desktop Banner"
+            },
+          {
+            "type": "image_picker",
+            "id": "mobile_banner",
+            "label": "Mobile Banner"     
+            },    
+          {
+            "type": "inline_richtext",
+            "id": "promo_title",
+            "default": "Lip Service",
+            "label": "Promo Header"
+          },
+          {
+            "type": "inline_richtext",
+            "id": "promo_subheader",
+            "default": "Shop Lip",
+            "label": "Sub Header"
+          },
+          {
+            "type": "inline_richtext",
+            "id": "button_cta",
+            "default": "Shop Now",
+            "label": "Button Call to Action"
+          },        
+          {
+            "type": "url",
+            "id": "url_link",
+            "label": "Banner Link"
+          }
+        ]  
+    }
+  ],
+  "presets": [
+    {
+      "name": "Multicolumn Image",
+      "blocks": [
+        {
+          "type": "column"
+        },
+        {
+          "type": "column"
+        }
+      ]
+    }
+  ]
+}
+
+{% endschema %}

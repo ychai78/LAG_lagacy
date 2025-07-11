@@ -1,0 +1,251 @@
+{{ 'blog.css' | asset_url | stylesheet_tag }}
+<style>
+
+.btn.sort {
+    float: left;
+    height: 30px;
+    line-height: 0;
+    margin-right: 10px;
+    font-size: .9rem;
+    width: 85px;
+    padding: 0 0 0 0;
+    margin-top: 5px;
+}
+.btn.sort.active {
+    background: black;
+}  
+.toolbar-sort.filter {
+    display: flex;
+    width: 100%;
+    border-bottom: 1px solid;
+    justify-content: space-between;
+}
+  .toolbar-sort.filter #sort-by {
+    width: 180px !important;
+    float: right;
+    padding: 0 15px 0 15px;
+    display: block;
+    border: 1px solid #000;
+    position: relative;
+    cursor: pointer;
+    text-transform: capitalize;
+    padding-right: 30px;
+    overflow: hidden;
+}
+h1.entry-title {
+    font-size: 18px;
+    letter-spacing: 4px;
+    font-weight: 800;
+    line-height: 1.0909090909;
+    margin-bottom: 12px;
+    margin: 0 0 12px 0;
+    text-transform: uppercase;
+}
+  .post-date {
+    font-size: 16px;
+    color: #9d9d9d;
+    font-style: italic;
+    margin: 0 0 20px;
+}
+body#main_blog main.main-content p {
+    margin-bottom: 24px;
+}
+  .entry-content img {
+    margin: 10px 0;
+}
+.entry-content a {
+    text-decoration: underline;
+    font-size: 13px;
+    font-weight: 700;
+
+
+}
+
+a.post-shop-now {
+    display: block;
+}
+.entry-content {
+    font-size: 13px;
+    color: #1f1f1f;
+    display: block !important;
+}
+  .post.type-post {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+
+}
+  .post.type-post:first-child {
+    border-top: none;
+}
+  .post-video {
+    display: inline-block;
+    position: relative;
+}
+  .post-video:after {
+    content: '';
+    height: 100%;
+    width: 100%;
+    display: block;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    background-image: url(https://cdn.shopify.com/s/files/1/0944/0398/files/play.png?1240649…);
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: .85;
+    pointer-events: none;
+}
+  .post-video img {
+    max-width: 250px;
+}
+section.post-products-used {
+    display: flex;
+    width: 100%;
+    margin: 0 auto;
+    justify-content: center;
+      flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+  a.post-shop-now:hover {
+    cursor: pointer;
+}
+  span.news-category {
+    display: block;
+    text-align: center;
+    background: black;
+    color: white;
+    width: 100px;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+    font-weight: 900;
+}
+</style>
+
+
+
+
+<div class="main-wrapper new-blog">
+<section class="left-blog">
+  <h1 class="entry-title main">
+  
+    NEWS & Events
+  </h1>  
+
+
+  
+
+
+<div class="toolbar-sort filter">
+ <div class="sort-by">
+   <div class="sort-by-buttons">
+    <button class="btn sort " id="all">Show All</button>
+	<button class="btn sort" id="event-tag">Events</button>
+	<button class="active btn sort" id="news-tag">News</button>
+   </div>
+  </div>
+  <div class="sort-by hide">
+  <select id="sort-by">
+    <option selected disabled>SORT BY</option>
+    <option value="all">All</option>
+    <option value="event-tag">Events</option>
+    <option value="news-tag">Magazine</option>
+    
+  </select>
+</div>
+  </div>
+
+  
+  
+{% assign featuredBlogs = 'events,news' | split:',' %}
+
+{% comment %}
+Set the featuredArticles variable to false by default.
+{% endcomment %}
+{% assign featuredArticles = false %}
+
+{% comment %}
+Grab the last 50 (default) articles from each Blog. Add the articles to the featureArticles variable.
+{% endcomment %}
+{% for featuredBlog in featuredBlogs %}
+	{% if blogs[featuredBlog].articles %}
+		{% if featuredArticles %}
+			{% assign featuredArticles = featuredArticles | concat:blogs[featuredBlog].articles %}
+		{% else %}
+			{% assign featuredArticles = blogs[featuredBlog].articles %}
+		{% endif %}
+	{% endif %}
+{% endfor %}
+
+{% comment %}
+If featuredArticles is not false we should have articles to show - so let's do it!
+{% endcomment %}
+<div id ="filter-container">
+{% if featuredArticles %}
+	{% assign featuredArticles = featuredArticles | sort:'published_at' | reverse %}
+
+	{% for article in featuredArticles %}
+
+  {%- comment %}<locksmith:193c>{% endcomment -%}
+    {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: article, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+  {%- comment %}</locksmith:193c>{% endcomment -%}
+
+  {% assign url = article.url   | remove: "/blogs/"  %}
+  {% assign blog_category = url | split:'/' | first %}
+
+<article id="{{article.id}}" 
+         class="post type-post category-uncategorized {% if blog_category == "news"  %}news-tag{% endif %}{% if blog_category == "events"  %}event-tag{% endif %}">
+     
+  
+  {% if blog_category == "news"  %}
+   {% include 'page.mainblog.news' %}
+ {% endif %}
+  
+  
+  
+  {% if blog_category == "events"  %}
+   {% include 'page.mainblog.events' %}
+   {% endif %}
+  
+</article>
+
+ 	{% endfor %}
+
+{% endif %}
+</div>
+  </section>
+ {% include 'page.mainblog_right_widget' %}
+
+<script async data-apikey="5399a1c36a43a39830a89db6bc09bef6f2715156ef42cf38d04596c50d37ca7b" data-instance="38fd8c67d850b7a79d0063329d98bc2c" data-olapic="olapic_specific_widget" src="https://photorankstatics-a.akamaihd.net/81b03e40475846d5883661ff57b34ece/static/frontend/latest/build.min.js" type="text/javascript"></script>
+<script>
+
+jQuery(document).ready(function() {
+  $( "button#news-tag" ).trigger( "click" );
+  $(".post-shop-now").click(function() {
+  $( this ).nextAll('section').toggle();
+});
+
+});
+</script>
+<script>
+  var $btns = $( "#sort-by" ).change(function() {
+
+  if (this.value == 'all') {
+    $('#filter-container > article').fadeIn(450);
+  } else {
+    var $el = $('.' + this.value).fadeIn(450);
+    $('#filter-container > article').not($el).hide();
+  }
+ 
+})
+
+  var $btns = $('.btn.sort').click(function() {
+  if (this.id == 'all') {
+    $('#filter-container > article').fadeIn(450);
+  } else {
+    var $el = $('.' + this.id).fadeIn(450);
+    $('#filter-container > article').not($el).hide();
+  }
+  $btns.removeClass('active');
+  $(this).addClass('active');
+})
+</script>

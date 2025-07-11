@@ -1,0 +1,146 @@
+<div class="customer-service-page container-grid mb-[20vh]">
+  {% render 'breadcrumb' %}
+  <div class="grid grid-cols-1 gap-8 lg:grid-cols-10 my-8">
+    <div class="flex flex-col lg:col-span-2">
+      {% assign handle = page.handle %}
+      {% assign words = handle | split: '-' %}
+      {% assign capitalized_words = '' %}
+      {% for word in words %}
+        {% assign capitalized_word = word | capitalize %}
+        {% assign capitalized_words = capitalized_words | append: capitalized_word | append: ' ' %}
+      {% endfor %}
+      {% assign capitalized_handle = capitalized_words | strip %}
+      
+      <div class="daisydropdown daisydropdown-bottom daisydropdown-end w-full lg:hidden">
+        <div tabindex="0" role="button" id="sortButton" class="sortByFilter daisybtn m-1 w-full">
+          {{ capitalized_handle }}
+          <svg width="12" height="7" viewBox="0 0 12 7" xmlns="http://www.w3.org/2000/svg">
+            <path id="icon-expand" d="M10.95 2.364A1 1 0 109.536.95L6 4.485 2.465.95A1 1 0 001.05 2.364l4.243 4.243a1 1 0 001.414 0v-.001l4.243-4.242z" fill="currentColor" fill-rule="evenodd"></path>
+          </svg>
+        </div>
+        <ul tabindex="0" class="daisydropdown-content z-[1] daisymenu p-2 shadow bg-base-100 rounded-box w-full">
+          {% if section.settings.navigation_menu != blank %}
+            {% for link in section.settings.navigation_menu.links %}
+              {%- comment %}<locksmith:6178>{% endcomment -%}
+                {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: section.settings.navigation_menu, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+              {%- comment %}</locksmith:6178>{% endcomment -%}
+              <li value="{{ link.title }}" {% if page.handle == link.handle %}class="selected font-bold"{% endif %}>
+                <a href="{{ link.url }}">{{ link.title }}</a>
+              </li>
+            {% endfor %}
+          {% endif %}
+        </ul>
+      </div>
+
+      <aside class="customer-service__nav-panel hidden lg:block">
+        <ul tabindex="0" class="daisydropdown-content z-[1] daisymenu p-2 shadow bg-base-100 rounded-box w-[11rem]">
+          {% if section.settings.navigation_menu != blank %}
+            {% for link in section.settings.navigation_menu.links %}
+              {%- comment %}<locksmith:5f2b>{% endcomment -%}
+                {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: section.settings.navigation_menu, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+              {%- comment %}</locksmith:5f2b>{% endcomment -%}
+              <li value="{{ link.title }}" {% if page.handle == link.handle %}class="selected font-bold"{% endif %}>
+                <a href="{{ link.url }}">{{ link.title }}</a>
+              </li>
+            {% endfor %}
+          {% endif %}
+        </ul>  
+      </aside>
+    </div>
+
+      <div class="flex flex-col lg:col-span-8">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'title' -%}
+              <div class="product__title" {{ block.shopify_attributes }}>
+                <h1>{{ page.title | split: '|' | first }}</h1>
+              </div>
+            {%- when 'custom_liquid' -%}
+              {{ block.settings.custom_liquid }}
+            {%- when 'page_content' -%}
+              {{ page.content }}
+           
+          {%- endcase -%}
+        {% endfor %}
+      </div>
+   </div>
+</div>
+<style>
+nav.breadcrumbs ol {
+    padding-inline-start: 0;
+}
+.customer-service-page strong {
+    font-size: .95em;
+    font-weight: 600;
+}
+.customer-service-page ol {
+    list-style-type: decimal;
+    margin-block-start: var(--space-400);
+    padding-inline-start: 3rem;
+}
+.customer-service-page h2 {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid;
+    border-color: black;
+}
+.customer-service-page h3 {
+    font-size: 1.25em;
+    text-transform: uppercase;
+}
+.customer-service-page h4 {
+    font-size: 1.1em;
+    margin-top: var(--space-400);
+}
+.customer-service-page h3:not(:first-of-type) {
+    margin-top: var(--space-600);
+    border-top: 1px solid #e0ded7;
+    padding-top: var(--space-600);
+}
+.customer-service-page ul:not(.daisymenu) {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: var(--space-400);
+    padding-inline-start: 3rem;
+}
+</style>
+
+{% schema %}
+{
+  "name": "Service",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "navigation_menu",
+      "label": "Navigation Menu",
+      "info": "Select the menu to display in the sidebar",
+      "default": "main-menu"
+    }
+  ],
+  "blocks": [
+    
+    {
+      "type": "custom_liquid",
+      "name": "Custom liquid block",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Custom liquid",
+          "info": "Add custom Liquid code"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sidemenu",
+      "settings": {},
+      "blocks": [
+
+      ]
+    }
+  ]
+}
+{% endschema %}

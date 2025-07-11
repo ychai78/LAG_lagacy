@@ -1,0 +1,158 @@
+<style>
+.section-menu__wrapper {
+    padding: 1rem;
+}
+  @media (min-width: 1025px){
+.desktop\:p-lg {
+    padding: 24px;
+}
+  }
+  a.section-menu__item {
+    padding: 16px 32px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    margin-right: 2rem;
+}
+.section-menu__item:hover {
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    background: black;
+    color: white;
+}
+  
+  .p-md {
+    padding: 16px;
+}
+
+.whitespace-nowrap {
+    white-space: nowrap;
+}
+.overflow-auto {
+    overflow: auto;
+}
+.w-full {
+    width: 100%;
+}
+  
+  .text-center {
+    text-align: center;
+}
+.whitespace-nowrap {
+    white-space: nowrap;
+}
+.bg-white {
+    --tw-bg-opacity: 1;
+    background-color: rgb(251 251 251 / var(--tw-bg-opacity));
+}4
+.gap-md {
+    gap: 16px;
+}
+.justify-start {
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+}
+
+.items-center {
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.flex {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.btn {
+    --tw-border-opacity: 1;
+    --tw-bg-opacity: 1;
+    --tw-text-opacity: 1;
+    background-color: rgb(17 17 17 / var(--tw-bg-opacity));
+    border-color: rgb(17 17 17 / var(--tw-border-opacity));
+    border-radius: 100px;
+    border-width: 1px;
+    color: rgb(251 251 251 / var(--tw-text-opacity));
+    cursor: pointer;
+    display: inline-block;
+    padding: 16px 32px;
+    text-align: center;
+    text-transform: uppercase;
+}
+.btn--black-outline {
+  border: solid;
+    border-color: rgb(17 17 17 / var(--tw-border-opacity));
+    border-width: 1px;
+    color: rgb(17 17 17 / var(--tw-text-opacity));
+} 
+     .btn--black-outline, .btn--black-outline:disabled {
+    --tw-border-opacity: 1;
+    --tw-text-opacity: 1;
+    background-color: transparent;
+}
+  .section-menu {
+    margin: 0;
+    display: flex;
+    margin: 1rem 0;
+}
+  </style>
+
+
+<quicklinks-nav data-transition-enabled="true" data-scroll-transition="fade" class="overflow-x-scroll relative">
+
+  <div class="quicklinks__nav-menu section-menu__wrapper scroll-snap gap-4">
+      {%- for link in section.settings.menu.links -%}
+        {%- comment %}<locksmith:2a77>{% endcomment -%}
+          {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: section.settings.menu, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+        {%- comment %}</locksmith:2a77>{% endcomment -%}
+        <a href="{{ link.url }}" class="section-menu__item btn btn--black-outline">{{- link.title | escape -}}</a>
+      {%- endfor -%}
+  </div>
+<style>
+.quicklinks__nav-menu {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  cursor: grab;
+  user-select: none; /* Prevent text selection while grabbing */
+}
+
+.quicklinks__nav-menu:active {
+  cursor: grabbing;
+}  
+.quicklinks__nav-menu::-webkit-scrollbar {
+  display: none;
+}
+
+.quicklinks__nav-menu {
+  scrollbar-width: none;
+}
+</style>
+</quicklinks-nav> 
+
+
+{% schema %}
+  {
+    "name": "Quick Links Menu",
+    "tag": "section",
+    "class": "section",
+    "disabled_on": {
+      "groups": ["header", "footer"]
+    },
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "default": "main-menu",
+      "label": "Quick Links Menu"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Quick Links Menu"
+    }
+  ]
+
+  }
+{% endschema %}

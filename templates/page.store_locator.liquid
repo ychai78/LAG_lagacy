@@ -1,0 +1,45 @@
+<script defer src="{{ 'storeLocator.js' | asset_url }}"></script>
+
+<div class="main-wrapper-store-locator">
+  <div id="storemapper" class="w-full flex justify-center"></div>
+  <script data-storemapper-start="2020,02,06" data-storemapper-id="6918">
+    (function() {var script = document.createElement('script');script.type  = 'text/javascript';script.async = true;script.src = 'https://www.storemapper.co/js/widget.js'; var entry = document.getElementsByTagName('script')[0];entry.parentNode.insertBefore(script, entry);}());
+  </script>
+</div>
+<style>
+  .main-wrapper-store-locator {
+	max-height: calc(100vh - 8.875rem);
+}
+#storemapper .storemapper-loader-wrap{
+	margin-top:5%;
+	margin-left:0px;
+	display: block;
+}
+#storemapper .storemapper-loader-marker {
+	fill: #eb008b;
+}
+#storemapper .storemapper-loader-shadow {
+	fill: #484848;
+}
+div#rite-aid-store {
+	margin-top: 1rem;
+	opacity: 0;
+}
+a.btn.storemapper-map-directions {
+	float: left;
+}
+#storemapper #storemapper-list li.storemapper-selected p.storemapper-description, #storemapper #storemapper-list li.storemapper-selected p.storemapper-distance, #storemapper #storemapper-list li.storemapper-selected p[class^='storemapper-custom-'], #storemapper #storemapper-list li.storemapper-selected .storemapper-phone a, #storemapper #storemapper-list li.storemapper-selected .storemapper-email a, #storemapper #storemapper-list li.storemapper-selected .storemapper-url a {
+	color: black;
+}
+@media only screen and (min-width: 768px){
+	div#storemapper #storemapper-left, div#storemapper #storemapper-right {
+		height: 500px;
+		height: calc(100vh - 8.875rem);
+	}
+}
+</style>
+<script type="text/javascript">
+  $(document).ready(function(){
+    initStoreLocator();
+  });
+</script>

@@ -1,0 +1,91 @@
+ <div class="experience-page mx-auto {% if page.metafields.custom.fixed_width.value == true %}max-w-screen-xl{% endif %}">
+
+  
+  {% if page.metafields.custom.experience_page_images.value %}
+    {% assign item = page.metafields.custom.experience_page_images.value %}
+
+
+
+    
+ {% for images in item %}
+<div class="experience-block block{{ forloop.index }}">
+         <picture class="image-grid unselectable">
+    
+          <source
+            type="image/jpg" 
+            sizes="100vw" width="auto" height="auto" 
+            srcset="
+              {%- assign w = 100 -%}
+              {%- for width in (0..100) -%}
+                {{ images | image_url: width: w }} {{ w }}w{%- if w > 3600 -%}{%- break -%}{%- endif -%},
+                {%- assign w = w | times: 1.53 | round: 0 -%}
+              {%- endfor -%}
+            "
+          >
+          {%- liquid
+            assign loading = 'lazy'
+            assign fetchpriority = 'auto'
+            if forloop.first
+              assign fetchpriority = 'high'
+              assign loading = 'eager'
+            endif
+
+            assign image_url = images | image_url: width: 3600
+          -%}
+
+          <img
+            src="{{ image_url }}"
+            alt="{{ page_title}} - {{ forloop.index }}"
+            width="3600"
+            loading="{{ loading }}"
+            fetchpriority="{{ fetchpriority }}"
+            class="responsive-image object-contain w-revert-layer "
+          >
+        </picture>   
+</div>
+ {% endfor %}
+    
+    
+ {% else %}
+    <div class="rte">{{ page.content | split: '[lang2]' | first }}</div>
+    {% endif %}
+
+  
+  {% if page.metafields.custom.custom_page_coding %}
+    {% assign content = page.metafields.custom.custom_page_coding %}
+    {{ content }}
+    {% endif %}
+
+  
+</div>
+                     
+
+
+<style>
+  .w-revert-layer {
+    width: revert-layer;
+}
+  .site-wrap:has(.experience-page) {
+    max-width: 100vw;
+    padding: 0;
+}
+  
+.main-wrapper {
+    padding: 0;
+    display: block;
+    font-family: "Gotham Medium", sans-serif;
+    color: white;
+    max-width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.main-wrapper.fixed-width {
+    max-width: 107rem;
+}
+  
+  footer.site-footer {
+    margin: -1rem 0 0 0;
+}
+  
+</style>

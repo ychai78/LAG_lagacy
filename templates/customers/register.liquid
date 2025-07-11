@@ -1,0 +1,117 @@
+
+<div class="min-h-halfscreen max-w-screen-sm mx-auto px-6 py-8 flex flex-col justify-center items-center">
+
+  <div class="w-full mx-auto">
+     
+      <div class="mx-auto my-10">
+      <div class="text-center">
+        <h1 class="text-4xl md:text-5xl leading-none font-heading font-bold text-center">Create Account</h1>
+        <p class="my-4 text-center w-[330px] lg:w-full mx-auto">Create an account for easier, faster check out and to track your orders.</p>
+      </div>
+      <div class="m-7">
+         {%- form 'create_customer', novalidate: 'novalidate' -%}
+        {%- if form.errors -%}
+          <div class="text-center text-sm mb-4 text-red-600">
+          <div class="errors">
+            <ul>
+              {%- for field in form.errors -%}
+                <li>
+                  {%- if field == 'form' -%}
+                    {{ form.errors.messages[field] }}
+                  {%- else -%}
+                    <a href="#RegisterForm-{{ field }}">
+                      {{ form.errors.translated_fields[field] | capitalize }}
+                      {{ form.errors.messages[field] }}
+                    </a>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        </div>
+         {%- endif -%}
+           <div class="mb-6">           
+            <label for="RegisterForm-FirstName" class="sr-only">First Name</label>
+           <input
+              type="text"
+              name="customer[first_name]"
+              id="RegisterForm-FirstName"
+              {% if form.first_name %}
+                value="{{ form.first_name }}"
+              {% endif %}
+              autocomplete="given-name"
+              placeholder="First Name"
+              class="w-full px-3 py-2 placeholder-gray-400 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-pink-100 focus:border-pink-300"
+            >        
+           </div>   
+           <div class="mb-6">           
+            <label for="RegisterForm-LastName" class="sr-only">Last Name</label>
+           <input
+              type="text"
+              name="customer[last_name]"
+              id="RegisterForm-LastName"
+              {% if form.first_name %}
+                value="{{ form.first_name }}"
+              {% endif %}
+              autocomplete="family-name"
+              placeholder="Last Name"
+              class="w-full px-3 py-2 placeholder-gray-400 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-pink-100 focus:border-pink-300"
+            >        
+           </div>    
+           <div class="mb-6">           
+            <label for="RegisterForm-email" class="sr-only">Email</label>
+            <input
+                    type="email"
+                    name="customer[email]"
+                    id="RegisterForm-email"
+                    {% if form.email %}
+                      value="{{ form.email }}"
+                    {% endif %}
+                    spellcheck="false"
+                    autocapitalize="off"
+                    autocomplete="email"
+                    aria-required="true"
+                    {% if form.errors contains 'email' %}
+                      aria-invalid="true"
+                      aria-describedby="RegisterForm-email-error"
+                    {% endif %}
+                    placeholder="Email"
+                    class="w-full px-3 py-2 placeholder-gray-400 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-pink-100 focus:border-pink-300"
+                  >  
+           </div>           
+           <div class="mb-6">           
+            <label for="RegisterForm-password" class="sr-only">Password</label>
+            <input
+                    type="password"
+                    name="customer[password]"
+                    id="RegisterForm-password"
+                    aria-required="true"
+                    {% if form.errors contains 'password' %}
+                      aria-invalid="true"
+                      aria-describedby="RegisterForm-password-error"
+                    {% endif %}
+                    placeholder="Password"
+                   class="w-full px-3 py-2 placeholder-gray-400 border border-gray-400 rounded-md focus:outline-none focus:ring focus:ring-pink-100 focus:border-pink-300"
+                  >      
+           </div>            
+            <div class="mb-6">
+             
+             <button type="submit" class="w-full px-3 py-4 text-white daisybtn daisybtn-accent font-sans font-bold uppercase text-white text-xs md:text-sm">Create</button>
+            </div>  
+            <div class="flex flex-col my-4 py-4 text-center">
+              
+              <a href="/account/login" class="text-sm inline-block my-1">Have an account? <span class="underline">Login</span></a>
+              <a href="/" class="text-sm inline-block my-1">Return to Store</a>
+            </div>                  
+         {%- endform -%}
+
+
+        
+
+        </div>
+      </div>
+   
+    
+  </div>
+</div>
+

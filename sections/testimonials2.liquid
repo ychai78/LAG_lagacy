@@ -1,0 +1,207 @@
+{% schema %}
+{
+	"name": "Testimonial Slider",
+	"settings": [
+		{
+			"type": "text",
+			"id": "title",
+			"label": "Section Title",
+			"default": "Don't just take our word for it..."
+		},
+		{
+			"type": "textarea",
+			"id": "description",
+			"label": "Section Description",
+			"default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+		}
+	],
+	"blocks": [
+		{
+			"type": "testimonial",
+			"name": "Testimonial",
+			"settings": [
+				{
+					"type": "range",
+					"id": "rating",
+					"min": 1,
+					"max": 5,
+					"step": 1,
+					"label": "Rating",
+					"default": 5
+				},
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Testimonial Title",
+					"default": "Great Product!"
+				},
+				{
+					"type": "textarea",
+					"id": "content",
+					"label": "Testimonial Content",
+					"default": "This product exceeded my expectations. Highly recommended!"
+				},
+				{
+					"type": "text",
+					"id": "author",
+					"label": "Author Name",
+					"default": "John Doe"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Testimonial Slider",
+			"blocks": [
+				{
+					"type": "testimonial"
+				},
+				{
+					"type": "testimonial"
+				},
+				{
+					"type": "testimonial"
+				}
+			]
+		}
+	]
+}
+{% endschema %}
+
+
+
+<section class="bg-gray-50">
+	<div class="container-grid mx-auto px-4 py-12 sm:px-6 lg:me-0 lg:py-16 lg:pe-0 lg:ps-8 xl:py-24">
+		<div class="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:items-center lg:gap-16">
+			<div class="max-w-xl text-center ltr:sm:text-left rtl:sm:text-right">
+				<h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+					{{ section.settings.title }}
+				</h2>
+
+				<p class="mt-4 text-gray-700">
+					{{ section.settings.description }}
+				</p>
+
+				<div class="hidden lg:mt-8 lg:flex lg:gap-4">
+					<button
+						aria-label="Previous slide"
+						id="keen-slider-previous-desktop"
+						class="p-3 transition border rounded-full border-rose-600 text-rose-600 hover:bg-rose-600 hover:text-white"
+					>
+						{% render 'icon-arrow-left-circle' %}
+					</button>
+
+					<button
+						aria-label="Next slide"
+						id="keen-slider-next-desktop"
+						class="p-3 transition border rounded-full border-rose-600 text-rose-600 hover:bg-rose-600 hover:text-white"
+					>
+						{% render 'icon-arrow-right-circle' %}
+					</button>
+				</div>
+			</div>
+
+			<div class="-mx-6 lg:col-span-2 lg:mx-0">
+				<div id="keen-slider" class="keen-slider">
+					{% for block in section.blocks %}
+						{% if block.type == 'testimonial' %}
+							<div class="keen-slider__slide">
+								<blockquote
+									class="flex flex-col justify-between h-full p-6 bg-white shadow-sm sm:p-8 lg:p-12"
+								>
+									<div>
+										<div class="flex gap-0.5 text-green-500">
+											{% for i in (1..5) %}
+												<svg
+													class="size-5"
+													fill="{% if i <= block.settings.rating %}currentColor{% else %}none{% endif %}"
+													stroke="currentColor"
+													viewBox="0 0 24 24"
+													xmlns="http://www.w3.org/2000/svg"
+												>
+													<path
+													  stroke-linecap="round"
+													  stroke-linejoin="round"
+													  stroke-width="2"
+													  d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+													/>
+												</svg>
+											{% endfor %}
+										</div>
+
+										<div class="mt-4">
+											<p class="text-2xl font-bold text-rose-600 sm:text-3xl">{{ block.settings.title }}</p>
+
+											<p class="mt-4 leading-relaxed text-gray-700">
+												{{ block.settings.content }}
+											</p>
+										</div>
+									</div>
+
+									<footer class="mt-4 text-sm font-medium text-gray-700 sm:mt-6">
+										&mdash; {{ block.settings.author }}
+									</footer>
+								</blockquote>
+							</div>
+						{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+
+		<div class="flex justify-center gap-4 mt-8 lg:hidden">
+			<button
+				aria-label="Previous slide"
+				id="keen-slider-previous"
+				class="p-4 transition border rounded-full border-rose-600 text-rose-600 hover:bg-rose-600 hover:text-white"
+			>
+				{% render 'icon-arrow-left-circle' %}
+			</button>
+
+			<button
+				aria-label="Next slide"
+				id="keen-slider-next"
+				class="p-4 transition border rounded-full border-rose-600 text-rose-600 hover:bg-rose-600 hover:text-white"
+			>
+				{% render 'icon-arrow-right-circle' %}
+			</button>
+		</div>
+	</div>
+</section>
+
+<script>
+	const keenSlider = new KeenSlider(
+		'#keen-slider',
+		{
+			loop: true,
+			slides: {
+				origin: 'center',
+				perView: 1.25,
+				spacing: 16,
+			},
+			breakpoints: {
+				'(min-width: 1024px)': {
+					slides: {
+						origin: 'auto',
+						perView: 1.5,
+						spacing: 32,
+					},
+				},
+			},
+		},
+		[]
+	);
+
+	const keenSliderPrevious = document.getElementById('keen-slider-previous');
+	const keenSliderNext = document.getElementById('keen-slider-next');
+
+	const keenSliderPreviousDesktop = document.getElementById('keen-slider-previous-desktop');
+	const keenSliderNextDesktop = document.getElementById('keen-slider-next-desktop');
+
+	keenSliderPrevious.addEventListener('click', () => keenSlider.prev());
+	keenSliderNext.addEventListener('click', () => keenSlider.next());
+
+	keenSliderPreviousDesktop.addEventListener('click', () => keenSlider.prev());
+	keenSliderNextDesktop.addEventListener('click', () => keenSlider.next());
+</script>

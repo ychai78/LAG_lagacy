@@ -1,0 +1,87 @@
+{% assign first_variant = product.variants.first %}
+<div class="container-grid gap-y-4 lg:grid ">
+  {% render 'breadcrumb' %}
+</div>
+<div class="PDP_section container-grid gap-y-4">
+  <div class="my-4 md:my-8 flex flex-col items-start w-full mx-auto product-container md:gap-4 md:flex-row" >
+   <div id="product-main-image" class="flex-auto block w-full product-main-image md:w-6/12 lg:w-7/12">
+      {% for block in section.blocks %}
+        {% if block.type == 'product_media' %}
+          {% render 'product-media', product: product, first_variant: first_variant %}
+        {% endif %}
+      {% endfor %}
+    </div>
+    <div
+      class="flex-auto w-full px-4 product-info md:px-0 md:w-6/12 lg:w-5/12 lg:pl-8"
+      style="max-width: 100vw;overflow: hidden;"
+    >
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'product_info' %}
+            {% render 'product-info', product: product %}
+          {% when 'product_form' %}
+            {% render 'product-form', product: product %}
+           {% when 'product_in_stores_list' %}
+            {% render 'product-in-stores-list', product: product %}                   
+          {% when 'shipping_promo' %}
+            {% render 'shipping-promo', product: product %}
+          {% when 'see_in_action' %}
+            {% render 'see-it-in-action2' %}
+          {% when 'product_accordion' %}
+            {% render 'product-accordion', product: product %}
+          {% when 'description_images' %}
+            {% render 'product-description-images' %}
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Main",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "product_media",
+      "name": "Product Media",
+      "limit": 1
+    },
+    {
+      "type": "product_info",
+      "name": "Product Info",
+      "limit": 1
+    },
+    {
+      "type": "product_form",
+      "name": "Product Form",
+      "limit": 1
+    },
+    {
+      "type": "product_in_stores_list",
+      "name": "Product in Stores List",
+      "limit": 1
+    },    
+    {
+      "type": "shipping_promo",
+      "name": "Shipping Promo",
+      "limit": 1
+    },
+    {
+      "type": "see_in_action",
+      "name": "See In Action",
+      "limit": 1
+    },
+    {
+      "type": "product_accordion",
+      "name": "Product Accordion",
+      "limit": 1
+    },
+    {
+      "type": "description_images",
+      "name": "Description Images",
+      "limit": 1
+    }
+  ]
+}
+{% endschema %}

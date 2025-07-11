@@ -1,0 +1,142 @@
+{{ 'collections.css' | asset_url | stylesheet_tag }}
+
+{% assign product_per_page = 24 %}
+{% capture category_title %}
+  {% render 'collection titles' %}
+{% endcapture %}
+
+{% assign product_count = 0 %}
+{% for product in collection.products %}
+	{%- comment %}<locksmith:2408>{% endcomment -%}
+	  {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: collection, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+	{%- comment %}</locksmith:2408>{% endcomment -%}
+	{% unless product.tags contains 'coming soon' %}
+		{% assign product_count = product_count | plus: 1 %}
+	{% endunless %}
+{% endfor %}
+
+
+{% assign category_title = category_title | strip | escape %}
+
+<div class="mt-4 container-grid">
+	<h1 class="mx-auto mt-4 mb-0 uppercase text-step-4" data-title="{{collection.title}}">{{ category_title }}</h1>
+
+		<div class="flex items-center justify-between mb-4">
+			<span class="text-xl lowercase search-results-count-container tracking-overline">
+				{{ product_count }}
+				{{ product_count | pluralize: 'item', 'items' }}
+			</span>
+			<div class="justify-end hidden sortByOptions md:flex">
+				<div class="daisydropdown daisydropdown-end daisydropdown-bottom">
+					<div tabindex="0" role="button" id="sortButton" class="m-1 sortByFilter daisybtn">
+						Sort by -
+						<span id="sortText">Featured</span>
+						<svg width="12" height="7" viewBox="0 0 12 7" xmlns="http://www.w3.org/2000/svg">
+							<path id="icon-expand" d="M10.95 2.364A1 1 0 109.536.95L6 4.485 2.465.95A1 1 0 001.05 2.364l4.243 4.243a1 1 0 001.414 0v-.001l4.243-4.242z" fill="currentColor" fill-rule="evenodd"></path>
+						</svg>
+					</div>
+					<ul tabindex="0" class="daisymenu daisydropdown-content z-[1] w-52 rounded-box bg-base-100 p-2 shadow">
+						<li value="manual"><a href="{{ collection.url | sort_by: 'manual' }}" class="sortOption">Featured</a></li>
+						<li value="best-selling">
+							<a href="{{ collection.url | sort_by: 'best-selling' }}" class="sortOption">Best Selling</a>
+						</li>
+						<li value="price-descending">
+							<a href="{{ collection.url | sort_by: 'price-ascending' }}" class="sortOption">Price: Low to High</a>
+						</li>
+						<li value="price-ascending">
+							<a href="{{ collection.url | sort_by: 'price-descending' }}" class="sortOption">Price: High to Low</a>
+						</li>
+						<li value="title-ascending">
+							<a href="{{ collection.url | sort_by: 'title-ascending' }}" class="sortOption">A-Z</a>
+						</li>
+						<li value="title-descending">
+							<a href="{{ collection.url | sort_by: 'title-descending' }}" class="sortOption">Z-A</a>
+						</li>
+					</ul>
+				</div>
+
+				<script>
+					document.addEventListener('DOMContentLoaded', function () {
+						const sortOptions = document.querySelectorAll('.sortOption');
+						const sortText = document.getElementById('sortText');
+
+						sortOptions.forEach((option) => {
+							option.addEventListener('click', function (event) {
+								event.preventDefault(); // Prevent the default link behavior
+								const selectedText = this.textContent;
+								sortText.textContent = selectedText;
+
+								// Redirect to the href of the clicked link
+								window.location.href = this.href;
+							});
+						});
+
+						// Set the sort text based on the current URL
+						const urlParams = new URLSearchParams(window.location.search);
+						const sortBy = urlParams.get('sort_by');
+						if (sortBy) {
+							const selectedOption = Array.from(sortOptions).find(
+								(option) => option.parentElement.getAttribute('value') === sortBy
+							);
+							if (selectedOption) {
+								sortText.textContent = selectedOption.textContent;
+							}
+						}
+					});
+				</script>
+			</div>
+		</div>
+	
+	{% render 'collection-promo-banner' %}
+
+	{% if collection.metafields.custom.collection_banner %}
+		<div class="collection_product__image_promo">
+			{% assign array_of_images = collection.metafields.custom.collection_banner.value %}
+			{% for images in array_of_images %}
+				{% render 'image', images: images, class: 'collection_image_promo' %}
+			{% endfor %}
+		</div>
+	{% endif %}
+
+	{% paginate collection.products by product_per_page %}
+		<div
+			id="CollectionProducts"
+			class="grid grid-cols-2 gap-2 products-grid lg:grid-cols-3 lg:gap-4 lg:gap-y-8 xl:grid-cols-4"
+		>
+			{% if collection.products.size > 0 %}
+				{% assign eager_load_threshold = 6 %}
+				{% assign product_index = 0 %}
+
+				{% comment %} Display new products first {% endcomment %}
+				{% for product in collection.products %}
+					{%- comment %}<locksmith:be25>{% endcomment -%}
+					  {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: collection, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+					{%- comment %}</locksmith:be25>{% endcomment -%}
+					{% if product.tags contains 'new' %}
+						{% unless product.tags contains 'coming soon' %}
+							{% assign product_index = product_index | plus: 1 %}
+							{% render 'card-product-3',
+								card_product: product,
+								eager_load: true,
+								eager_load_index: product_index,
+								eager_load_threshold: eager_load_threshold
+							%}
+						{% endunless %}
+					{% endif %}
+				{% endfor %}
+
+				
+
+			{% endif %}
+		</div>
+
+		<div id="Pagination">
+			{% render 'pagination', paginate: paginate, anchor: '' %}
+		</div>
+	{% endpaginate %}
+
+	{% render 'collection-description' %}
+	<div class="my-4">
+		{% render 'breadcrumb', class: 'flex' %}
+	</div>
+</div>

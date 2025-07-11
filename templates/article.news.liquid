@@ -1,0 +1,227 @@
+{% assign url = article.url | remove: '/blogs/' %}
+{% assign blog_category = url | split: '/' | first %}
+<div class="container-grid">
+  <div class="breadcrumb-nav-back mt-4">
+    <a href="/pages/news-events">&lt; BACK</a>
+  </div>
+
+  <div class="mx-auto flex flex-wrap py-6">
+    <!-- Post Section -->
+
+    <section class="flex w-full flex-col items-center px-3">
+      <article class="my-4 grid lg:grid-cols-2">
+        <div class="flex justify-center p-4"><a href="#" class="hover:opacity-75">
+          <picture>
+            <source
+              srcset="
+                {% assign desktop_widths = '500 700' | split: ' ' %}
+                {% for width in desktop_widths %}
+                  {{ article.image | image_url: width: width }} {{ width }}w{% unless forloop.last %},{% endunless %}
+                {% endfor %}
+              "
+            >
+            <img alt="{{ article.title}}" loading="lazy" src="{{ article.image | image_url: width: 473 }}" width="473"/>
+          </picture>
+        </a></div>
+        <div class="flex flex-col justify-start p-4">
+          <a href="#" class="pb-4 text-sm font-bold uppercase text-pink-600">{{ blog_category }}</a>
+          <a href="#" class="pb-4 text-3xl font-bold hover:text-gray-700 max-w-[30ch]">
+            {% if blog_category == 'magazines' %}
+              {% comment %}
+                Grab tagline if exist, if not grab title
+              {% endcomment %}
+              {% if article.metafields.c_f.blog_tagline %}
+                {% assign tagline = article.metafields.c_f.blog_tagline %}
+                {{ tagline }}
+              {% else %}
+                {% assign magazine_title = article.title | split: '-' | first %}
+                Featured on {{ magazine_title }}
+              {% endif %}
+            {% endif %}
+
+            {% if blog_category == 'events' or blog_category == 'news' %}
+              {% comment %}
+                Grab tagline if exist, if not grab title
+              {% endcomment %}
+              {% if article.metafields.c_f.blog_tagline %}
+                {% assign tagline = article.metafields.c_f.blog_tagline %}
+                {{ tagline }}
+              {% else %}
+                {{ article.title }}
+              {% endif %}
+            {% endif %}
+          </a>
+          <p href="#" class="pb-8 text-sm">Published on {{ article.published_at | date: '%m/%d/%y' }}</p>
+          {% if article.content %}
+            <div class="pb-3">{{ article.content }}</div>
+          {% endif %}
+        
+        </div>
+      
+       
+        {% comment %}
+        <div class="flex flex-col justify-start bg-white p-6">
+          {% assign product_found = false %}
+          {% for tag in article.tags %}
+            {% assign product = all_products[tag] %}
+            {% if product != blank %}
+              {% assign product_found = true %}
+            {% endif %}
+          {% endfor %}
+
+          {% if product_found %}
+            <div class="blog-post-photos shop-post-container">
+              <h3>Shop this post</h3>
+              <div class="shop-post">
+                {% for tag in article.tags %}
+                  {% assign product = all_products[tag] %}
+                  {% if product != blank %}
+                    {% include 'product-grid-item' %}
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+        </div>
+        {% endcomment %}
+      </article>
+        {% section 'multiarticle' %}
+    </section>
+
+    <!-- Sidebar Section -->
+    <aside class="flex w-full  items-center px-3">
+      <div class="my-4 flex w-full flex-col bg-white p-6 shadow-">
+        <p class="pb-5 text-xl font-semibold">See us in the press</p>
+      
+        <div class="grid lg:flex gap-8">
+          {% for article in blogs.magazines.articles limit: 3 %}
+            {%- comment %}<locksmith:fad9>{% endcomment -%}
+              {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: article, subject_parent: blogs.magazines, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+            {%- comment %}</locksmith:fad9>{% endcomment -%}
+            {% assign url = article.url | remove: '/blogs/' %}
+
+            {% assign blog_category = url | split: '/' | first %}
+            {% include 'page.mainblog.magazines_side' %}
+          {% endfor %}
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+  jQuery(document).ready(function() {
+    $(".post-shop-now").click(function() {
+    $( this ).nextAll('section').toggle();
+  });
+
+    if( $(".shop-post-container .shop-this-look-grid").children().length > 0){
+   	 $(".shop-post-container").show();
+    }
+  });
+
+  $(document).ready(function(){
+    $('.bxslider').slick({
+       dots: true,
+       lazyLoad: 'ondemand',
+              infinite: false,
+              slidesToShow: 4,
+              slidesToScroll: 4,rows: 0,
+              nextArrow: '<div class="slick-button-next"></div>',
+              prevArrow: '<div class="slick-button-prev"></div>'
+    });
+
+    $('.blogSlider').slick({
+
+             slidesToShow: 3,
+             slidesToScroll: 1,
+             arrows: false,
+             infinite: false,
+             dots: false,
+             swipeToSlide: true,
+             draggable:true,
+
+                  responsive: [
+
+
+                {
+                  breakpoint: 768,
+                  settings: {
+                    slidesToShow: 1.5,
+                    slidesToScroll: 1,
+                    arrows: false,
+                    infinite: false,
+                    dots: false
+
+                  }
+                }
+
+              ]
+    });
+  });
+
+
+
+
+
+
+  {% if article.metafields.c_f.blog_event_js != null %}
+  {{ article.metafields.c_f.blog_event_js }}
+              {% endif %}
+</script>
+
+<style>
+    .main-wrapper.new-blog h1.entry-title {
+      margin-top: 1rem;
+  }
+    .main-wrapper.new-blog .left-blog {
+      margin-bottom: 3rem;
+  }
+    body[data-page-handle="article.events"] main.main-content p {
+      margin-bottom: 24px;
+      font-size: 1.25rem;
+  }
+  iframe.yt-short {
+      width: 100%;
+      height: 100%;
+      aspect-ratio: 9 / 16;
+      margin: 0 1rem;
+      border: none;
+  }
+    iframe.yt-short:after{
+      content: ""; background: transparent; width: 100%; height: 100%; min-height: 1px; position: absolute; top: 0;
+    }
+  .shop-post-container .grid__item {
+      width: 180px;
+      float: left;
+      margin-right: 1rem;
+  }
+  .shop-post-container  .shop-post {
+      margin: 2rem 0;
+  }
+    .shop-post h3 {
+      border-bottom: 1px solid #e5e5e5;
+      font-weight: 700;
+      padding-bottom: 10px;
+      font-size: 18px;
+      letter-spacing: 0px;
+      margin: 1rem 0;
+      text-transform: uppercase;
+  }
+    .blog-video.head-video .post-video img {
+      max-width: 100%;
+  }
+    .blog-video.head-video {
+      border-top: none;
+  }
+    .blog-video.head-video {
+      border-top: none;
+      text-align: center;
+  }
+    .blogSlider {
+      margin-bottom: 5rem;
+  }
+    .shop-post section.grid-product__swatch {
+      display: none;
+  }
+</style>

@@ -1,0 +1,65 @@
+{% case product.type %}
+	{% when 'eyeshadow'  or 'eyeliner' or 'mascara' or 'eyebrow' or 'eyeliner & lipliner'%}
+		{% assign product_collection = "eyes" %}
+  	
+  	{% when 'lipgloss'  or 'lipstick' or 'lipliner' or 'lip care' %}
+		{% assign product_collection = "lips" %}
+
+	{% when 'prime & set'  or 'Foundation' or 'foundation' or 'Cream' or 'blush' or 'concealer' or 'contour & highlight' or 'powder'  or 'face/body palette'%}
+		{% assign product_collection = "face" %}
+
+	{% when 'polish'  or 'treatment'  or 'nail tips' %}
+		{% assign product_collection = "nails" %}
+  	
+	{% when 'accessories' or 'train case' or 'bags' or 'brushes' or 'tools'%}
+		{% assign product_collection = "accessories" %}
+
+	{% when 'Reverie Collection'%}
+		{% assign product_collection = "reverie-holiday-collection" %}
+
+	{% when 'vault'%}
+		{% assign product_collection = "limited-edition-vaults" %}
+
+  {% else %}
+    {% assign product_collection = "" %}
+{% endcase %}
+
+
+
+
+<ol id="breadcrumbs" class="flex items-center whitespace-nowrap mbe-1" itemscope itemtype="http://schema.org/BreadcrumbList">
+  <li class="inline-flex items-center" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+    <a class="flex items-center text-sm text-gray-500 hover:text-pink-600 focus:outline-none focus:text-pink-600" href="{{ shop.secure_url }}/" itemprop="item">
+      <span itemprop="name">Home</span>
+      <meta itemprop="position" content="1" />
+    </a>
+    <svg class="flex-shrink-0 mx-2 overflow-visible size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m9 18 6-6-6-6"></path>
+    </svg>
+  </li>
+  
+  <li class="inline-flex items-center" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+    <a class="flex items-center text-sm text-gray-500 hover:text-pink-600 focus:outline-none focus:text-pink-600" href="{{ shop.secure_url }}/collections/{{ product_collection }}" itemprop="item">
+      <span itemprop="name">{{ product_collection | replace: '-', ' ' | capitalize }}</span>
+      <meta itemprop="position" content="2" />
+    </a>
+    <svg class="flex-shrink-0 mx-2 overflow-visible size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m9 18 6-6-6-6"></path>
+    </svg>
+  </li>
+  
+  <li class="inline-flex items-center" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+    <a class="flex items-center text-sm text-gray-500 hover:text-pink-600 focus:outline-none focus:text-pink-600" href="{{ shop.secure_url }}/collections/{{ product_collection }}/{{ product.type | handle }}" itemprop="item">
+      <span itemprop="name">{{ product.type | capitalize }}</span>
+      <meta itemprop="position" content="3" />
+    </a>
+    <svg class="flex-shrink-0 mx-2 overflow-visible size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m9 18 6-6-6-6"></path>
+    </svg>
+  </li>
+  
+  <li class="inline-flex items-center text-sm font-semibold text-gray-800 truncate" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" aria-current="page">
+    <span itemprop="name">{{ product.title }}</span>
+    <meta itemprop="position" content="4" />
+  </li>
+</ol>

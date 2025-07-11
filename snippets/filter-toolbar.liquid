@@ -1,0 +1,161 @@
+{% if settings.collection_results_per_page != blank %}
+  {% assign product_per_page = settings.collection_results_per_page %}
+{% else %}
+  {% assign product_per_page = 8 %}
+{% endif %}
+{% assign collection_list =  collection.metafields.c_f.collection_type %}
+{% assign collection_linklist =  linklists[collection_list].links  | sort: 'title'  %}
+{% assign collection_of_page =  collection.handle | remove: '-'  %}
+{%unless linklists[collection_list].links == empty %}                                
+<section class="refinementWrap">
+
+<div class="refinements site-wrap">  
+
+ <div class="refinements-wrap">
+   <div class="refinements-wrapper">
+    
+     
+     
+     
+     <h4 class="refinement_header">FILTER</h4>	
+     
+     
+     <div class="refine-filter">
+       {%comment%}
+ 		{%unless linklists[collection_list].links == empty %}
+        <div id="filter-category">
+             <h3 class="filter-title"><a href="#">{{collection_list}}</a></h3>
+             <div class="refinement refinement_formulation" style="">
+               <ul class="refine-list">
+              	{% for link in collection_linklist  %}     
+                 <li>                
+                   <a href="{{link.url }}" class="navigation-link{% if {{link.handle}} == {{collection_of_page}} %} active{% endif %}">{{link.title}}</a>             
+                 </li>      
+                 {% endfor %}            
+               </ul>    		
+          	</div>   		 
+       </div>
+       {% endunless %}
+        {%endcomment%}
+ 		
+      
+        <div id="filter-formulation">
+             <h3 class="filter-title"><a href="#">By Formulation</a></h3>
+             <div class="refinement refinement_formulation" style="">
+
+            {% assign tags = 'cream, cream-to-powder, gel, liquid, loose-powder, pressed-powder, spray' | split: ',' %}
+            
+	    <ul class="refine-list">
+              {% for t in tags %}
+              {% assign tag = t | strip |  %}
+              {% assign tagNoSpace = {{tag | replace:' ','-'}}%}
+              {% if current_tags contains tag %}
+         
+              <li><a href="/collections/{{ collection.handle }}/{{tagNoSpace}}" {% if tagNoSpace  == current_tags.first  %} class="filter-link active"{% endif %}><span class="checkBox"></span>{{ tag }}</a> </li>
+              {% elsif collection.all_tags contains tag %}
+              <li><a href="/collections/{{ collection.handle }}/{{tagNoSpace}}" {% if tagNoSpace  == current_tags.first  %} class="filter-link active"{% endif %}><span class="checkBox"></span>{{ tag }}</a> </li>
+
+                {% endif %}
+              {% endfor %}
+            </ul>
+
+    		</div>
+   		 </div>
+       
+        
+         <div id="filter-finish">
+              <h3 class="filter-title"><a href="#">By Finish</a></h3>
+        <div class="refinement refinement_finish" style="">
+
+             {% assign tags = 'dewy, glitter, luminous, matte, metallic, satin, shimmer, shiny' | split: ',' %}
+            <ul class="refine-list">
+              {% for t in tags %}
+              {% assign tag = t | strip %}
+              {% assign tagNoSpace = {{tag | replace:' ','-'}}%}
+              {% if current_tags contains tag %}
+              <li><a href="/collections/{{ collection.handle }}/{{tagNoSpace}}" {% if tagNoSpace  == current_tags.first  %} class="filter-link active"{% endif %}><span class="checkBox"></span>{{ tag }}</a> </li>
+              {% elsif collection.all_tags contains tag %}
+              <li><a href="/collections/{{ collection.handle }}/{{tagNoSpace}}" {% if tagNoSpace  == current_tags.first  %} class="filter-link active"{% endif %}><span class="checkBox"></span>{{ tag }}</a> </li>
+
+                {% endif %}
+              {% endfor %}
+            </ul>
+         
+    </div>
+           
+           
+           
+           
+       </div>
+       <div id="filter-coverage">
+
+               <h3 class="filter-title"><a href="#">By Coverage</a></h3>
+        <div class="refinement refinement_coverage" style="">
+
+            {% assign tags = 'full, medium-to-full, medium, sheer-to-medium, sheer' | split: ',' %}
+            <ul class="refine-list">
+              {% for t in tags %}
+              {% assign tag = t | strip %}
+              {% assign tagNoSpace = {{tag | replace:' ','-'}}%}
+              {% if current_tags contains tag %}
+              <li><a href="/collections/{{ collection.handle }}/{{tagNoSpace}}" {% if tagNoSpace  == current_tags.first  %} class="filter-link active"{% endif %}><span class="checkBox"></span>{{ tag }}</a> </li>
+              {% elsif collection.all_tags contains tag %}
+              <li><a href="/collections/{{ collection.handle }}/{{tagNoSpace}}" {% if tagNoSpace  == current_tags.first  %} class="filter-link active"{% endif %}><span class="checkBox"></span>{{ tag }}</a> </li>
+
+                {% endif %}
+              {% endfor %}
+            </ul>
+         
+    </div>
+       
+       
+       
+       </div>
+    </div>
+     
+ 
+  <a id="clearFilter"class="clear_refinements hide" title="Show all options" href="/collections/{{{collection_of_page }}">CLEAR FILTERS</a>
+
+  </div></div>
+
+</div>
+  
+  
+
+
+  
+  
+
+<script>
+$('.toggleControl').click(function() {
+
+    jQuery(this).next().toggle( 500 );
+
+ 
+ 
+  });
+    
+if ( $('.refinements-wrapper .filter-link').hasClass( "active" ) ) {
+ 
+        $( '#clearFilter' ).removeClass("hide");
+            
+ 
+    }
+ $('ul.refine-list:not(:has(li))').parent().parent().remove();
+  
+
+</script>
+
+  
+
+
+    
+	
+  
+  </section>
+ {% endunless %}
+
+
+
+
+

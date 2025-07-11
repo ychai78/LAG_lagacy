@@ -1,0 +1,81 @@
+{%comment%}	Displays the side menu on desktop	{%endcomment%}
+
+
+
+
+
+
+{%comment%}	Displays the side menu on mobile devices.	{%endcomment%}
+
+
+{% assign collection_linklist =  linklists[collection_list].links  %}
+{% assign collection_of_page =  collection.handle | remove: '-'  %}
+
+
+<aside class="customer-service-sidemenu visible-xs visible-sm ">
+<nav class="customer-service-mobile_menu" id="filter-nav">  
+  <div class="menu-item" id="cat">
+    <span class="collapse-menu-header" id="cat-menu" ><span>{{collection.title}}</span>
+      
+      {%unless linklists[collection_list].links == empty %}
+      <span class="icon-add"><span class="navigation-icon-add-line1 navigation-icon-add-line"></span></span>
+      {% endunless %}
+  </span>
+  <ul class="customer-service-menu dropdown-collapsed">
+    {% for link in collection_linklist  %}
+
+
+      {%- comment %}<locksmith:a46a>{% endcomment -%}
+        {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+      {%- comment %}</locksmith:a46a>{% endcomment -%}
+
+
+      <li class="c-menu_item" data-dropdown-link="{{ link.title | downcase }}">
+        <a href="{{link.url }}" class="navigation-link{% if {{link.handle}} == {{collection_of_page}} %} current active{% endif %}">{{link.title}}</a>
+    </li>
+    {% endfor %}
+  </ul>
+  </div>
+  
+  <div class="menu-item" id="filter">
+  <span class="collapse-menu-header" id="filter-menu" ><span>Filter</span>
+    <span class="icon-add">
+      <span class="navigation-icon-add-line1 navigation-icon-add-line"></span>
+    </span>
+  </span>
+  <ul class="customer-service-menu dropdown-collapsed">
+      <li class="c-menu_item">
+        {% include 'filter-toolbar' %}
+    </li>
+  </ul>
+  </div>
+{%comment%}  
+  <div class="menu-item" id="sort">
+  <span class="collapse-menu-header" id="sort-menu" ><span>Sort</span>
+  <span class="icon-add">
+      <span class="navigation-icon-add-line1 navigation-icon-add-line"></span>
+    </span>
+  </span>
+  <ul class="customer-service-menu dropdown-collapsed sortBy">
+  
+    
+    <li class="c-menu_item" value="manual"><a href="{{ collection.url | sort_by: 'manual' }}">Featured</a></li>
+    <li class="c-menu_item" value="best-selling"><a href="{{ collection.url | sort_by: 'best-selling' }}">Best Selling</a></li>
+    <li class="c-menu_item" value="price-ascending"><a href="{{ collection.url | sort_by: 'price-ascending' }}">Price: Low to High</a></li>
+    <li class="c-menu_item" value="price-descending"><a href="{{ collection.url | sort_by: 'price-descending' }}">Price: High to Low</a></li>
+	<li class="c-menu_item" value="title-ascending"><a href="{{ collection.url | sort_by: 'title-ascending' }}">A-Z</a></li>
+    <li class="c-menu_item" value="title-descending"><a href="{{ collection.url | sort_by: 'title-descending' }}">Z-A</a></li>
+    
+  </ul>
+  </div>
+  {%endcomment%}
+</nav>
+</aside>
+ 
+<script>
+$(document).ready(function(){
+var QueryURL =document.URL.split("=")[1];
+$('a[href*=' + QueryURL + ']').addClass("current");
+});    
+       
+ </script>

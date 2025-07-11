@@ -1,0 +1,158 @@
+{% comment %}
+ EComposer (https://ecomposer.io)
+ You SHOULD NOT modify source code in this page because
+ It is automatically generated from EComposer
+ {% endcomment %} 
+ 
+            {% assign ecom_root_url = routes.root_url %}
+            {% if ecom_root_url != '/'%}
+                {% assign ecom_root_url = routes.root_url | append: '/' %}
+            {% endif %}
+        <link rel="stylesheet" media="all" id="ecom-vendors-css_ecomposer_base" href="https://cdn.ecomposer.app/vendors/css/ecom-base.css?v=1.2" /><noscript><link rel="stylesheet" media="all" id="ecom-vendors-css_ecomposer_base" href="https://cdn.ecomposer.app/vendors/css/ecom-base.css?v=1.2" /></noscript>
+{%capture section_id %}ecom-blank-template-kkk-section{% endcapture%}{% if section and section_id == section.id and headless == true %}
+{{ content_for_header }}
+{% render 'ecom_header', ECOM_THEME: true %}{% endif %}
+{{'ecom-63c878baefc9e0aec4012042.css'  | asset_url | stylesheet_tag }}
+<script defer src="{{ 'ecom-63c878baefc9e0aec4012042.js' | asset_url }}"></script>
+<script type="text/javascript" id="ecom-page-info">
+                    window.EComposer = window.EComposer || {};
+                    window.EComposer.TEMPLATE_ID="63c878baefc9e0aec4012042";
+                    window.EComposer.SECTION = {"template_id":"63c878baefc9e0aec4012042","title":"Blank Template","type":"section","slug":"ecom-blank-template-kkk","plan_id":1};
+            </script>
+<div class="ecom-builder" id="ecom-blank-template-kkk"><div class="ecom-sections" data-section-id="{{section.id}}">
+                    {% comment %}
+                        // Reactive
+                        * this.data.settings.product
+                    {% endcomment  %}
+                    {% liquid
+                        if request.page_type != 'product' or product == blank
+                            assign selected_product = ''
+                            if selected_product == blank or selected_product == '' or all_products[selected_product] == blank
+                                assign product = collections['all'].products.first
+                            else
+                                assign product = all_products[selected_product]
+                                if product.id == blank
+                                    assign product = collections['all'].products.last
+                                endif
+                            endif
+                        endif
+                    %}
+                    {%- if product != blank -%}
+                        {%- form 'product', product,class: "ecom-product-form ecom-product-form--single ecom-click", product_id: product.id, data-product_id: product.id,data-product-id: product.id, data-handle: product.handle-%}
+
+                 <section class="ecom-row ecom-core ecom-section ecom-9a5f7da69hi" data-id="ecom-9a5f7da69hi" style="z-index: inherit;"><div data-deep="1" class="core__row--columns"><div class="ecom-column ecom-core core__column--first core__column--last ecom-1q9bkr2kei2"><div class="core__column--wrapper"><div class="core__blocks" index="0"><div class="core__blocks--body"><!----><div class="ecom-block ecom-core core__block elmspace ecom-95uvmn1g4qs" data-core-is="block"><div class="ecom-element ecom-product-single ecom-product-single__description" deep="1"><div class="ecom-product-single__description-wrapper"><div class="ecom-product-single__description-container" data-show-type="full"><div class="ecom-product-single__description--paragraph" style="max-height: var(--ecom-description-height);">{{product.description}}</div><!----><!----></div></div></div><!----><!----></div><!----></div></div></div><div class="ecom-column__overlay"><!----><!----><div class="ecom-overlay"></div></div></div></div><div class="ecom-section__overlay"><!----><!----><div class="ecom-overlay"></div></div><!----></section>
+
+                    {% unless ecom_has_variant_picker %}
+                    {%- capture ecom_product_json -%}
+                        {
+                        "id":  {{ product.id }},
+                        "title":  {{ product.title | json }},
+                        "handle":  {{ product.handle | json }},
+                        "price":  {{ product.price| json }},
+                        "price_min":  {{ product.price_min| json }},
+                        "price_max":  {{ product.price_max| json }},
+                        "available":  {{ product.available | json }},
+                        "price_varies":  {{ product.price_varies| json }},
+                        "compare_at_price":  {{ product.compare_at_price| json }},
+                        "compare_at_price_min":  {{ product.compare_at_price_min| json }},
+                        "compare_at_price_max":  {{ product.compare_at_price_max| json }},
+                        "compare_at_price_varies":  {{ product.compare_at_price_varies| json }},
+                        "variants": [
+                            {%- for variant in product.variants -%}
+                                {
+                                "id":  {{ variant.id }},
+                                "title": " {{ variant.option1 | handleize }}{%- if product.options.size == 2 -%} / {%- endif -%} {{ variant.option2 | handleize }}{%- if product.options.size == 3 -%} / {%- endif -%} {{ variant.option3 | handleize }}",
+                                "option1":  {{ variant.option1  | json }},
+                                "option2": {%- if product.options.size == 1 -%}null{%-else-%} {{ variant.option2  | json }}{%-endif-%},
+                                "option3": {%- if product.options.size == 1 or product.options.size == 2 -%}null{%-else-%} {{ variant.option3  | json }}{%-endif-%},
+                                "sku":  {{ variant.sku | json }},
+                                "requires_shipping":  {{ variant.requires_shipping }},
+                                "taxable":  {{ variant.taxable |json }},
+                                "selling_plan_allocations":{{variant.selling_plan_allocations | json }},
+                                "featured_image": {%- if variant.image.id != blank -%}{
+                                        "id":  {{ variant.image.id | json }},
+                                        "product_id":  {{ product.id | json }},
+                                        "width":  {{ variant.image.width | json }},
+                                        "height":  {{ variant.image.height | json }},
+                                        "src":  {{ variant.image.src | json }},
+                                        "position": {{ variant.image.position }}
+                                    }{%- else-%}null{%-endif-%},
+                                "available":  {{ variant.available }},
+                                "public_title": " {{ variant.option1 | handleize }}{%- if product.options.size == 2 -%} / {%- endif -%} {{ variant.option2 | handleize }}{%- if product.options.size == 3 -%} / {%- endif -%} {{ variant.option3 | handleize }}",
+                                "options":   {{ variant.options | json }},
+                                "price":  {{ variant.price| json }},
+                                "weight":  {{ variant.weight| json }},
+                                "compare_at_price":  {{ variant.compare_at_price | json }},
+                                "inventory_quantity":  {{ variant.inventory_quantity | json }},
+                                "inventory_management":  {{ variant.inventory_management | json }},
+                                "inventory_policy":  {{ variant.inventory_policy | json }},
+                                "next_incoming_date": {% if variant.next_incoming_date %}{{variant.next_incoming_date | time_tag | json }}{% else%}null{% endif %},
+                                "barcode":  {{ variant.barcode | json }}
+                                }{%- if forloop.last == false -%},{%- endif -%}
+                                {%- endfor -%}
+                                ],
+                                "featured_image":  {{ product.featured_image | json }},
+                                "options": [
+                                {%- for option in product.options -%}
+                                {{ option | json }}{%- if forloop.last == false -%},{%- endif -%}
+                                {%-endfor -%}
+                            ]
+                        }
+                    {%- endcapture -%}
+                        <input type="hidden" name="id" value="{{product.selected_or_first_available_variant.id}}" />
+                        <script type="application/json" id="product-json-{{product.id}}-ecom-9a5f7da69hi">
+                                {{ ecom_product_json}}
+                        </script>
+                    {% endunless %}
+                    {%- endform -%}
+                    {% assign ecom_has_variant_picker = false %}
+                    <!-- Begin Shopify-Afterpay JavaScript Snippet (v1.0.10) -->
+                    <script type="text/javascript">
+                        // Overrides:
+                        // var afterpay_min = 0.04;            // As per your Afterpay contract.
+                        // var afterpay_max = 2000.00;         // As per your Afterpay contract.
+                        // var afterpay_cbt_enabled = false;   // As per your Afterpay contract; change to true to display Cross-Border Trade artwork (for AU/NZ).
+                        // var afterpay_logo_theme = 'colour'; // Can be 'colour', 'black' or 'white'.
+                        var afterpay_product_selector = 'afterpay-placement.ecom-afterpay-integrate';
+                         var afterpay_cart_integration_enabled  = window.afterpay_cart_integration_enabled ||  true;
+                        // var afterpay_cart_static_selector = '#cart-subtotal-selector';
+
+                        // Non-editable fields:
+                        var afterpay_shop_currency = {{ shop.currency | json }};
+                        var afterpay_cart_currency = {{ cart.currency.iso_code | json }};
+                        var afterpay_shop_money_format = {{ shop.money_format | json }};
+                        var afterpay_shop_permanent_domain = {{ shop.permanent_domain | json }};
+                        var afterpay_theme_name = {{ theme.name | json }};
+                        var afterpay_product = {% if ecom_product_json%}{{ecom_product_json}}{% else %}{{ product | json }}{% endif %};
+                        var afterpay_current_variant = {{ product.selected_or_first_available_variant | json }};
+                        var afterpay_cart_total_price = {{ cart.total_price | json }};
+                        var afterpay_js_snippet_version = '1.0.10';
+                    </script>
+                    {%- endif -%}
+                <!---This page has been built by EComposer Builder (www.ecomposer.io)--->
+</div></div>
+{% schema %}
+{
+    "name": "Blank Template",
+    "locales": {
+        "en": {}
+    },
+    "settings": [
+        {
+            "type": "header",
+            "content": "The section was generated by [Ecomposer](https:\/\/ecomposer.io).",
+            "info": "\n                    EComposer is a Visual Page Builder app on Shopify AppStore.\n                    It provides 100+ pre-built templates in library,\n                    so you can build unlimited pages that you can imagine with it.\n                    "
+        },
+        {
+            "type": "header",
+            "content": "[EDIT WITH EComposer APP \u2192](https:\/\/ecomposer.app\/shop\/builder?page=section&id=63c878baefc9e0aec4012042&utm_source=theme-customize)",
+            "info": "(*You must install the app to start editing this section [Learn more](https:\/\/help.ecomposer.io\/docs\/getting-started\/installation\/))"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Blank Template"
+        }
+    ]
+}
+{% endschema %}

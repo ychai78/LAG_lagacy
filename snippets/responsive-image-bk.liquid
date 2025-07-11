@@ -1,0 +1,81 @@
+{% comment %}
+  Enhanced Responsive Image Snippet with WebP fallback
+{% endcomment %}
+
+{%- liquid
+  assign image_class = class | default: 'responsive-image'
+  assign image_alt = alt | default: image.alt | default: 'Image' | escape
+  assign image_width = width | default: image.width
+  assign image_height = height | default: image.height | times: image_width | divided_by: image.width
+  assign image_sizes = sizes | default: '100vw'
+  assign fetchpriority = eager_load | default: false
+  assign fetchpriority = fetchpriority | default: 'auto', 'high'
+  assign decoding = decoding | default: 'async'
+  
+  # Optimize quality based on image width
+  assign quality_settings = "75,80,82,85,85,85,85" | split: ","
+  assign widths = "320,640,960,1280,1600,1920,2048" | split: ","
+  
+  # Initialize srcset strings for both WebP and fallback formats
+  assign webp_srcset = ""
+  assign fallback_srcset = ""
+
+  # Calculate aspect ratio
+  assign aspect_ratio = image_height | times: 100.0 | divided_by: image_width | round: 2
+-%}
+
+{%- # Generate optimized srcset for both formats -%}
+{%- for width in widths -%}
+  {%- assign quality = quality_settings[forloop.index0] | times: 1 -%}
+  {%- capture webp_item -%}
+    {{ image | image_url: width: width, format: 'webp', quality: quality }} {{ width }}w{%- unless forloop.last -%}, {%- endunless -%}
+  {%- endcapture -%}
+  {%- capture fallback_item -%}
+    {{ image | image_url: width: width, quality: quality }} {{ width }}w{%- unless forloop.last -%}, {%- endunless -%}
+  {%- endcapture -%}
+  {%- assign webp_srcset = webp_srcset | append: webp_item -%}
+  {%- assign fallback_srcset = fallback_srcset | append: fallback_item -%}
+{%- endfor -%}
+
+<div class="responsive-image-wrapper" style="padding-bottom: {{ aspect_ratio }}%;">
+  <picture>
+    <source
+      type="image/webp"
+      srcset="{{ webp_srcset }}"
+      sizes="{{ image_sizes }}"
+    >
+    <source
+      type="image/jpeg"
+      srcset="{{ fallback_srcset }}"
+      sizes="{{ image_sizes }}"
+    >
+    <img
+      class="{{ image_class }}{% if rounded %} rounded-lg{% endif %}"
+      src="{{ image | image_url: width: image_width }}"
+      alt="{{ image_alt }}"
+      loading="{% if eager_load %}eager{% else %}lazy{% endif %}"
+      width="{{ image_width }}"
+      height="{{ image_height }}"
+      fetchpriority="{% if eager_load %}high{% else %}{{ fetchpriority }}{% endif %}"
+      decoding="{{ decoding }}"
+      {% if eager_load %}data-priority="true"{% endif %}
+    >
+  </picture>
+</div>
+
+{% style %}
+  .responsive-image-wrapper {
+    position: relative;
+    height: 0;
+    width: 100%;
+  }
+  
+  .responsive-image-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+{% endstyle %}

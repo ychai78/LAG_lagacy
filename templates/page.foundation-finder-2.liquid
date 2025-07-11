@@ -1,0 +1,339 @@
+{% comment %}
+This template is also used for listing out articles of a specific tag.
+You can change layouts or styles by checking if current_tags is true.
+
+{% endcomment %}
+<header class="page-header center">
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src="https://npmcdn.com/isotope-layout@3/dist/isotope.pkgd.js"></script>
+
+ 
+</header>
+<script>
+  var dataURL=  "https://cdn.shopify.com/s/files/1/0944/0398/files/foundationFinderData_20210611_2.json?v=1623439193";  
+  var dataURL=  "https://cdn.shopify.com/s/files/1/0944/0398/files/foundationFinderData_20210810_1_2.json?v=1628616154"; 
+  var dataURL=  "https://cdn.shopify.com/s/files/1/0944/0398/files/foundationFinderData_20220622_3.json?v=1655938870"; 
+  
+  $.get( dataURL, function( data ) {
+           var HTML = '';
+               for (var i = 0; i < data.length; i++) {
+                   value = data[i];
+                   HTML += '<div class="foundation-element '
+                   +value.Undertone+ ' ' 
+                   +value.Coverage+ ' '
+                   +value.Shade+ ' '
+                   +value.Finish+ ' '
+                   +'" data-product="'+value.PageHandle
+                   +'" data-undertone="'+value.Undertone
+                   +'" data-coverage="'+value.Coverage                   
+                   +'" data-shade="'+value.Shade
+                   +'" data-finish="'+value.Finish
+                   +'" data-sku="'+value.SKU+'">'
+                   +'<img class="f-image" src="'+value.VariantImage+'"><br>'
+                   +'<div class="f-prod-info">'
+                   +'<div class="f-sku">'+value.SKU+'</div>'
+                   +'<div class="f-shade">'+value.Product+' - '+value.ShadeName+'</div>'                  
+                   +'<div class="f-skintone">'+"<span>Skintone: </span>"+value.Shade+'</div>'   
+                   +'<div class="f-undertone">'+"<span>Undertone: </span>"+value.Undertone+'</div>'                   
+                   +'<div class="f-desc">'+"<span>Description: </span>"+value.Description+'</div>'
+                   +'<div class="f-finish">'+"<span>Finish & Coverage: </span>"+value.FinishCoverage+'</div>'
+                   +'<\/div>'
+                   +'<\/div>';
+               }
+    $('#shadeSelector-grid').append(HTML);
+    initIsotope();
+    
+  });
+
+</script>
+
+  
+ 
+<div class="filters">
+
+   <div class="ui-group">
+    <h3>STEP 1 - Select your skin tone</h3>
+    <div class="button-group js-radio-button-group" 	id="finder-btn-skintone" data-filter-group="skintone">
+      <button class="button" data-filter=".light" 		id="btn-shade-light">light</button>
+      <button class="button" data-filter=".light-medium"id="btn-shade-light-medium">light medium</button>
+      <button class="button" data-filter=".medium"		id="btn-shade-medium">medium</button>
+      <button class="button" data-filter=".medium-deep"	id="btn-shade-medium-deep">medium deep</button>
+      <button class="button" data-filter=".deep"		id="btn-shade-deep">deep</button>
+    </div>
+  </div>
+  
+  <div class="ui-group">
+    <h3>STEP 2 - Select your undertone</h3>
+    <div class="button-group js-radio-button-group" id="finder-btn-undertone" data-filter-group="undertone">
+      <button class="button" data-filter=".warm"  	id="btn-undertone-warm">Warm</button>
+      <button class="button" data-filter=".cool" 	id="btn-undertone-cool">Cool</button>
+      <button class="button" data-filter=".neutral"	id="btn-undertone-neutral">Neutral</button>
+
+    </div>
+  </div>
+{%comment%}
+  <div class="ui-group">
+    <h3>STEP 3 - Select your coverage</h3>
+    <div class="button-group js-radio-button-group"  		id="finder-btn-coverage" data-filter-group="coverage">
+      <button class="button" data-filter=".sheer" 			id="btn-coverage-sheer">sheer</button>
+      <button class="button" data-filter=".medium-buildable"id="btn-coverage-medium-buildable">medium/buildable</button>
+      <button class="button" data-filter=".full"			id="btn-coverage-full">full</button>
+    </div>
+  </div>
+  
+  <div class="ui-group">
+    <h3>STEP 4 - Select your Finish</h3>
+    <div class="button-group js-radio-button-group" 	 id="finder-btn-finish"data-filter-group="finish">
+      <button class="button" data-filter=".natural" 	id="btn-finish-natural">natural</button>
+      <button class="button" data-filter=".dewy"		id="btn-finish-dewy">dewy</button>
+      <button class="button" data-filter=".matte"		id="btn-finish-matte">matte</button>
+    </div>
+  </div>
+  {%endcomment%}
+  <div class="restart-section">
+	<button onClick="window.location.reload();">Restart</button>
+  </div>
+
+
+
+
+</div>
+<div class="grid" id="shadeSelector-grid"></div>
+
+  
+<div class="collection-wrapper ">
+  <div class="main-content-layout collections">
+    <div class="category product-grid">
+      <div class="ff-products-grid col-xs-12">
+        {% for product in collections.foundation-finder.products %}
+          {%- comment %}<locksmith:a0ad>{% endcomment -%}
+            {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: collections.foundation-finder, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+          {%- comment %}</locksmith:a0ad>{% endcomment -%}
+          {% for variant in product.variants %} 
+          	{% include 'product-grid-item-shade-finder' %}
+          {% endfor %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<style>
+
+  .ui-group button:disabled {
+    background: white;
+}
+  .restart-section {
+    margin-bottom: 2rem;
+}
+  .ui-group h3 {
+    min-width: 20rem;
+}
+  .ui-group {
+    display: block;
+}
+    span.purple {
+    color: #5c6ac4;
+}
+  span.green {
+    color: green;
+}span.blue {
+    color: blue;
+}
+* { box-sizing: border-box; }
+
+body {
+  font-family: sans-serif;
+}
+
+/* ---- button ---- */
+
+.button {
+  display: inline-block;
+  padding: 0.5em 1.0em;
+  background: #EEE;
+  border: none;
+  border-radius: 7px;
+  background-image: linear-gradient( to bottom, hsla(0, 0%, 0%, 0), hsla(0, 0%, 0%, 0.2) );
+  color: #222;
+  font-family: sans-serif;
+  font-size: 16px;
+  text-shadow: 0 1px white;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #8CF;
+  text-shadow: 0 1px hsla(0, 0%, 100%, 0.5);
+  color: #222;
+}
+
+.button:active,
+.button.is-checked {
+  background-color: #28F;
+}
+
+.button.is-checked {
+  color: white;
+  text-shadow: 0 -1px hsla(0, 0%, 0%, 0.8);
+}
+
+.button:active {
+  box-shadow: inset 0 1px 10px hsla(0, 0%, 0%, 0.8);
+}
+
+/* ---- button-group ---- */
+
+.button-group:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.button-group .button {
+  float: left;
+  border-radius: 0;
+  margin-left: 0;
+  margin-right: 1px;
+}
+
+.button-group .button:first-child { border-radius: 0.5em 0 0 0.5em; }
+.button-group .button:last-child { border-radius: 0 0.5em 0.5em 0; }
+
+/* ---- isotope ---- */
+
+.grid {
+  background: #EEE;
+  max-width: 1200px;
+}
+
+/* clear fix */
+.grid:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+/* ui group */
+
+
+.ui-group h3 {
+  display: inline-block;
+  vertical-align: top;
+  line-height: 32px;
+  margin-right: 0.2em;
+  font-size: 16px;
+}
+
+.ui-group .button-group {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+/* foundation-element */
+
+.foundation-element {
+    padding: 1rem;
+    width: 250px;
+    height: 350px;
+    float: left;
+}
+img.f-image {
+    width: 100px;
+} 
+.foundation-element.round {
+  border-radius: 35px;
+}
+ 
+.foundation-element.big.round {
+  border-radius: 75px;
+}
+ 
+.foundation-element.red { background: red; }
+.foundation-element.blue { background: blue; }
+.foundation-element.yellow { background: yellow; }
+ 
+.foundation-element.wide, .foundation-element.big { width: 150px; }
+.foundation-element.tall, .foundation-element.big { height: 150px; }
+
+span.name {
+    font-weight: 700;
+}
+  span.f-details {
+    font-style: italic;
+    color: blue;
+}
+#shadeSelector-grid {
+    max-height: initial;
+    overflow: visible;
+}
+.f-prod-info >div span {
+    font-weight: 700;
+}
+.f-sku {
+    font-size: 1.1rem;
+}
+.f-shade {
+    border-bottom: 1px solid gray;
+    margin-bottom: 0.5rem;
+} 
+  .f-prod-info {
+    margin-top: 1rem;
+}
+  .f-sku, .f-shade {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+</style>
+
+<script>
+  function initIsotope() { 
+// external js: isotope.pkgd.js
+
+// init Isotope
+var $grid = $('.grid').isotope({
+  itemSelector: '.foundation-element'
+});
+
+// store filter for each group
+var filters = {};
+
+$('.filters').on( 'click', '.button', function( event ) {
+  var $button = $( event.currentTarget );
+  // get group key
+  var $buttonGroup = $button.parents('.button-group');
+  var filterGroup = $buttonGroup.attr('data-filter-group');
+  // set filter for group
+  filters[ filterGroup ] = $button.attr('data-filter');
+  // combine filters
+  var filterValue = concatValues( filters );
+  // set filter for Isotope
+  $grid.isotope({ filter: filterValue });
+});
+
+// change is-checked class on buttons
+$('.button-group').each( function( i, buttonGroup ) {
+  var $buttonGroup = $( buttonGroup );
+  $buttonGroup.on( 'click', 'button', function( event ) {
+    $buttonGroup.find('.is-checked').removeClass('is-checked');
+    var $button = $( event.currentTarget );
+    $button.addClass('is-checked');
+  });
+});
+  
+// flatten object by concatting values
+function concatValues( obj ) {
+  var value = '';
+  for ( var prop in obj ) {
+    value += obj[ prop ];
+  }
+  return value;
+}
+ }
+
+</script>

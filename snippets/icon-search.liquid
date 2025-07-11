@@ -1,0 +1,25 @@
+
+{% comment %}
+    Renders a play icon
+
+    Usage:
+       {% render 'icon-play',  class: 'w-[75px] h-[75px]' %}
+    %}
+{% endcomment %}
+
+{%- liquid
+   if class == nil
+   assign class =  '' 
+   else
+    assign class = class 
+endif
+-%}
+
+
+       <svg role="img" aria-labelledby="Search" width="20" height="20" viewBox="0 0 20 20" class="{{ class }}">
+      <title id="Search">Search</title>
+      <g id="icon-search" fill-rule="nonzero" fill="none">
+      <path d="M8.43038 15.8607C12.5341 15.8607 15.8608 12.5341 15.8608 8.43037C15.8608 4.32669 12.5341 1 8.43038 1C4.3267 1 1 4.32669 1 8.43037C1 12.5341 4.3267 15.8607 8.43038 15.8607Z" stroke="currentColor" stroke-miterlimit="10" stroke-linecap="round"></path>
+      <path d="M18.6379 19.0007L13.4966 13.8594" stroke="currentColor" stroke-miterlimit="10" stroke-linecap="round"></path>
+    </g>
+    </svg>

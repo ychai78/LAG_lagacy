@@ -1,0 +1,20 @@
+{%- comment -%}
+  Parses the current page URL from content_for_header and returns the final URL segment
+  Returns: String - The last segment of the current page URL with query parameters
+{%- endcomment -%}
+
+{%- capture content_for_querystring -%}{{ content_for_header }}{%- endcapture -%}
+{%- assign page_url = content_for_querystring
+  | split: '"pageurl":"'
+  | last
+  | split: '"'
+  | first
+  | split: '.myshopify.com'
+  | last
+  | replace: '\/', '/'
+  | replace: '%20', ' '
+  | replace: '\u0026', '&'
+  | split: '/'
+  | last
+-%}
+{{ page_url }}

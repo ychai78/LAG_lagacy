@@ -1,0 +1,281 @@
+{{ 'blog.css' | asset_url | stylesheet_tag }}
+
+<div class="container-grid">
+  <h1 class="text-center mt-4">News & Events</h1>
+
+  <div class="toolbar-sort filter flex justify-center">
+    <div class="sort-by">
+      <div class="sort-by-buttons flex gap-4">
+        <button
+          class="daisybtn-active btn sort daisybtn daisybtn-outline daisybtn-accent h-8 min-h-8 font-bold text-xs md:text-sm"
+          id="all"
+        >
+          Show All
+        </button>
+        <button
+          class="btn sort daisybtn daisybtn-outline daisybtn-accent h-8 min-h-8 font-bold text-xs md:text-sm"
+          id="event-tag"
+        >
+          Events
+        </button>
+        <button
+          class="btn sort daisybtn daisybtn-outline daisybtn-accent h-8 min-h-8 font-bold text-xs md:text-sm"
+          id="news-tag"
+        >
+          News
+        </button>
+      </div>
+    </div>
+    <div class="sort-by hide">
+      <select id="sort-by">
+        <option selected disabled>SORT BY</option>
+        <option value="all">All</option>
+        <option value="event-tag">Events</option>
+        <option value="news-tag">Magazine</option>
+      </select>
+    </div>
+  </div>
+
+  {% assign featuredBlogs = 'events,news' | split: ',' %}
+
+  {% comment %}
+    Set the featured_articles variable to false by default.
+  {% endcomment %}
+  
+  {% assign featured_articles = false %}
+
+  {% for featuredBlog in featuredBlogs %}
+    {% if blogs[featuredBlog].articles %}
+      {% if featured_articles %}
+        {% assign featured_articles = featured_articles | concat: blogs[featuredBlog].articles %}
+      {% else %}
+        {% assign featured_articles = blogs[featuredBlog].articles %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+
+
+
+  <div class="px-8 mx-auto xl:px-5 py-5 lg:py-8">
+
+    <div class="mt-10 grid gap-10 md:grid-cols-3">
+      {% if featured_articles %}
+        {% assign featured_articles = featured_articles | sort: 'published_at' | reverse %}
+
+        {% for article in featured_articles %}
+          {%- comment %}<locksmith:9483>{% endcomment -%}
+            {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: article, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+          {%- comment %}</locksmith:9483>{% endcomment -%}
+          {% assign url = article.url | remove: '/blogs/' %}
+          {% assign blog_category = url | split: '/' | first %}
+
+          <div class="group cursor-pointer post type-post {% if blog_category == "news"  %}news-tag{% endif %}{% if blog_category == "events"  %}event-tag{% endif %}"
+            id="{{article.id}}"
+          >
+            <div class=" overflow-hidden rounded-md bg-gray-100 transition-all hover:scale-105">
+              <a class="relative block aspect-square" href="{{article.url}}">
+                {% render 'image',
+                  images: article.image,
+                  class: 'object-cover transition-all',
+                  widths: '375, 550, 750',
+                  width: '750',
+                  sizes: '(max-width: 768px) 30vw, 33vw',
+                  alt_tag: article.title
+                %}
+              </a>
+            </div>
+            <div class="">
+              <div>
+                <div class="flex gap-3">
+                  <a href="/category/design"
+                    ><span class="inline-block text-xs font-bold tracking-wider uppercase mt-5 text-pink-600">
+                      {% if blog_category == 'news' %}News{% endif -%}
+                      {%- if blog_category == 'events' %}Events{% endif -%}
+                    </span></a
+                  >
+                </div>
+                <h2 class="text-lg font-semibold leading-snug tracking-tight mt-2">
+                  <a href="/post/14-architectural-design-ideas-for-spacious-interior"
+                    ><span class="bg-gradient-to-r from-pink-200 to-pink-100 bg-[length:0px_10px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_10px] ">
+                      {{- article.title -}}
+                    </span></a
+                  >
+                </h2>
+                <div class="hidden">
+                  <p class="mt-2 line-clamp-3 text-sm text-gray-500">
+                    <a href="/post/14-architectural-design-ideas-for-spacious-interior">
+                      {{- article.content | strip_html | truncatewords: 20 }}
+                    </a>
+                  </p>
+                </div>
+                <div class="mt-3 flex items-center space-x-3 text-gray-500">
+                  <div class="truncate text-sm" datetime="{{ article.published_at | date: '%Y%m%d' }}">
+                    {{ article.published_at | date: '%b %d, %Y' }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+   
+  </div>
+
+  
+</div>
+<script>
+  // Reset function to set display: block for all event-tag and news-tag elements
+  function resetTags() {
+    $('.event-tag').css('display', 'block');
+    $('.news-tag').css('display', 'block');
+    $('.sort-by-buttons button').removeClass("daisybtn-active");
+  }
+
+  // Click handler for the event-tag button
+  $("#event-tag").click(function() {
+    resetTags(); // Reset all tags first
+    $(this).addClass("daisybtn-active");
+    $('.news-tag').hide(); // Hide news tags
+    $('.event-tag').addClass("block"); // Ensure event tags are displayed
+  });
+
+  // Click handler for the news-tag button
+  $("#news-tag").click(function() {
+    resetTags(); // Reset all tags first
+    $(this).addClass("daisybtn-active");
+    $('.event-tag').hide(); // Hide event tags
+    $('.news-tag').addClass("block"); // Ensure news tags are displayed
+  });
+
+  // Click handler for the all button
+  $("#all").click(function() {
+    resetTags(); // Reset all tags first
+    $(this).addClass("daisybtn-active");
+    $('.event-tag').addClass("block"); // Ensure event tags are displayed
+    $('.news-tag').addClass("block"); // Ensure news tags are displayed
+  });
+</script>
+
+{% comment %}
+<script>
+  jQuery(document).ready(function() {
+
+    $('.post-content article.readmore').readmore({
+  collapsedHeight:100
+  });
+
+
+    $(".post-shop-now").click(function() {
+    $( this ).nextAll('section').toggle();
+  });
+
+
+  $('.bxslider').each(function(){
+    $(this).bxSlider({
+     	mode: 'horizontal',
+    	pager:false,
+      controls:true,
+      infiniteLoop:false,
+  	slideWidth: 120,
+      minSlides: 2,
+      maxSlides: 5,
+      moveSlides: 5,
+      slideMargin: 10,
+     	onSliderLoad: function(){
+
+          $(this).parents('.bx-wrapper').addClass('horz-bxslider');
+    }
+    });
+    $(this).parents('.bx-wrapper').children('.bx-controls').insertBefore($(this).parent());
+    if ($(this).children('div').length < 1) {
+       $(this).children('.bx-controls-direction').hide();
+    }
+
+  });
+
+     $("a.bx-prev, a.bx-next").bind("click", function() {
+          // extra call for lazy loading
+          setTimeout(function() { $(window).trigger("scroll"); }, 100);
+      });
+
+
+  });
+</script>
+
+<script>
+    var $btns = $( "#sort-by" ).change(function() {
+
+    if (this.value == 'all') {
+      $('#filter-container > article').fadeIn(450);
+    } else {
+      var $el = $('.' + this.value).fadeIn(450);
+      $('#filter-container > article').not($el).hide();
+    }
+
+  })
+
+    var $btns = $('.btn.sort').click(function() {
+    if (this.id == 'all') {
+      $('#filter-container > article').fadeIn(450);
+    } else {
+      var $el = $('.' + this.id).fadeIn(450);
+      $('#filter-container > article').not($el).hide();
+    }
+    $btns.removeClass('active');
+    $(this).addClass('active');
+  })
+</script>
+
+<style>
+  .-hideOnEvent {
+      display: none!important;
+  }
+  .shop-post {
+      display: none!important;
+  }
+    .blog-post-photos{display:block!important;}
+    .blog-post-photos.shop-post {
+      display: none!important;
+  }
+  .blog-post-photos h3 {
+    margin: 0 0 0 0;
+  }
+    .blog-post-photos {
+      width: 100%;
+  }
+    .post-content article + [data-readmore-toggle], .post-content article[data-readmore] {
+      margin: 1rem 0;
+  }
+    .blog-post-photos img {
+      width: 49%;
+  }
+    .event_description .post-content {
+      width: 100%;
+  }
+    .blog-post-photos-slider {
+      width: 100%;
+      margin-bottom: 1rem;
+  }
+    .blog-post-photos-slider h3 {
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      border-bottom: 1px solid #ddd;
+  }
+    .shop-post section.grid-product__swatch {
+      display: none;
+  }
+</style>
+
+<script type="text/javascript">
+  $( document ).ready(function() {
+    if (document.location.href.indexOf('internal-test=yes') > 0)
+    {
+  $(".site-nav").first().remove();
+  $("#internal-test").removeClass("hide");
+
+    }
+         });
+</script>
+{% endcomment %}

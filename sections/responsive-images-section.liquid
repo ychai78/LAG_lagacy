@@ -1,0 +1,80 @@
+{% for block in section.blocks %}
+  <div class="responsive-image-container" {{ block.shopify_attributes }}>
+    {% if block.settings.mobile_image or block.settings.desktop_image %}
+      <picture>
+        {% if block.settings.mobile_image %}
+          <source media="(max-width: 767px)" srcset="{{ block.settings.mobile_image | image_url: width: 767 }}">
+        {% endif %}
+        {% if block.settings.desktop_image %}
+          <source media="(min-width: 768px)" srcset="{{ block.settings.desktop_image | image_url: width: 1920 }}">
+        {% endif %}
+        <img alt="{{ block.settings.alt_text }}" loading="lazy" src="{{ block.settings.desktop_image | default: block.settings.mobile_image | image_url: width: 1920 }}"/>
+      </picture>
+    {% else %}
+      <div class="placeholder-container">
+        <div class="placeholder-svg mobile-placeholder">
+         {{ 'product-1' | placeholder_svg_tag }}
+        </div>
+        <div class="placeholder-svg desktop-placeholder">
+         {{ 'product-1' | placeholder_svg_tag }}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% endfor %}
+
+{% schema %}
+{
+  "name": "Responsive Image Section",
+  "tag": "section",
+  "class": "responsive-images",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "image_set",
+      "name": "Image Set",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "desktop_image",
+          "label": "Desktop Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image"
+        },
+        {
+          "type": "text",
+          "id": "alt_text",
+          "label": "Alt Text",
+          "default": "Responsive image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Responsive Images",
+      "blocks": [
+        {
+          "type": "image_set"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .responsive-image-container {
+    margin-bottom: 20px;
+  }
+  .responsive-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+ 
+ 
+</style>

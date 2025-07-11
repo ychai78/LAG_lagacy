@@ -1,0 +1,18 @@
+<div class="my-4 max-w-screen-lg text-pretty mb-8 py-8">
+    {% assign collectionData =  shop.metafields.global.collectionData.value %}
+    {% assign pageHandle = canonical_url | split: "/" | last  %}
+    {% for menuItem in collectionData %}
+    {% if menuItem.handle == pageHandle %}
+    
+	{% assign title = menuItem.title %}
+    {% assign currentHandle   = menuItem.handle %}
+    {% assign metaDescription = menuItem.metaDescription %}
+    {% assign pageDescription = menuItem.pageDescription %}
+    {% assign metaTitle       = menuItem.title %}
+    {% assign metaKeywords    = menuItem.keywords %}
+
+    {% break %}
+    {% endif %}
+    {% endfor %} 
+  {{pageDescription}}
+</div>    

@@ -1,0 +1,38 @@
+{% assign schedule_datetime = section.settings.schedule_datetime | date: '%s' %}
+{% assign current_datetime = 'now' | date: '%s' %}
+{% assign use_scheduled = false %}
+
+{% if section.settings.enable_schedule and current_datetime >= schedule_datetime %}
+  {% assign use_scheduled = true %}
+{% endif %}
+
+<div class="grid max-w-3xl grid-cols-3 gap-4 gap-y-8 items-start">
+  {% assign promo_blocks = section.blocks | where: "type", "promo_image" %}
+  
+  {% for block in promo_blocks %}
+    {%- comment %}<locksmith:ed8f>{% endcomment -%}
+      {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: block, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+    {%- comment %}</locksmith:ed8f>{% endcomment -%}
+    <div class="promo" {{ block.shopify_attributes }}>
+      {% if use_scheduled and block.settings.scheduled_image != blank %}
+        <a href="{{ block.settings.scheduled_link }}" class="relative inline-block hover:cursor-pointer">
+          <img alt="{{ block.settings.scheduled_title }}" class="w-full h-auto object-cover aspect-[2/3]" height="525" loading="lazy" sizes="(max-width: 350px) 100vw, 350px" src="{{ block.settings.scheduled_image | img_url: '350x' }}" srcset="
+              {{ block.settings.scheduled_image | img_url: '350x' }} 350w,
+              {{ block.settings.scheduled_image | img_url: '700x' }} 700w,
+              {{ block.settings.scheduled_image | img_url: '1050x' }} 1050w
+            " width="350"/>
+          <h4 class="pt-2 mb-2 text-sm font-bold">{{ block.settings.scheduled_title }}</h4>
+        </a>
+      {% elsif block.settings.image != blank %}
+        <a href="{{ block.settings.link }}" class="relative inline-block hover:cursor-pointer">
+          <img alt="{{ block.settings.title }}" class="w-full h-auto object-cover aspect-[2/3]" height="525" loading="lazy" sizes="(max-width: 350px) 100vw, 350px" src="{{ block.settings.image | img_url: '350x' }}" srcset="
+              {{ block.settings.image | img_url: '350x' }} 350w,
+              {{ block.settings.image | img_url: '700x' }} 700w,
+              {{ block.settings.image | img_url: '1050x' }} 1050w
+            " width="350"/>
+          <h4 class="pt-2 mb-2 text-sm font-bold">{{ block.settings.title }}</h4>
+        </a>
+      {% endif %}
+    </div>
+  {% endfor %}
+</div>

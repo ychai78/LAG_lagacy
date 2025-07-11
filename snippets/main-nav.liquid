@@ -1,0 +1,611 @@
+<div class="container-grid bg-secondary-pink relative">
+  <div class="grid grid-cols-[1fr_2fr_1fr] lg:grid-cols-[20ch_1fr_20ch] items-center py-3 px-2 lg:px-0">
+    <div class="brand-nav-left  flex gap-4 items-center lg:!hidden">
+    <button type="button" role="button" aria-label="menu" class="burger block h-[26.66px] w-[26.66px] lg:hidden">
+        <label for="mobile-drawer" class="cursor-pointer">
+          <svg role="img" class="text-black" aria-labelledby="Hamburger" width="24" height="18" viewBox="0 0 24 18" fill="none">
+      <title id="Hamburger">Hamburger</title>
+      <path id="icon-hamburger" d="M1 1.25H23" stroke="currentColor" stroke-miterlimit="10" stroke-linecap="round"></path>
+      <path d="M1 9H23" stroke="currentColor" stroke-miterlimit="10" stroke-linecap="round"></path>
+      <path d="M1 16.75H23" stroke="currentColor" stroke-miterlimit="10" stroke-linecap="round"></path>
+    </svg>
+        </label>
+      </button>
+      
+      <a href="/account" class="icon svg-item lg:hidden" aria-expanded="true" role="button">
+        <span class="sr-only">Login</span>
+
+      {% render 'icon-account', class: 'size-4 block text-black' %}
+      
+      </a>
+    </div>
+
+    <div class="logo w-[13ch] lg:w-[20ch] mx-auto">
+      <a href="/" aria-current="page" class="block mx-auto">
+        {%- render 'logo-lagirl' -%}
+        <span class="sr-only">L.A. Girl Cosmetics</span>
+      </a>
+    </div>
+
+    {% comment %}
+    <div role="navigation" aria-label="Main Navigation" class="full-width bg-secondary-pink w-full hidden lg:flex">
+      <nav
+        aria-label="Main"
+        class="nav-banner full-width lex hide-scrollbar hidden h-[39px] w-full items-center overflow-x-auto lg:flex"
+      >
+        <div
+          class="nav-banner-item group shrink-0 px-4  first-of-type:ml-auto last-of-type:mr-auto"
+        >
+          <div class="relative">
+            <a
+              href="/collections/whats-new"
+              class="peer flex flex-wrap items-center gap-2 font-bold uppercase transition-colors lg:hover:text-pink-600"
+            >
+              What's New
+              {% render 'icon-arrow-down', class: 'size-4 block text-black' %}
+            </a>
+            <button
+              aria-label="show submenu for what's new"
+              aria-expanded="false"
+              class="peer pointer-events-none absolute left-full top-1/2 z-10 ml-[1px] -translate-y-1/2 opacity-0 transition-opacity focus-visible:pointer-events-auto focus-visible:opacity-100 focus-visible:outline-offset-1 peer-focus-visible:pointer-events-auto peer-focus-visible:opacity-100"
+            ></button>
+          </div>
+          <div class="submenu before:bg-transparent absolute left-0 top-[46px] hidden w-full shadow-[0px_20px_20px_0px_rgba(0,0,0,0.15)] before:mb-8 before:block group-hover:block">
+            <!-- Submenu content -->
+            <div class="container-grid megamenu absolute bg-white w-full shadow-xl">
+              <div class="mt-6 mb-6 flex">
+                <div class="mx-auto grid grid-cols-[200px_1fr] gap-4 gap-x-8">
+                  <div class="">
+                    <div class="w-full">
+                      <h4 class="mb-4 font-bold uppercase">Featured</h4>
+                      <ul class="grid gap-1">
+                      
+                        <li class="max-w-[20ch]">
+                          <a href="/collections/whats-new" 
+                            class="relative mb-2 inline-block text-balance text-sm font-bold uppercase">Shop All New</a>
+                        </li>
+                       
+                        {% for link in linklists.featured.links %}
+                            <li class="max-w-[20ch]">
+                              <a class="relative mb-2 inline-block text-balance text-sm" href="{{ link.url }}">{{ link.title }}</a>
+                            </li>
+                          {% endfor %}    
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="">
+                    <div class="grid max-w-3xl grid-cols-3 gap-4 gap-y-8">
+                      {% render 'mega-menu' %}
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="nav-banner-item group shrink-0 px-4 first-of-type:ml-auto last-of-type:mr-auto"
+        >
+          <div class="relative">
+            <a
+              href="/collections/all"
+              class="peer flex flex-wrap items-center gap-2 font-bold uppercase transition-colors lg:hover:text-pink-600"
+            >
+              Products
+              {% render 'icon-arrow-down', class: 'size-4 block text-black' %}
+            </a>
+            <button
+              aria-label="show submenu for products"
+              aria-expanded="false"
+              class="peer pointer-events-none absolute left-full top-1/2 z-10 ml-[1px] -translate-y-1/2 opacity-0 transition-opacity focus-visible:pointer-events-auto focus-visible:opacity-100 focus-visible:outline-offset-1 peer-focus-visible:pointer-events-auto peer-focus-visible:opacity-100"
+            ></button>
+          </div>
+          <div class="submenu before:bg-transparent absolute left-0 top-[46px] hidden w-full shadow-[0px_20px_20px_0px_rgba(0,0,0,0.15)] before:mb-8 before:block group-hover:block">
+            <!-- Submenu content -->
+            <div class="container-grid bg-white">
+              <div class="mt-6 mb-6 flex">
+                <div class="mx-auto grid grid-cols-[repeat(5,minmax(170px,1fr))] gap-8" style="grid-template-columns: repeat(5, minmax(170px, 1fr));">
+                  {% for link in linklists['main-menu'].links %}
+                    <div class="menu__items_collection">
+                      <div class="menu__item">
+                        <h3 class="menu__item-header text-black-800 text-bold inline-block text-xl font-bold">
+                          <a class="relative" href="{{ link.url }}">{{ link.title }}</a>
+                        </h3>
+                      </div>
+
+                      {% if link.links != blank %}
+                        {% for childlink in link.links %}
+                          <div class="menu__item">
+                            <span class="menu__link-text" data-link="{{ childlink.title  | downcase }}">
+                              <a
+                                href="{{ childlink.url }}"
+                                class="text-black-800 relative inline-block py-2"
+                              >
+                                {{ childlink.title }}
+                              </a>
+                            </span>
+                          </div>
+                        {% endfor %}
+                      {% endif %}
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="nav-banner-item group shrink-0 px-4 first-of-type:ml-auto last-of-type:mr-auto"
+        >
+          <div class="relative">
+            <a
+              href="#"
+              class="peer flex flex-wrap items-center gap-2 font-bold uppercase transition-colors lg:hover:text-pink-600"
+            >
+              Trending
+              {% render 'icon-arrow-down', class: 'size-4 block text-black' %}
+            </a>
+            <button
+              aria-label="show submenu for trending"
+              aria-expanded="false"
+              class="peer pointer-events-none absolute left-full top-1/2 z-10 ml-[1px] -translate-y-1/2 opacity-0 transition-opacity focus-visible:pointer-events-auto focus-visible:opacity-100 focus-visible:outline-offset-1 peer-focus-visible:pointer-events-auto peer-focus-visible:opacity-100"
+            ></button>
+          </div>
+          <div class="submenu before:bg-transparent absolute lg:w-[20ch] top-[46px] hidden before:mb-8 before:block group-hover:block">
+            <!-- Submenu content -->
+            <div class="megamenu absolute bg-white w-full  p-4 shadow-xl">
+              <ul class="flex flex-col">
+                <li class="max-w-[16ch]">
+                  <a href="/pages/news-events" class="relative mb-2 inline-block text-balance text-sm"
+                    >News &amp; Events</a
+                  >
+                </li>
+                <li class="max-w-[16ch]">
+                  <a href="/blogs/magazines" class="relative mb-2 inline-block text-balance text-sm">Press/Media</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          class="nav-banner-item group shrink-0 px-4 first-of-type:ml-auto last-of-type:mr-auto"
+        >
+          <div class="relative">
+            <a
+              href="/pages/store-locator"
+              class="peer flex flex-wrap items-center gap-2 font-bold uppercase transition-colors lg:hover:text-pink-600"
+            >
+              Stores
+            </a>
+          </div>
+        </div>
+      </nav>
+    </div>
+   
+    {% endcomment %}
+    <div class="full-width bg-secondary-pink w-full hidden lg:flex">
+   
+     
+    </div>
+
+    <div class="flex items-center justify-end gap-4 text-right">
+      <a href="/account" class="icon svg-item hidden lg:block" aria-expanded="true" role="button">
+        <span class="sr-only">Login</span>
+        {% render 'icon-account', class: 'size-4 block text-black' %}
+      </a>
+
+      <button
+        aria-expanded="false"
+        role="button"
+        type="button"
+        class="search-open icon svg-item"
+        data-message="search-message"
+        data-search-target="desktop-search-modal"
+      >
+        {% render 'icon-search', class: 'size-4 block text-black' %}
+      </button>
+      {% comment %}
+        <button
+          aria-label="open shopping bag. {{ cart.item_count }} items"
+          class="indicator relative inline-flex w-max-content "
+        >
+          <label for="cart-drawer" class="cursor-pointer">
+            {% render 'icon-bag', class: 'size-6 block text-black' %}
+            <span class="cartCount indicator-item badge-sm">{{ cart.item_count }}</span>
+          </label>
+        </button>
+      {% endcomment %}
+      <a href="/cart" class="indicator relative inline-flex w-max-content  site-header__icon site-header__cart">
+        {% render 'icon-bag', class: 'size-6 block text-black' %}
+        <div id="CartCount" class="site-header__cart-count cursor-pointer">
+          <span class="cartCount indicator-item badge-sm">{{ cart.item_count }}</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+<div class="container-grid bg-secondary-pink">
+  {% render 'search-bar', class: 'desktop-search-modal hidden' %}
+</div>
+  
+
+<div class="bg-secondary-pink ">
+  
+<nav class="sm:hidden">
+  {% assign menuclass = 'text-gray-900 px-3 py-2 rounded-md font-semibold text-md ' %} 
+  <div>
+    <div class="overflow-x-auto whitespace-nowrap flex no-scrollbar">
+  
+     
+          <div class="group inline-block">
+            <details class="group submenu-details">
+              <summary class="{{ menuclass }}  list-none cursor-pointer">
+               What's New
+                <svg class="stroke-black fill-current size-3 inline-block transform group-open:rotate-180 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></path>
+                </svg>
+              </summary>
+              <div class="absolute w-[100vw] max-w-full left-0 z-30 shadow-md overflow-hidden transition-[height,opacity] duration-[300ms] ease-in-out h-[0px] opacity-0 group-open:h-[150px] group-open:opacity-100 bg-white border border-gray-200">
+               <div class="flex max-w-full gap-2 py-4 collection-quicklink align-center">
+		
+                 <div class="max-w-full w-[100vw]">
+                   <div class="overflow-x-auto grid grid-flow-col auto-cols-[5rem] gap-4 no-scrollbar mx-4">
+                     <div class="inline-block">
+                       
+                       <a href="/collections/whats-new" class="flex flex-col items-center justify-center gap-2 text-center cursor-pointer">
+									
+									<div class="text-xs font-medium text-balance bg-[#fcdeed] tracking-[normal] h-20 w-20 rounded-full grid place-items-center p-2">Shop All New</div>
+								</a>
+                     </div>
+                     {% for link in linklists.featured.links %}
+                       
+                     {%- comment %}<locksmith:3d05>{% endcomment -%}
+                       {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists.featured, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+                     {%- comment %}</locksmith:3d05>{% endcomment -%}
+                       
+                     <div class="inline-block">
+								<a href="{{ link.url }}" class="flex flex-col items-center justify-center gap-2 text-center cursor-pointer">
+								
+									<div class="text-xs font-medium text-balance bg-[#fcdeed] tracking-[normal] h-20 w-20 rounded-full grid place-items-center p-2">{{ link.title }}</div>
+								</a>
+                     </div>
+                        
+                     {% endfor %} 
+		
+			</div>
+		</div>
+	</div>
+               
+                          
+                
+              </div>
+            </details>
+          </div>
+
+     
+                   
+
+
+      
+      {% for link in linklists.main-menu.links %}
+        {%- comment %}<locksmith:4820>{% endcomment -%}
+          {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists.main-menu, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+        {%- comment %}</locksmith:4820>{% endcomment -%}
+        {% if link.links != blank %}
+          <div class="group inline-block">
+            <details class="group submenu-details">
+              <summary class="{{ menuclass }}  list-none cursor-pointer">
+                {{ link.title  }}
+                <svg class="stroke-black fill-current size-3 inline-block transform group-open:rotate-180 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></path>
+                </svg>
+              </summary>
+              <div class="absolute w-[100vw] max-w-full left-0 z-30 shadow-md overflow-hidden transition-[height,opacity] duration-[300ms] ease-in-out h-[0px] opacity-0 group-open:h-[150px] group-open:opacity-100 bg-white border border-gray-200">
+                {% render 'collection-horz-menu' , links: link.links %}
+                
+              </div>
+            </details>
+          </div>
+          
+        {% else %}
+          <a href="{{ link.url }}" class="{{ menuclass }}">{{ link.title | upcase }}</a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+  <div class="fixed inset-0 bg-black opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out z-10" id="submenu-overlay"></div>
+
+</nav>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const submenus = document.querySelectorAll('.submenu-details');
+    const overlay = document.getElementById('submenu-overlay');
+    const header = document.querySelector('header'); // Assuming there's a header element
+
+    function updateOverlay() {
+      const anyOpen = Array.from(submenus).some(submenu => submenu.open);
+      if (anyOpen) {
+        overlay.style.opacity = '0.5';
+        overlay.style.pointerEvents = 'auto';
+        const headerHeight = header.offsetHeight;
+        overlay.style.top = `${headerHeight}px`;
+      } else {
+        overlay.style.opacity = '0';
+        overlay.style.pointerEvents = 'none';
+        overlay.style.top = '0';
+      }
+    }
+
+    submenus.forEach(submenu => {
+      submenu.addEventListener('toggle', function() {
+        if (this.open) {
+          submenus.forEach(otherSubmenu => {
+            if (otherSubmenu !== this && otherSubmenu.open) {
+              otherSubmenu.open = false;
+            }
+          });
+        }
+        updateOverlay();
+      });
+    });
+
+    // Close all submenus when clicking outside
+    document.addEventListener('click', function(event) {
+      if (!event.target.closest('.submenu-details')) {
+        submenus.forEach(submenu => {
+          submenu.open = false;
+        });
+        updateOverlay();
+      }
+    });
+  });
+</script>
+
+
+
+
+{%- capture css -%}
+  <style>
+ 
+  .sm\:hidden {
+    position: relative;
+    z-index: 30;
+  }
+
+  #submenu-overlay {
+    z-index: 10;
+  }
+</style>
+<style>
+
+    .megadropdownmenu {
+        display: grid;
+        grid-gap: var(--gap);
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--min)), 1fr));
+        --min: 15ch;
+        --gap: 1rem;
+    }
+
+      .mega-menu {
+        opacity:0;
+        visibility:hidden;
+        z-index: -900;
+        left: 0;
+        position: absolute;
+        text-align: left;
+        width: 100%;
+        transition: all 0.15s linear 0s;
+      }
+
+
+
+      /* #hoverable Class Styles */
+      .hoverable {
+        position: static;
+      }
+
+      .hoverable > a:after {
+        content: "\25BC";
+        font-size: 10px;
+        padding-left: 6px;
+        position: relative;
+        top: -1px;
+      }
+
+      .hoverable:hover .mega-menu {
+        opacity:1;
+        visibility:visible;
+        z-index: 900;
+      }
+
+
+      /* #toggle Class Styles */
+
+      .toggleable > label:after {
+        content: "\25BC";
+        font-size: 10px;
+        padding-left: 6px;
+        position: relative;
+        top: -1px;
+      }
+
+      .toggle-input {
+        display: none;
+      }
+      .toggle-input:not(checked) ~ .mega-menu {
+        opacity:0;
+        visibility:hidden;
+        z-index: -900;
+      }
+
+      .toggle-input:checked ~ .mega-menu {
+        opacity:1;
+        visibility:visible;
+        z-index: 900;
+      }
+
+      .toggle-input:checked + label {
+        color: white;
+        background: rgb(3, 102, 114); /*@apply bg-white */
+      }
+
+      .toggle-input:checked ~ label:after {
+        content: "\25B2";
+        font-size: 10px;
+        padding-left: 6px;
+        position: relative;
+        top: -1px;
+      }
+      .header__icons-cart .indicator-item {
+      --tw-translate-y: 100%;
+  }
+</style>
+<style>
+  
+    .mobilebtn{
+        display: inline-flex;
+        height: 3rem;
+        min-height: 3rem;
+        flex-shrink: 0;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--rounded-btn, .5rem);
+        border-color: transparent;
+        border-color: oklch(var(--btn-color, var(--b2)) / var(--tw-border-opacity));
+        padding-left: 1rem;
+        padding-right: 1rem;
+        text-align: center;
+        font-size: .875rem;
+        line-height: 1em;
+        gap: .5rem;
+        font-weight: 600;
+        text-decoration-line: none;
+        transition-duration: .2s;
+        transition-timing-function: cubic-bezier(0,0,.2,1);
+        border-width: var(--border-btn, 1px);
+        transition-property: color, background-color, border-color, opacity, box-shadow, transform;
+        --tw-text-opacity: 1;
+        color: var(--fallback-bc, oklch(var(--bc) / var(--tw-text-opacity)));
+        --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / .05);
+        --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+        box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+        outline-color: var(--fallback-bc, oklch(var(--bc) / 1));
+        background-color: oklch(var(--btn-color, var(--b2)) / var(--tw-bg-opacity));
+        --tw-bg-opacity: 1;
+        --tw-border-opacity: 1;
+
+        border-width: 1px;
+        border-color: transparent;
+        background-color: transparent;
+        color: currentColor;
+        --tw-shadow: 0 0 #0000;
+        --tw-shadow-colored: 0 0 #0000;
+        box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+        outline-color: currentColor;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+        .mobilebtn {
+            animation: button-pop var(--animation-btn, .25s) ease-out;
+        }
+    }
+        .badge-sm {
+        height: 1rem;
+        font-size: .75rem;
+        line-height: 1rem;
+        padding-left: .438rem;
+        padding-right: .438rem;
+          display: inline-flex;
+        align-items: center;
+        justify-content: center;
+          transition-timing-function: cubic-bezier(0,0,.2,1);
+        transition-duration: .2s;
+          width: fit-content;
+          border-radius: var(--rounded-badge, 1.9rem);
+        border-width: 1px;
+        --tw-border-opacity: 1;
+        border-color: var(--fallback-b2, oklch(var(--b2) / var(--tw-border-opacity)));
+        --tw-bg-opacity: 1;
+        background-color: var(--fallback-b1, oklch(var(--b1) / var(--tw-bg-opacity)));
+        --tw-text-opacity: 1;
+        color: var(--fallback-bc, oklch(var(--bc) / var(--tw-text-opacity)));
+
+    }
+        .indicator :where(.indicator-item) {
+        z-index: 1;
+        position: absolute;
+        white-space: nowrap;
+        bottom: auto; 
+        inset-inline-end: 0px;
+        inset-inline-start: auto;
+        top: 0;
+        --tw-translate-y: -50%;
+        --tw-translate-x: 50%;
+        transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skew(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+    }
+.menu__link-text a:after, .menu__item-header a:after, .megamenu li a:after, .megamenu .promo a:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    left: 0;
+    transform: scaleX(0);
+    transform-origin: center center;
+    background-color: #eb018b;
+    transition: transform .3s;
+}
+
+  .menu__item:hover .menu__link-text a:after, .menu__item:hover .menu__item-header a:after, .megamenu li:hover a:after, .megamenu .promo a:hover:after {
+    transform: scaleX(1);
+}
+</style>
+  
+<style>
+
+
+
+  .predictive-search .spinner {
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+  }
+  .search-modal--open {
+    overflow: hidden;
+}
+.search-modal--open .modal-overlay{
+
+    position: absolute;
+    background-color: rgba(0, 0, 0, .5);
+    top: 100%;
+    left: 0;
+    right: 0;
+    height: 100vh;
+
+}
+
+
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
+{%- endcapture -%}
+{{- css | strip_newlines | replace: ' ', ' ' | replace: ' ', ' ' | replace: ' ', ' ' -}}

@@ -1,0 +1,298 @@
+<div class="marquee-{{ section.id }}" data-transition-enabled="true" data-scroll-transition="fade">
+    <div class="marquee__slide">
+       
+      {%- for block in section.blocks -%}
+          {%- if block.settings.heading != blank -%}
+              {% for _ in (1..block.settings.range) %}
+                  <span style="padding:0 {{ block.settings.padding}}px">{{ block.settings.heading }}</span>
+              {% endfor %}  
+          {%- endif -%}
+          {%- if block.settings.image != blank -%}
+              {% for _ in (1..block.settings.range) %}
+                  <span style="padding:0 {{ block.settings.padding}}px">
+                    {{ block.settings.image | image_url: width: 473 | image_tag: fetchpriority: 'auto', loading: 'lazy' }}
+                  </span>
+              {% endfor %}  
+          {%- endif -%}
+      {%- endfor -%}
+   
+    </div>
+    <div class="marquee__slide">
+       
+      {%- for block in section.blocks -%}
+        {%- if block.settings.show_fade -%}
+          <style> 
+            .marquee-{{ section.id }}:before,
+            .marquee-{{ section.id }}:after {
+              position: absolute;
+              top: 0;
+              width: 250px;
+              height: 100%;
+              content: "";
+              z-index: 2;
+            }
+            
+            .marquee-{{ section.id }}:before {
+              left: 0;
+              background: linear-gradient(to left, rgba(255, 255, 255, 0), white);
+            }
+            
+            .marquee-{{ section.id }}:after {
+              right: 0;
+              background: linear-gradient(to right, rgba(255, 255, 255, 0), white);
+            }
+          </style>
+        {%- endif %}
+        {%- if block.settings.enable_pause -%}
+          <style>
+            .marquee-{{ section.id }}:hover .marquee__slide {
+              animation-play-state: paused;
+            }
+          </style>
+        {%- endif %}        
+        <style>
+        .marquee-{{ section.id }} {
+          overflow: hidden;
+          background: {{ block.settings.color_padding }};
+          white-space: nowrap;
+          position: relative;
+          color: {{ block.settings.color_text }};
+          font-family: 'Jost';
+          font-weight: 600;
+          letter-spacing: 0.5px;
+          font-size: 1.25em;
+          padding-top: clamp(.5rem, 1.5vh, 2rem);
+          padding-bottom: clamp(.5rem, 1.5vh, 2rem);
+          
+        }
+
+        </style>
+
+        
+          {%- if block.settings.heading != blank -%}
+              {% for _ in (1..block.settings.range) %}
+                  <span style="padding:0 {{ block.settings.padding}}px">{{ block.settings.heading }}</span>
+              {% endfor %}  
+          {%- endif -%}
+          {%- if block.settings.image != blank -%}
+              {% for _ in (1..block.settings.range) %}
+                  <span style="padding:0 {{ block.settings.padding}}px">
+                    {{ block.settings.image | image_url: width: 473 | image_tag: fetchpriority: 'auto', loading: 'lazy' }}
+                  </span>
+              {% endfor %}  
+          {%- endif -%}
+      {%- endfor -%}
+   
+    </div>
+
+</div>
+<style>
+
+  
+  @keyframes marquee-slide  {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+  
+
+
+  
+
+  
+  .marquee__slide {
+    display: inline-block;
+    animation: 35s marquee-slide infinite linear;
+  }
+  
+  .marquee__slide span {
+    height: 50px;
+    margin: 0 10px;
+  }
+</style>
+
+
+{% schema %}
+  {
+    "name": "Marquee Infinite Slider",
+    "tag": "section",
+    "class": "section",
+    "disabled_on": {
+    "groups": ["header", "footer"]
+    },    
+    "settings": [],
+    "blocks": [
+      {
+        "type": "slide",
+        "name": "Slide",
+        "limit": 5,
+        "settings": [
+          {
+            "type": "header",
+            "content": "Fill in either Heading or the Image section"
+          },
+          {
+            "type": "inline_richtext",
+            "id": "heading",
+            "default": "Heading",
+            "label": "Displayed text"
+          },
+          {
+          "type": "color",
+          "id": "color_text",
+          "label": "Text Color",
+          "default": "#000000"
+          },          
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Select Image"
+          },
+          {
+            "type": "range",
+            "id": "range",
+            "min": 0,
+            "max": 5,
+            "step": 1,
+            "unit": "x",
+            "label": "Repeat Element",
+            "default": 4
+          },
+          {
+            "type": "range",
+            "id": "padding",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "unit": "px",
+            "label": "Padding Between Elements",
+            "default": 25
+          },
+          {
+          "type": "color",
+          "id": "color_padding",
+          "label": "Padding Color",
+          "default": "#eb018b"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_fade",
+            "label": "Enable Side Fade Out",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "enable_pause",
+            "label": "Enable Pause on hover",
+            "default": true
+          } 
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Marquee Infinite Slider",
+        "blocks": [
+          {
+            "type": "slide"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% comment %}
+<div id="marquee-template-{{ section.id }}">
+<div class="marquee-container inline-flex items-center whitespace-nowrap pl-100 font-heading heading-secondary">
+        <span class=" flex-shrink-0  text-lg lg:text-3xl ">TAG US @LAGIRLCOSMETICS TO BE FEATURED!</span><span class=" flex-shrink-0 px-2 text-current">
+            <svg class="w-4 h-4 rotate-anim" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100.5 3L114.058 58.7724L157.809 21.6208L135.996 74.7109L193.228 70.3708L144.375 100.5L193.228 130.629L135.996 126.289L157.809 179.379L114.058 142.228L100.5 198L86.9419 142.228L43.1909 179.379L65.0044 126.289L7.77197 130.629L56.625 100.5L7.77197 70.3708L65.0044 74.7109L43.1909 21.6208L86.9419 58.7724L100.5 3Z" fill="currentColor"></path></svg>
+          </span>
+        <span class=" flex-shrink-0  text-lg lg:text-3xl " aria-hidden="true">TAG US @LAGIRLCOSMETICS TO BE FEATURED!</span><span class=" flex-shrink-0 px-2 text-current">
+            <svg class="w-4 h-4 rotate-anim" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100.5 3L114.058 58.7724L157.809 21.6208L135.996 74.7109L193.228 70.3708L144.375 100.5L193.228 130.629L135.996 126.289L157.809 179.379L114.058 142.228L100.5 198L86.9419 142.228L43.1909 179.379L65.0044 126.289L7.77197 130.629L56.625 100.5L7.77197 70.3708L65.0044 74.7109L43.1909 21.6208L86.9419 58.7724L100.5 3Z" fill="currentColor"></path></svg>
+          </span>
+        <span class=" flex-shrink-0  text-lg lg:text-3xl " aria-hidden="true">TAG US @LAGIRLCOSMETICS TO BE FEATURED!</span><span class=" flex-shrink-0 px-2 text-current">
+            <svg class="w-4 h-4 rotate-anim" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100.5 3L114.058 58.7724L157.809 21.6208L135.996 74.7109L193.228 70.3708L144.375 100.5L193.228 130.629L135.996 126.289L157.809 179.379L114.058 142.228L100.5 198L86.9419 142.228L43.1909 179.379L65.0044 126.289L7.77197 130.629L56.625 100.5L7.77197 70.3708L65.0044 74.7109L43.1909 21.6208L86.9419 58.7724L100.5 3Z" fill="currentColor"></path></svg>
+          </span>
+        <span class=" flex-shrink-0  text-lg lg:text-3xl " aria-hidden="true">TAG US @LAGIRLCOSMETICS TO BE FEATURED!</span><span class=" flex-shrink-0 px-2 text-current">
+            <svg class="w-4 h-4 rotate-anim" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100.5 3L114.058 58.7724L157.809 21.6208L135.996 74.7109L193.228 70.3708L144.375 100.5L193.228 130.629L135.996 126.289L157.809 179.379L114.058 142.228L100.5 198L86.9419 142.228L43.1909 179.379L65.0044 126.289L7.77197 130.629L56.625 100.5L7.77197 70.3708L65.0044 74.7109L43.1909 21.6208L86.9419 58.7724L100.5 3Z" fill="currentColor"></path></svg>
+          </span>
+        <span class=" flex-shrink-0  text-lg lg:text-3xl " aria-hidden="true">TAG US @LAGIRLCOSMETICS TO BE FEATURED!</span><span class=" flex-shrink-0 px-2 text-current">
+            <svg class="w-4 h-4 rotate-anim" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100.5 3L114.058 58.7724L157.809 21.6208L135.996 74.7109L193.228 70.3708L144.375 100.5L193.228 130.629L135.996 126.289L157.809 179.379L114.058 142.228L100.5 198L86.9419 142.228L43.1909 179.379L65.0044 126.289L7.77197 130.629L56.625 100.5L7.77197 70.3708L65.0044 74.7109L43.1909 21.6208L86.9419 58.7724L100.5 3Z" fill="currentColor"></path></svg>
+          </span>
+        <span class=" flex-shrink-0  text-lg lg:text-3xl " aria-hidden="true">TAG US @LAGIRLCOSMETICS TO BE FEATURED!</span><span class=" flex-shrink-0 px-2 text-current">
+            <svg class="w-4 h-4 rotate-anim" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100.5 3L114.058 58.7724L157.809 21.6208L135.996 74.7109L193.228 70.3708L144.375 100.5L193.228 130.629L135.996 126.289L157.809 179.379L114.058 142.228L100.5 198L86.9419 142.228L43.1909 179.379L65.0044 126.289L7.77197 130.629L56.625 100.5L7.77197 70.3708L65.0044 74.7109L43.1909 21.6208L86.9419 58.7724L100.5 3Z" fill="currentColor"></path></svg>
+          </span>
+        <span class=" flex-shrink-0  text-lg lg:text-3xl " aria-hidden="true">TAG US @LAGIRLCOSMETICS TO BE FEATURED!</span><span class=" flex-shrink-0 px-2 text-current">
+            <svg class="w-4 h-4 rotate-anim" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100.5 3L114.058 58.7724L157.809 21.6208L135.996 74.7109L193.228 70.3708L144.375 100.5L193.228 130.629L135.996 126.289L157.809 179.379L114.058 142.228L100.5 198L86.9419 142.228L43.1909 179.379L65.0044 126.289L7.77197 130.629L56.625 100.5L7.77197 70.3708L65.0044 74.7109L43.1909 21.6208L86.9419 58.7724L100.5 3Z" fill="currentColor"></path></svg>
+          </span>
+        <span class=" flex-shrink-0  text-lg lg:text-3xl " aria-hidden="true">TAG US @LAGIRLCOSMETICS TO BE FEATURED!</span><span class=" flex-shrink-0 px-2 text-current">
+            <svg class="w-4 h-4 rotate-anim" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100.5 3L114.058 58.7724L157.809 21.6208L135.996 74.7109L193.228 70.3708L144.375 100.5L193.228 130.629L135.996 126.289L157.809 179.379L114.058 142.228L100.5 198L86.9419 142.228L43.1909 179.379L65.0044 126.289L7.77197 130.629L56.625 100.5L7.77197 70.3708L65.0044 74.7109L43.1909 21.6208L86.9419 58.7724L100.5 3Z" fill="currentColor"></path></svg>
+          </span>
+        <span class=" flex-shrink-0  text-lg lg:text-3xl " aria-hidden="true">TAG US @LAGIRLCOSMETICS TO BE FEATURED!</span><span class=" flex-shrink-0 px-2 text-current">
+            <svg class="w-4 h-4 rotate-anim" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100.5 3L114.058 58.7724L157.809 21.6208L135.996 74.7109L193.228 70.3708L144.375 100.5L193.228 130.629L135.996 126.289L157.809 179.379L114.058 142.228L100.5 198L86.9419 142.228L43.1909 179.379L65.0044 126.289L7.77197 130.629L56.625 100.5L7.77197 70.3708L65.0044 74.7109L43.1909 21.6208L86.9419 58.7724L100.5 3Z" fill="currentColor"></path></svg>
+          </span>
+        <span class=" flex-shrink-0  text-lg lg:text-3xl " aria-hidden="true">TAG US @LAGIRLCOSMETICS TO BE FEATURED!</span><span class=" flex-shrink-0 px-2 text-current">
+            <svg class="w-4 h-4 rotate-anim" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100.5 3L114.058 58.7724L157.809 21.6208L135.996 74.7109L193.228 70.3708L144.375 100.5L193.228 130.629L135.996 126.289L157.809 179.379L114.058 142.228L100.5 198L86.9419 142.228L43.1909 179.379L65.0044 126.289L7.77197 130.629L56.625 100.5L7.77197 70.3708L65.0044 74.7109L43.1909 21.6208L86.9419 58.7724L100.5 3Z" fill="currentColor"></path></svg>
+          </span>
+</div>
+</div>
+<style>
+  @media (prefers-reduced-motion: reduce) {
+  .marquee-container {
+    padding-left: 0;
+    text-align: center;
+    white-space: normal;
+    display: block;
+  }
+  .marquee span {
+    display: none;
+  }
+  .marquee span:first-child {
+    display: inline;
+  }
+}
+
+.marquee-container {
+  visibility: visible;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+    -webkit-transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+    -webkit-transform: translateX(-100%);
+  }
+}
+
+@keyframes shift {
+  to {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+}
+  
+    @media (prefers-reduced-motion: no-preference) {
+     #marquee-template-{{ section.id }} .marquee-container {
+        will-change: transform; 
+        animation: marquee 70s linear infinite ;
+      }
+  
+      
+        #marquee-template-{{ section.id }}.rotate-anim {
+        animation-iteration-count:infinite;
+        animation-timing-function:linear;
+        animation-name:rotate;
+        animation-duration:3s;
+      }
+      
+  
+    }
+    </style>
+{% endcomment %}

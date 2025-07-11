@@ -1,0 +1,390 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+<div class="container-grid">
+    <div class="collection section-{{ section.id }}-padding{% if section.settings.full_width %} collection--full-width{% endif %}"  data-transition-enabled="true" data-scroll-transition="fade">
+    <div class="collection__title title-wrapper title-wrapper--no-top-margin page-width{% if show_mobile_slider %} title-wrapper--self-padded-tablet-down{% endif %}{% if show_desktop_slider %} collection__title--desktop-slider{% endif %} max-w-screen-xl mx-auto">
+      {%- if section.settings.title != blank -%}
+        <h3 class="text-3xl lg:text-4xl font-bold mb-6 font-display left">
+            {{ section.settings.title }}
+          </h3>
+    
+      {%- endif -%}
+      {%- if section.settings.description != blank -%}
+        <div class="collection__description {{ section.settings.description_style }} rte{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          {{ section.settings.description -}}
+        </div>
+      {%- endif -%}
+    </div>
+
+      
+
+ 
+
+ 
+  <card-slider>
+    <div class="relative">
+      <div class="card-slider_card-container hide-scroll-bar flex overflow-x-scroll pb-10" aria-label="Card slider">
+        <div class="card-slider_wrapper flex flex-nowrap">
+          
+  
+      
+      <div class="carouselContainer hide-scroll-bar grid gap-4 overflow-x-auto overflow-x-scroll whitespace-nowrap [grid-auto-columns:300px] [grid-auto-flow:column]" aria-label="Card slider">
+       
+          
+          {% for block in section.blocks %}
+            {%- liquid
+              assign video_id = block.settings.video.id | default: block.settings.video_url.id
+              assign video_alt = block.settings.video.alt | default: block.settings.description
+              assign alt = video_alt | escape
+              assign video_preview_image = block.settings.video_preview_image | default: block.settings.cover_image
+
+            -%} 
+                      
+          <!-- Card items -->
+              {%- if block.settings.video != null  -%}
+                {% assign video = block.settings.video %}
+                {% assign video_url = '' %}
+
+                {% for source in video.sources %}
+                  {% if source.format == 'mp4' %}
+                    {% assign video_url = source.url %}
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+
+               
+                  {%- assign video_preview_image = block.settings.video.preview_image -%}
+
+                <div class="card-slider_container flex min-h-[120px] flex-col gap-2">
+                  <a href="{{ video_url }}" class="glightbox" data-glightbox="gallery1">
+                  <div class="card-slider_video-container pointer-events-auto relative grid aspect-[9/16] max-h-[800px] w-full cursor-pointer overflow-hidden rounded-md bg-white">
+          
+                      {%- render 'responsive-image', image: video_preview_image, lazyload: true, width: 1440, alt: video_preview_image.alt, 
+                         class: 'card-slider_thumbnail absolute block col-span-1 row-span-1 object-cover max-h-[800px] h-full w-full m-0 aspect-[9/16] z-[1] rounded-md' -%}
+
+                   
+                    <button aria-label="Open video" type="button" class="media-play-icon z-[1] col-span-1 row-span-1 flex h-16 w-16 items-center justify-center self-center justify-self-center rounded-full border-0 border-solid border-transparent bg-black p-0 opacity-65 transition-opacity duration-300">
+                      {%- render 'icon-play' -%}
+                    </button>
+                  </div>
+                  </a>
+                  </div>
+               
+                {%- else -%}
+
+                <div class="card-slider_container flex min-h-[120px] flex-col gap-2">
+                  <a href="{{ video_url }}" class="glightbox" data-glightbox="gallery1">
+                  <div class="card-slider_video-container pointer-events-auto relative grid aspect-[9/16] max-h-[800px] w-full cursor-pointer overflow-hidden rounded-md bg-white">
+                   
+                         <img
+                        class="card-slider_thumbnail absolute z-[1] col-span-1 row-span-1 m-0 block aspect-[9/16] h-full max-h-[800px] w-full rounded-md object-cover"
+                        src="//img.youtube.com/vi/{{ video_id }}/maxres2.jpg"
+                        srcset="
+                          //img.youtube.com/vi/{{ video_id }}/default.jpg 120w,
+                          //img.youtube.com/vi/{{ video_id }}/mqdefault.jpg 320w,
+                          //img.youtube.com/vi/{{ video_id }}/hqdefault.jpg 480w,
+                          //img.youtube.com/vi/{{ video_id }}/sddefault.jpg 640w,
+                          //img.youtube.com/vi/{{ video_id }}/maxresdefault.jpg 1025w
+                        "
+                        sizes="(max-width: 479px) 480px, (max-width: 639px) 640px, (max-width: 767px) 768px, (max-width: 1023px) 1024px, (max-width: 1279px) 1280px, 100vw"
+                        alt="{{  block.settings.alt_text }}"
+                        width="1440" height="2560" 
+                        loading="lazy"
+                      >
+                    
+                    
+                    <button aria-label="Open video" type="button" class="media-play-icon z-[1] col-span-1 row-span-1 flex h-16 w-16 items-center justify-center self-center justify-self-center rounded-full border-0 border-solid border-transparent bg-black p-0 opacity-65 transition-opacity duration-300">
+                      {%- render 'icon-play' -%}
+                    </button>
+                  </div>
+                  </a>
+                  </div>
+
+              {%- endif -%}
+          <!-- Repeat for other cards -->
+          {% endfor %}
+       
+      </div>
+            {% render 'sliderbtns', class: 'new-scroll-btn no-js-hidden flex gap-2 absolute top-[-4rem] right-0 z-10' %}
+     
+
+        </div>
+      </div>
+
+
+          
+
+         
+    </div>
+  </card-slider>
+</div>
+</div>
+<script>
+class CardSlider extends HTMLElement {
+    constructor() {
+        super();
+        this.cardContainer = this.querySelector('.card-slider_card-container');
+        this.cardsWrapper = this.querySelector('.card-slider_wrapper');
+        this.carouselContainer = this.querySelector('.carouselContainer');
+        this.cards = this.carouselContainer.querySelectorAll('.card-slider_container');
+        this.prevBtn = this.querySelector('.sliderbtn-prev');
+        this.nextBtn = this.querySelector('.sliderbtn-next');
+        this.currentCardIndex = 0;
+        this.fullyVisibleCards = 0;
+    }
+
+    connectedCallback() {
+        this.updateFullyVisibleCards();
+        this.prevBtn.addEventListener('click', () => this.scroll(-1));
+        this.nextBtn.addEventListener('click', () => this.scroll(1));
+        window.addEventListener('resize', () => this.updateFullyVisibleCards());
+        this.cardContainer.addEventListener('scroll', () => this.updateButtonState());
+        this.updateButtonState();
+    }
+
+    updateFullyVisibleCards() {
+        const containerWidth = this.cardContainer.offsetWidth;
+        const cardWidth = this.cards[0].offsetWidth;
+        this.fullyVisibleCards = Math.floor(containerWidth / cardWidth);
+        this.updateButtonState();
+    }
+
+    scroll(direction) {
+        const cardWidth = this.cards[0].offsetWidth;
+        const scrollAmount = direction * this.fullyVisibleCards * cardWidth;
+        this.cardContainer.scrollBy({
+            left: scrollAmount,
+            behavior: 'smooth'
+        });
+    }
+
+    updateButtonState() {
+        const isAtStart = this.cardContainer.scrollLeft === 0;
+        const isAtEnd = this.cardContainer.scrollLeft + this.cardContainer.offsetWidth >= this.cardsWrapper.offsetWidth;
+
+        this.prevBtn.disabled = isAtStart;
+        this.nextBtn.disabled = isAtEnd;
+    }
+}
+
+customElements.define('card-slider', CardSlider);
+</script>
+<style>
+  .hide-scroll-bar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scroll-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+
+
+.sliderbtn:hover:not(:disabled) {
+    background-color: #ec4899;
+}
+
+.sliderbtn:hover:not(:disabled) svg {
+    color: white;
+}
+
+.sliderbtn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+  
+</style>
+
+
+<script>
+function initGLightbox() {
+
+const lightbox = GLightbox({
+  selector: '.glightbox',
+    loop: true,
+    autoplayVideos: true,
+    videosWidth: '45vw',
+  plyr: {
+    css: 'https://cdn.plyr.io/3.5.6/plyr.css', // Default not required to include
+    js: 'https://cdn.plyr.io/3.5.6/plyr.js', // Default not required to include
+    config: {
+      ratio: '9:16', // or '4:3'
+      muted: false,
+      hideControls: true,
+      youtube: {
+        noCookie: true,
+        rel: 0,
+        showinfo: 0,
+        iv_load_policy: 3
+      }
+    }
+  }
+});
+  
+}
+
+  // Call the function to initialize GLightbox
+  initGLightbox();
+
+  // Example: Reinitialize GLightbox after content update
+  document.addEventListener('contentUpdated', function() {
+    initGLightbox();
+  });
+</script>
+
+
+{% schema %}
+{
+  "name": "Featured Videos",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "Featured video",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "header",
+      "content": "Contain Images"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "square",
+          "label": "Square"
+        },
+        {
+          "value": "9/16",
+          "label": "9/16 Vertical"
+        },
+        {
+          "value": "16/9",
+          "label": "16/9 horizontal"
+        }        
+      ],
+      "default": "none",
+      "label": "None"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }    
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Promo Column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "block_name",
+          "label": "Block Name",
+          "default": "Promo Column"
+        },
+           {
+            "type": "header",
+            "content": "Shopify-hosted video"
+          },
+           {
+            "type": "video",
+            "id": "video",
+            "label": "Video"
+          },
+           {
+            "type": "header",
+            "content": "Youtube Video"
+          },
+           {
+            "type": "paragraph",
+            "content": "Shows when no Shopify-hosted video is selected."
+          },
+           {
+            "type": "video_url",
+            "id": "video_url",
+            "accept": ["youtube"],
+            "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "label": "URL",
+            "info": "Share your brand story by adding a video to your store"
+          },
+           {
+            "type": "image_picker",
+            "id": "cover_image",
+            "label": "Cover image"
+          },
+           {
+            "type": "text",
+            "id": "alt_text",
+            "label": "Video alt text",
+            "info": "Describe the video for customers using screen readers. Learn more"
+          }
+        ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Videos",
+      "blocks": [
+        {
+          "type": "column"
+        },
+        {
+          "type": "column"
+        }
+      ]
+    }
+  ]
+
+}
+{% endschema %}

@@ -1,0 +1,63 @@
+
+<search-modal id="mobile-search-modal" class="mobile-search-modal z-10 hidden">  
+  <form action="/search" method="get" class="mobile-search-bar w-full flex mb-4 absolute top-0 left-0" role="search">
+    <label class="daisyinput rounded-none flex flex-grow items-center gap-2 w-fulldaisyinput rounded-none flex flex-grow items-center gap-2 w-full">
+      <button type="submit" aria-label="Navigation Search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70">
+          <path fill-rule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clip-rule="evenodd"></path>
+        </svg>
+      </button>
+      <input type="search" id="search_box_mobile" name="q" placeholder="Search..." aria-label="Search" class="w-full">
+      <input type="hidden" name="type" value="product">
+      <input type="hidden" name="options[unavailable_products]" value="hide">
+      <input type="hidden" name="options[prefix]" value="last">
+
+      <button type="button" id="mobile-search-close" class="p-2 inline-flex items-center justify-center">
+        <span class="sr-only">Close menu</span>
+        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" style="color: black;">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </label>
+  </form>
+
+  <div id="predictive-search-mobile" class="predictive-search hidden absolute bg-white top-12 border border-gray-300 overflow-y-auto z-[1000] left-0 w-full h-[80vh]" tabindex="-1">
+    <div class="predictive-search-wrapper"></div>
+    <div class="predictive-search__loading-state flex justify-center p-4">
+      <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+        <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+      </svg>
+    </div>
+  </div>
+  <div class="modal-overlay"></div>
+</search-modal>
+<style>
+  .mobile-search-modal .modal-overlay.search-modal--open {
+    position: absolute;
+    background-color: white;
+    top: 47px;
+    left: 0;
+    right: 0;
+    height: 100vh;
+}
+  .search-menu-bar.hidden {
+  display: none;
+}
+.search-menu-bar.active {
+  display: block;
+}
+
+.search-modal--open {
+  overflow: hidden;
+}
+.search-modal--open .modal-overlay:after {
+  content: "";
+  position: absolute;
+  background-color: rgba(0, 0, 0, .5);
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 100vh;
+}
+
+</style>

@@ -1,0 +1,85 @@
+{{ 'loyalty.css' | asset_url | stylesheet_tag }}
+
+<div id="banner" class="Futura-Now-Headline-font banner">
+  <div class="banner-image-container">
+    <img src="{{'PRA_03031.jpg' | file_url }}" alt="Loyalty banner" width="1200" height="100vh" class="banner-image">
+  </div>
+  <div class="banner-content">
+    <img src="{{ 'pro.points_logos-02.png' | file_url }}" alt="PRO.POINTS Logo" class="banner-logo" width="300" height="100">
+    <p class="banner-subtitle">Your glam routine just got a loyalty upgrade</p>
+    <div class="banner-buttons">
+      <button class="banner-button"><a href="/account">JOIN NOW</a></button>
+      <button class="banner-button"><a href="/account">LOGIN</a></button>
+    </div>
+  </div>
+  
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Function to adjust banner height based on header height
+    function adjustBannerHeight() {
+      var header = document.getElementById('site-header');
+      var banner = document.getElementById('banner');
+      var bannerImageContainer = document.querySelector('.banner-image-container');
+      var bannerContent = document.querySelector('.banner-content');
+      var windowWidth = window.innerWidth;
+      
+      // Skip height calculation for tablet breakpoint (601px to 991px)
+      if (windowWidth >= 601 && windowWidth <= 991) {
+        return; // Exit early, let CSS handle the fixed 60vh height
+      }
+      
+      if (header && banner) {
+        var headerHeight = header.offsetHeight;
+        var newBannerHeight = 'calc(100vh - ' + headerHeight + 'px)';
+        
+        banner.style.height = newBannerHeight;
+        
+        // For screens smaller than 601px, each section gets half the banner height
+        if (windowWidth < 601) {
+          var halfBannerHeight = 'calc((100vh - ' + headerHeight + 'px) / 2)';
+          
+          if (bannerImageContainer) {
+            bannerImageContainer.style.height = halfBannerHeight;
+          }
+          
+          if (bannerContent) {
+            bannerContent.style.height = halfBannerHeight;
+          }
+        } else {
+          // For desktop (992px and above), full height for both sections
+          if (bannerImageContainer) {
+            bannerImageContainer.style.height = newBannerHeight;
+          }
+          
+          if (bannerContent) {
+            bannerContent.style.height = '100%';
+          }
+        }
+      }
+    }
+    
+    // Initial adjustment
+    adjustBannerHeight();
+    
+    // Adjust on window resize
+    window.addEventListener('resize', adjustBannerHeight);
+    
+    // Adjust when header might change (for sticky headers that resize)
+    window.addEventListener('scroll', adjustBannerHeight);
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Loyalty_Banner",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Loyalty Page Banner",
+      "category": "Loyalty Page"
+    }
+  ]
+}
+{% endschema %}

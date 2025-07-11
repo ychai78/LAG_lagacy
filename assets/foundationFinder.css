@@ -1,0 +1,609 @@
+@font-face {
+    font-family: 'Giorgio Sans Medium';
+    src: url('https://cdn.shopify.com/s/files/1/0944/0398/files/Giorgio-Sans-Medium.eot');
+    src: url('https://cdn.shopify.com/s/files/1/0944/0398/files/Giorgio-Sans-Medium.eot?#iefix') format('embedded-opentype'),
+         url('https://cdn.shopify.com/s/files/1/0944/0398/files/Giorgio-Sans-Medium.woff2') format('woff2'),
+         url('https://cdn.shopify.com/s/files/1/0944/0398/files/Giorgio-Sans-Medium.woff') format('woff'),
+         url('https://cdn.shopify.com/s/files/1/0944/0398/files/Giorgio-Sans-Medium.ttf')  format('truetype'),
+         url('https://cdn.shopify.com/s/files/1/0944/0398/files/Giorgio-Sans-Medium.svg#Giorgio Sans Medium') format('svg');
+}
+@font-face {
+    font-family: 'ABChanel Couture';
+    src: url('https://cdn.shopify.com/s/files/1/0944/0398/files/ABChanelCouture-Semibold.eot');
+    src: url('https://cdn.shopify.com/s/files/1/0944/0398/files/ABChanelCouture-Semibold.eot?#iefix') format('embedded-opentype'),
+         url('https://cdn.shopify.com/s/files/1/0944/0398/files/ABChanelCouture-Semibold.woff2') format('woff2'),
+         url('https://cdn.shopify.com/s/files/1/0944/0398/files/ABChanelCouture-Semibold.woff') format('woff'),
+         url('https://cdn.shopify.com/s/files/1/0944/0398/files/ABChanelCouture-Semibold.ttf')  format('truetype'),
+         url('https://cdn.shopify.com/s/files/1/0944/0398/files/ABChanelCouture-Semibold.svg#ABChanel Couture') format('svg');
+}
+.site__header .container-grid .grid {
+    height: auto !important;
+}
+#main-footer .grid {
+    height: auto !important;
+}
+.site__footer {
+    margin-top: 4rem;
+}
+
+.foundationFinderMain {
+    background: url(https://cdn.shopify.com/s/files/1/0944/0398/files/foundation_finder_background_jpg.jpg?v=1625675091) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    margin-top: -2rem;
+}
+
+.foundationFinder-header h1 {
+    padding: 2rem 0 0;
+    text-align: center;
+    font-family: 'ABChanel Couture';
+    font-weight: 900;
+}
+.progressBar_wrap {
+    padding-top: 2rem;
+}
+.foundationFinderMain a:hover {
+    color: white;
+}
+a.foundation-btn.add:hover {
+    color: white;
+}
+.steps.active span.stepNumber {
+    background-color: black;
+    color: white;
+}
+
+.steps:before {
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: -40%;
+    width: 80%;
+    height: .2em;
+    background: #000;
+    z-index: 0;
+}
+.steps:first-child::before {
+  display: none;
+}
+.startOver {
+    text-align: center;
+    text-decoration: underline;
+    margin-top: 1rem;
+    font-weight: bold;
+}
+
+.shade-finder .flickity-slider img {
+
+  max-width:300px;
+}
+.shade-finder .flickity-slider img.is-selected {
+    opacity: 1;
+}
+.shade-finder .flickity-slider img {
+    opacity: .3;
+}
+.progressBar {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 1rem;
+    align-items: baseline;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+    .steps {
+        width: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: .75rem;
+        font-weight: 700;
+        position: relative;
+        text-transform: uppercase;
+    }
+span.stepNumber {
+    height: 2rem;
+    width: 2rem;
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    text-align: center;
+    z-index: 1;
+    font-size: 1.25rem;
+    justify-content: center;
+    align-items: center;
+}
+span.stepName {
+    margin-top: .5rem;
+}
+a.foundation-btn {
+    display: inline-block;
+    background: #000;
+    padding: .5rem 2rem;
+    color: #fff;
+    font-family: ABChanel Couture;
+    font-size: 1rem;
+}
+.foundationFinder_slide {
+    background: white;
+    padding: 3rem 0;
+    text-align: center;
+  display:none;
+}
+.foundationFinder_slide h2 {
+    font-family: 'ABChanel Couture';
+    font-weight: 700;
+    max-width: 600px;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+}
+.foundationFinder_slide.active {
+  display:block;
+}
+.shade-finder {
+    margin: 3rem 0;
+}
+a.startOver-btn:hover {
+    cursor: pointer;
+}
+
+.responseSection {
+    padding: 1rem;
+}
+.responseSection a.foundation-btn {
+    display: block;
+    max-width: 350px;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+    padding: .5rem .5rem;
+}
+.foundationFinder_slide p {
+    max-width: 610px;
+    margin: 0 auto;
+    text-align: center;
+    margin-bottom: 2rem;
+
+
+}
+.undertone-responses .description {
+    max-width: 350px;
+    margin: auto;
+    margin-bottom: 2rem;
+
+    font-size: 1rem;
+}
+
+
+
+.undertoneImg {
+    width: 350px;
+    margin: 0 auto;
+}
+p.filter-count {
+    display: none;
+}
+a#next-btn-skintone {
+    padding: .5rem .5rem;
+    width: 350px;
+    margin: 0 auto;
+}
+.foundationFinderMain.initial {
+    height: 0px;
+}
+figcaption.foundationFinderLanding_caption {
+    left: 50%;
+    position: absolute;
+    top: 15%;
+    transform: translate(-50%,-50%);
+    margin: 0 auto;
+    max-width: 650px;
+    width: 100%;
+    background: black;
+    padding: 4rem;
+    text-align: center;
+}
+p.foundationFinderLanding__landing-description {
+    color: white;
+    font-size: 1rem;
+
+    padding: 2rem 0;
+}
+div#match {
+    padding-bottom: 0 !important;
+}
+a#foundationStart {
+    background: #eb008b;
+    padding: 1rem 3rem;
+}
+a#foundationStartQuiz {
+    display: block;
+}
+
+/* external css: flickity.css */
+
+
+  .color-range-slider {
+    background-image: -webkit-gradient(linear,left top,right top,from(#e2c1b1),color-stop(#f3b182),color-stop(#f3b182),color-stop(#73452f),to(#44281d));
+    background-image: linear-gradient(to right,#e2c1b1,#f3b182,#cd8656,#73452f,#44281d);
+    border: none;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    height: 20px;
+}
+/* external css: flickity.css */
+
+.carousel {
+  background: #FAFAFA;
+  margin-bottom: 20px;
+}
+
+.carousel-cell {
+  width: 66%;
+  height: 200px;
+  margin-right: 10px;
+  background: #8C8;
+  border-radius: 5px;
+  counter-increment: carousel-cell;
+}
+
+/* cell number */
+.carousel-cell:before {
+  display: block;
+  text-align: center;
+  content: counter(carousel-cell);
+  line-height: 200px;
+  font-size: 80px;
+  color: white;
+}
+
+button.dot-button {
+    width: 20%;
+    border: none;
+    background: transparent;
+    height: 20px;
+    position: relative;
+}
+button.dot-button.is-selected:before {
+    content: "";
+    background-color: #000914;
+    border-radius: 50%;
+    border: none;
+    box-shadow: none;
+    height: 26px;
+    width: 26px;
+    display: block;
+    position: absolute;
+    top: -2px;
+}
+.button-group.button-group--cells:before {
+    content: "";
+    border: none;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    height: 20px;
+    width: 100px;
+    display: block;
+    background: rgb(255 255 255);
+    background: linear-gradient(90deg, rgb(255 255 255) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0) 100%);
+    position: absolute;
+    pointer-events: none;
+}
+.button-group.button-group--cells:after {
+    content: "";
+    border: none;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    height: 20px;
+    width: 100px;
+    display: block;
+    background: rgb(255 255 255);
+    background: linear-gradient( 270deg, rgb(255 255 255) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0) 100%);
+    position: absolute;
+    pointer-events: none;
+    right: 0;
+    top: 0;
+}  
+.foundation-shade-slider {
+    margin-top: 6rem;
+    display: flex;
+    justify-content: center;
+}  
+span.range-name {
+    position: absolute;
+    top: 0;
+    top: -60px;
+}
+.button:hover {
+  background-color: white;
+  border-color: #BBB;
+  cursor: pointer;
+}
+
+.button:focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+  background-color: white;
+}
+
+.button:active {
+  background-color: #EEE;
+  box-shadow: inset 0 2px 10px hsla(0, 0%, 0%, 0.3);
+}
+
+.button.is-selected {
+  background-color: #09F;
+  color: white;
+}
+
+/* ---- button-group ---- */
+.button-group.button-group--cells {
+    width: auto;flex-grow: 1;
+}
+.button-group {
+    display: inline-block;
+    vertical-align: bottom;
+    position: relative;
+}
+
+.button-group:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.button-group .dot-button {
+    float: left;
+    border-radius: 0;
+    border-right-width: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+
+/* ---- button-row ---- */
+
+.button-row {
+  text-align: center;
+}
+
+
+
+
+  .ui-group button:disabled {
+    background: white;
+}
+  .restart-section {
+    margin-bottom: 2rem;
+}
+  .ui-group h3 {
+    min-width: 20rem;
+}
+  .ui-group {
+    display: block;
+}
+    span.purple {
+    color: #5c6ac4;
+}
+  span.green {
+    color: green;
+}span.blue {
+    color: blue;
+}
+* { box-sizing: border-box; }
+
+
+
+/* ---- button ---- */
+
+.button {
+  display: inline-block;
+  padding: 0.5em 1.0em;
+  background: #EEE;
+  border: none;
+  border-radius: 7px;
+  background-image: linear-gradient( to bottom, hsla(0, 0%, 0%, 0), hsla(0, 0%, 0%, 0.2) );
+  color: #222;
+  font-size: 16px;
+  text-shadow: 0 1px white;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #8CF;
+  text-shadow: 0 1px hsla(0, 0%, 100%, 0.5);
+  color: #222;
+}
+
+.button:active,
+.button.is-checked {
+  background-color: #28F;
+}
+
+.button.is-checked {
+  color: white;
+  text-shadow: 0 -1px hsla(0, 0%, 0%, 0.8);
+}
+
+.button:active {
+  box-shadow: inset 0 1px 10px hsla(0, 0%, 0%, 0.8);
+}
+
+/* ---- button-group ---- */
+
+.button-group:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.button-group .button {
+  float: left;
+  border-radius: 0;
+  margin-left: 0;
+  margin-right: 1px;
+}
+
+.button-group .button:first-child { border-radius: 0.5em 0 0 0.5em; }
+.button-group .button:last-child { border-radius: 0 0.5em 0.5em 0; }
+
+
+
+/* ui group */
+
+
+.ui-group h3 {
+  display: inline-block;
+  vertical-align: top;
+  line-height: 32px;
+  margin-right: 0.2em;
+  font-size: 16px;
+}
+
+.ui-group .button-group {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+/* foundation-element */
+.foundation-element {
+    padding: 1rem;
+    width: 80%
+    height: auto;
+    float: left;
+    border: 1px solid #ddd;
+    margin: .5rem 1rem;
+    margin-bottom: 1rem;
+}
+
+.product-info {
+    text-align: center;
+      margin-top: 2rem;  
+    margin-bottom: .5rem;
+ 
+}
+
+.product-info .p-name {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.product-info .p-shade {
+    font-size: 1.2rem;
+    padding: 1rem 0;
+}
+.product-info .p-desc {
+    min-height: 60px;
+    width: 80%;
+    margin: 0 auto;
+}
+a.foundation-btn.add {
+    background: #eb008b;
+    display: inline-block;
+    padding: .5rem 2rem;
+    color: #fff;
+    font-size: .75rem;
+    margin-top: 1rem;
+}
+#shadeSelector-grid {
+    max-height: 0px;
+    overflow: hidden;
+}
+#shadeSelector-grid.result {
+    max-height: 100%;
+    display: flex;
+    justify-content: center;
+  flex-wrap: wrap;
+}
+.foundation-element a:hover {
+    cursor: pointer;
+}
+.foundation-element > a {
+    display: inline-block;
+}
+.undertone-responses a.foundation-btn {
+    padding: 0;
+}
+.undertone-responses a.foundation-btn span {
+    display: block;
+    padding: .5rem 0;
+}
+
+
+img.f-image.foundation-img {
+    width: 50%;
+}
+
+
+div#foundationFinder_results {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  margin-top:-2rem;
+    }
+
+
+
+@media only screen and (min-width: 769px) {
+
+  .shade-finder .flickity-slider img {
+
+  max-width:500px;
+}
+  
+.responseSection.undertone {
+    display: flex;
+}
+  .undertoneImg {
+    width: 220px;
+    margin: 0 auto;
+}
+
+.undertone-responses .description {
+    width: 220px;
+}
+.responseSection.undertone {
+    display: flex;
+    justify-content: space-between;
+    max-width: 880px;
+    margin: 0 auto;
+}
+.progressBar {
+    display: flex;
+    justify-content: center;
+  align-items: center;
+}
+a.startOver-btn {
+    margin-left: 2rem;
+}
+.steps {
+        width: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: .75rem;
+        font-weight: bold;
+}
+span.stepName {
+    margin-top: 1rem;
+}
+span.stepNumber {
+    height: 3rem;
+    width: 3rem;
+}  
+  
+  
+}
+@media only screen and (min-width: 1025px) {
+
+div#foundationFinder_results.results-2 .foundation-element,div#foundationFinder_results.results-1 .foundation-element {
+    width: 45%;
+}
+  
+}

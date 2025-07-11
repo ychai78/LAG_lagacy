@@ -1,0 +1,125 @@
+<div class="product-info__accordion">
+  <div class="accordion border-trans-grey">
+    <details open>
+      <summary
+        class="accordion__heading relative flex cursor-pointer list-none items-center justify-between p-4 text-[.88rem]"
+      >
+        <h5>Details</h5>
+      </summary>
+      <div
+        class="accordion__content px-4 pb-4 text-xs leading-[1.05rem] tracking-widest lg:text-[18px] lg:leading-[1.575rem]"
+      >
+        <div class="rte prose md:prose-lg hyphens-manual text-pretty tracking-[1.2px]">
+          {{  product.description }}
+        </div>
+        {% comment %}
+        <div class="rte prose md:prose-lg hyphens-manual text-pretty tracking-[1.2px]">
+          
+        
+        {% assign details_subheader_class = 'mb-1 block tracking-widest uppercase font-bold mt-step-2' %}
+        
+        {% if product.metafields.custom.details_what_it_is %}
+        <p class="{{ details_subheader_class }}">What It Is:</p>
+            {{ product.metafields.custom.details_what_it_is | metafield_tag }}
+        {% endif %}
+        
+        {% if product.metafields.custom.details_why_we_love_it %}
+        <p class="{{ details_subheader_class }}">Why We Love It:</p>
+            {{ product.metafields.custom.details_why_we_love_it | metafield_tag }}
+        {% endif %}
+        
+        {% if product.metafields.custom.details_formulated_with %}
+        <p class="{{ details_subheader_class }}">Formulated With:</p>
+            {{ product.metafields.custom.details_formulated_with | metafield_tag }}
+        {% endif %}
+        
+        {% if product.metafields.custom.details_tell_me_more %}
+        <p class="{{ details_subheader_class }}">Tell Me More:</p>
+            {{ product.metafields.custom.details_tell_me_more | metafield_tag }}
+        {% endif %}
+        </div>
+       
+        
+        <div class="rte prose md:prose-lg hyphens-manual text-pretty tracking-[1.2px]">
+          {% assign details_subheader_class = 'mb-1 block tracking-widest uppercase font-bold mt-step-2' %}      
+        
+        <p class="{{ details_subheader_class }}">What It Is:</p>
+           <div class="metafield-rich_text_field"><p>A buildable bronzer, blush, and highlighter made with an innovative bouncy formula that softens and blurs texture in one swipe! The bouncy texture is a gel-to-powder formula that melts into skin, creating a long-wearing, natural, airbrushed finish.</p></div>
+               
+        <p class="{{ details_subheader_class }}">Why We Love It:</p>
+          <div class="metafield-rich_text_field"><p>This luminous formula is enriched with skin-loving ingredients like niacinamide, aloe leaf extract, and glycerin, takes your glow to the next level. Smooth and hydrate your skin for a flawless-looking and radiant complexion.</p><ul><li>Long-wearing</li><li>Gel-to-powder formula</li><li>Blurring finish</li><li>Buildable coverage</li><li>Smudge-proof</li><li>Cruelty-Free</li></ul></div>
+            
+        <p class="{{ details_subheader_class }}">Formulated With:</p>
+          <div class="metafield-rich_text_field"><ul><li>Jojoba Oil</li><li>Squalene</li><li>Vitamin E</li></ul></div>     
+       
+        <p class="{{ details_subheader_class }}">Tell Me More:</p>
+        <div class="metafield-rich_text_field"><p>Available as a bronzer, blush, and highlighter.</p><ul><li>Bronzer - G97887 Sunkissed</li><li>Blush - G97888 Rosy Glow</li><li>Highlighter - G97889 Natural Glow</li></ul></div>
+       
+        </div>
+     {% endcomment %}
+      </div>
+    </details>
+  </div>
+  {% if product.metafields.custom.how_to_apply or product.metafields.custom.how_to_apply_html %}
+    <div class="accordion border-trans-grey border-y">
+      <details>
+        <summary
+          class="accordion__heading relative flex cursor-pointer list-none items-center justify-between p-4 text-[.88rem]"
+        >
+          <h5>How to Apply</h5>
+        </summary>
+        <div
+          class="accordion__content px-4 pb-4 text-xs leading-[1.05rem] tracking-widest lg:text-[18px] lg:leading-[1.575rem]"
+        >
+          <div class="rte prose md:prose-lg tracking-[1.2px]">
+            {{ product.metafields.custom.how_to_apply | metafield_tag }}
+              {{ product.metafields.custom.how_to_apply_html | metafield_tag }}
+   
+          </div>
+        </div>
+      </details>
+    </div>
+  {% endif %}
+</div>
+<style>
+  .accordion details[open] summary:after {
+    -webkit-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+  }
+.accordion summary::before {
+    background: #494949;
+    content: "";
+    height: 2px;
+    right: 4px;
+    position: absolute;
+    width: 12px;
+    transition: transform .5s ease;
+    display: inline-block;
+}
+  .accordion summary:after {
+    background: #494949;
+    content: "";
+    height: 2px;
+    right: 4px;
+    position: absolute;
+    width: 12px;
+    transition: transform .5s ease;
+}
+
+
+
+  /* Specific resets */
+  .accordion__content a {
+    text-decoration: none;
+    color: inherit;
+  }
+.product-info__accordion ul {
+    font-size: var(--fs-400);
+    line-height: 1em;
+    --ls-body: .031em;
+    letter-spacing: var(--ls-body);
+}
+  .product-info__accordion .metafield-rich_text_field {
+    margin-top: -.75rem;
+}
+</style>

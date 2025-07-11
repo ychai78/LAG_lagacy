@@ -1,0 +1,88 @@
+<div class="main-wrapper">
+  <div class="rte">{{ page.content | split: '[lang2]' | first }}</div>
+<div develic-map="{{page.metafields.maps-by-develic.data | escape}}"></div>
+
+
+
+
+</div>
+<style>
+
+	.develic-left-panel {
+		margin-right: 0;
+		border: 1px solid #d8d8d8;
+		height: inherit;
+		background-color: #fbfbfb;
+	}
+  .develic-right-panel {
+    width: calc(62%);
+    max-width: calc(100%);
+  }
+
+  &.develic-layout-full {
+    .develic-items-wrapper {
+      height: calc(100% - 36px);
+    }
+  }
+  &.develic-layout-no-filter {
+    .develic-items-wrapper {
+      height: 100%;
+    }
+  }
+
+	.develic-search-input {
+    border-color: #d8d8d8;
+    border-left: none;
+		border-right: none;
+		border-top: none;
+    font-weight: normal;
+    color: #000;
+    font-size: 16px;
+    border-radius: 0;
+    margin-bottom: 0;
+    &::-webkit-input-placeholder {
+      color: #888888;
+      font-weight: normal;
+      font-size: 16px;
+    }
+  }
+  .develic-search-autocomplete {
+    font-weight: normal;
+    color: #000;
+    border-radius: 0;
+  }
+
+  .develic-items-empty, .develic-items-empty-search {
+    color: #000;
+    font-size: 17px;
+    margin: 10px;
+  }
+
+  .develic-item {
+    border-bottom: 1px solid #d8d8d8;
+    border-left: none;
+    border-top: none;
+    border-right: none;
+    border-radius: 0;
+    margin-bottom: 0;
+    position: relative;
+
+    .develic-icon-star {
+      position: absolute;
+      right: 13px;
+      top: 10px;
+      width: 14px;
+    }
+  }
+
+
+  
+span.store-type {
+    font-weight: 700;
+    font-style: italic;
+}
+  .develic-map .develic-heading {
+    color: #eb008b!important;
+    font-weight: 800!important;
+}
+</style>

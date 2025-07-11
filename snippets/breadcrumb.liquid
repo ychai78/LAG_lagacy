@@ -1,0 +1,217 @@
+
+{% comment %}
+<!-- start responsive-image.liquid (SNIPPET) -->
+  Renders an image
+  
+  Accepts:
+  - class: {string} class used for the wrapper (optional)
+  - title: {string} class used for the current page title (optional). used on displays
+  Usage:
+  {% render 'breadcrumb', class: '' %}
+  
+{% endcomment %}
+ {%- assign class = class | default: 'breadcrumbs flex mt-4 text-nowrap ' -%}
+ {% assign li_class ='inline-flex items-center text-nowrap text-xs text-gray-800 text-wrap' %}
+ {% assign li_class_active =  li_class | append: ' ' | append: 'font-semibold' %}
+
+
+  
+{% if template == 'product' %}  
+    {% case product.type %}
+    	{% when 'eyeshadow'  or 'eyeliner' or 'mascara' or 'eyebrow' or 'eyeliner & lipliner'%}
+    		{% assign product_collection = "eyes" %}
+      	
+      	{% when 'lipgloss'  or 'lipstick' or 'lipliner' or 'lip care' %}
+    		{% assign product_collection = "lips" %}
+    
+    	{% when 'prime & set'  or 'foundation' or 'blush' or 'concealer' or 'contour & highlight' or 'powder'  or 'face/body palette'%}
+    		{% assign product_collection = "face" %}
+    
+    	{% when 'nail care'  or 'nail tips'  or 'nail polish'   %}
+    		{% assign product_collection = "nails" %}
+      	
+    	{% when 'accessories' or 'makeup tools' or 'bags' or 'brushes' or 'tools'%}
+    		{% assign product_collection = "accessories" %}
+    
+    	{% when 'Reverie Collection'%}
+    		{% assign product_collection = "reverie-holiday-collection" %}
+    
+    	{% when 'vault'%}
+    		{% assign product_collection = "limited-edition-vaults" %}
+    
+      {% else %}
+        {% assign product_collection = "" %}
+    {% endcase %}
+<nav class="{{ class }}" aria-label="Breadcrumb">
+  <ol class="flex items-center w-full h-6 overflow-x-auto" itemscope itemtype="http://schema.org/BreadcrumbList">
+  <li class="{{ li_class }}" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+    <a class="flex items-center text-xs hover:text-pink-600 focus:outline-none focus:text-pink-600" href="{{ shop.secure_url }}/" itemprop="item">
+      <span itemprop="name">Home</span>
+      <meta itemprop="position" content="1" />
+    </a>
+    <svg class="flex-shrink-0 mx-2 overflow-visible size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m9 18 6-6-6-6"></path>
+    </svg>
+  </li>
+  
+  <li class="{{ li_class }}" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+    <a class="flex items-center text-xs hover:text-pink-600 focus:outline-none focus:text-pink-600" href="{{ shop.secure_url }}/collections/{{ product_collection }}" itemprop="item">
+      <span itemprop="name">{{ product_collection | replace: '-', ' ' | capitalize }}</span>
+      <meta itemprop="position" content="2" />
+    </a>
+    <svg class="flex-shrink-0 mx-2 overflow-visible size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m9 18 6-6-6-6"></path>
+    </svg>
+  </li>
+  
+  <li class="{{ li_class }}" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+    <a class="flex items-center text-xs hover:text-pink-600 focus:outline-none focus:text-pink-600" href="{{ shop.secure_url }}/collections/{{ product_collection }}/{{ product.type | handle }}" itemprop="item">
+      <span itemprop="name">{{ product.type | capitalize }}</span>
+      <meta itemprop="position" content="3" />
+    </a>
+    <svg class="flex-shrink-0 mx-2 overflow-visible size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m9 18 6-6-6-6"></path>
+    </svg>
+  </li>
+ 
+  <li class="{{ li_class_active }}" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" aria-current="page">
+    <span itemprop="name">{{ product.title }}</span>
+    <meta itemprop="position" content="4" />
+  </li>
+</ol>
+</nav>
+      
+
+
+  
+{% elsif template contains 'page' %}  
+<nav class="{{ class }}" aria-label="Breadcrumb">
+  <ol class="flex items-center" itemscope itemtype="http://schema.org/BreadcrumbList">
+  <li class="{{ li_class }}" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+    <a class="flex items-center text-xs hover:text-pink-600 focus:outline-none focus:text-pink-600" href="{{ shop.secure_url }}/" itemprop="item">
+      <span itemprop="name">Home</span>
+      <meta itemprop="position" content="1" />
+    </a>
+    <svg class="flex-shrink-0 mx-2 overflow-visible size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m9 18 6-6-6-6"></path>
+    </svg>
+  </li>
+
+  <li class="{{ li_class_active }}" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" aria-current="page">
+    <span itemprop="name">{{ page.title | split: '|' | first }}</span>
+    <meta itemprop="position" content="2" />
+  </li>
+  </ol>
+</nav>
+
+
+{% elsif template contains 'collection' %}  
+    {% assign path = request.path %}
+    {% assign path_without_collections = path | remove: '/collections' %}
+    {% assign url_segments = path_without_collections | split: '/' %}
+
+    {% assign number_of_subcollections = url_segments.size | minus: 2 %}
+
+ 
+<nav class="{{ class }}" aria-label="Breadcrumb"><ol class="flex items-center" itemscope itemtype="http://schema.org/BreadcrumbList">
+  <li class="{{ li_class }}" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+    <a class="flex items-center text-xs hover:text-pink-600 focus:outline-none focus:text-pink-600" href="{{ shop.secure_url }}/" itemprop="item">
+      <span itemprop="name">Home</span>
+      <meta itemprop="position" content="1" />
+    </a>
+    <svg class="flex-shrink-0 mx-2 overflow-visible size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m9 18 6-6-6-6"></path>
+    </svg>
+  </li>
+
+  {% if number_of_subcollections == 0 %}
+  <li class="{{ li_class_active }}" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" >
+    <span itemprop="name">{{ collection.title }}</span>
+    <meta itemprop="position" content="2" />
+  </li>
+  {% elsif number_of_subcollections == 1 %}
+  <li class="{{ li_class }}" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+    <a class="flex items-center text-xs hover:text-pink-600 focus:outline-none focus:text-pink-600" href="{{ shop.secure_url }}/collections/{{ collection.handle }}" itemprop="item">
+      <span itemprop="name">{{ collection.title }}</span>
+      <meta itemprop="position" content="2" />
+    </a>
+    <svg class="flex-shrink-0 mx-2 overflow-visible size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m9 18 6-6-6-6"></path>
+    </svg>
+  </li>    
+  <li class="{{ li_class_active }}" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" >
+    <span itemprop="name">{% render 'collection titles' %}</span>
+    <meta itemprop="position" content="3" />
+  </li>
+    {% endif %}
+</ol> </nav>
+
+  
+  
+{% elsif template contains  'article' %}
+
+<nav class="{{ class }}" aria-label="Breadcrumb"><ol class="flex items-center mbe-1" itemscope itemtype="http://schema.org/BreadcrumbList">
+  <li class="{{ li_class }}" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+    <a class="flex items-center text-xs hover:text-pink-600 focus:outline-none focus:text-pink-600" href="{{ shop.secure_url }}/" itemprop="item">
+      <span itemprop="name">Home</span>
+      <meta itemprop="position" content="1" />
+    </a>
+    <svg class="flex-shrink-0 mx-2 overflow-visible size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m9 18 6-6-6-6"></path>
+    </svg>
+  </li>
+  
+  <li class="{{ li_class }}" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+     {% if template contains 'article.events' %}
+    <a class="flex items-center text-xs hover:text-pink-600 focus:outline-none focus:text-pink-600" href="{{ shop.secure_url }}/pages/news-events" itemprop="item">
+      <span itemprop="name">News & Events</span>
+      <meta itemprop="position" content="2" />
+    </a>
+       {% elsif template contains 'article.magazine' %}
+     <a class="flex items-center text-xs hover:text-pink-600 focus:outline-none focus:text-pink-600" href="{{ shop.secure_url }}/blogs/magazines" itemprop="item">
+      <span itemprop="name">Magazines</span>
+      <meta itemprop="position" content="2" />
+    </a>
+     {% endif %}
+    <svg class="flex-shrink-0 mx-2 overflow-visible size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m9 18 6-6-6-6"></path>
+    </svg>
+  </li>
+  
+  <li class="{{ li_class_active }}" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" aria-current="page">
+    <span itemprop="name">{{ article.title }}</span>
+    <meta itemprop="position" content="3" />
+  </li>
+</ol> </nav>
+
+{% elsif template contains  'metaobject/display' %}
+  
+<nav class="{{ class }}" aria-label="Breadcrumb">
+  <ol class="flex items-center mbe-1" itemscope itemtype="http://schema.org/BreadcrumbList">
+  <li class="{{ li_class }}" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+    <a class="flex items-center text-xs hover:text-pink-600 focus:outline-none focus:text-pink-600" href="{{ shop.secure_url }}/pages/marketing-resources-home/" itemprop="item">
+      <span itemprop="name">Marketing Resources</span>
+      <meta itemprop="position" content="1" />
+    </a>
+    <svg class="flex-shrink-0 mx-2 overflow-visible size-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m9 18 6-6-6-6"></path>
+    </svg>
+  </li>
+  
+  <li class="{{ li_class_active }}" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" aria-current="page">
+    <span itemprop="name">{{ title }}</span>
+    <meta itemprop="position" content="2" />
+  </li>
+</ol> 
+</nav>
+  
+
+  {% else %}
+  
+  {% endif %}
+
+
+
+
+
+  

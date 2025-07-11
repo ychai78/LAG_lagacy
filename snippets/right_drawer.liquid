@@ -1,0 +1,312 @@
+{{ 'right-drawer.css' | asset_url | stylesheet_tag }}
+
+{% comment %}
+  {% assign release_date1 = "11/23/17 00:00:02" | remove: "/"  | remove: ":" | remove: " " %}
+  {% assign end_date1 = "11/24/17 23:59:59" | remove: "/"  | remove: ":" | remove: " " %}
+
+  {% assign release_date2 = "11/27/17 00:00:02" | remove: "/"  | remove: ":" | remove: " " %}
+  {% assign end_date2 = "11/27/17 23:59:59" | remove: "/"  | remove: ":" | remove: " " %}
+
+  {% assign current_day = 'now' |  date: "%x %X" | remove: "/"  | remove: ":" | remove: " "  %}{% comment %} <!-- 04/22/14 13:17:24 -->{% endcomment %}
+  {% assign within_release_date = false %}
+
+    {% if current_day >= release_date1 and current_day <= end_date1 %}
+  {% assign within_release_date = true %}
+
+  {% endif %}
+   {% if current_day >= release_date2 and current_day <= end_date2 %}
+  {% assign within_release_date = true %}
+  {% endif %}
+ 
+  {% if within_release_date == true %}
+  {% assign free_shipping_price = 3500 %}
+  {% endif %}
+{% endcomment %}
+
+{% assign total_price = cart.original_total_price %}
+{% assign free_shipping_price = 3500 %}
+{% assign progress_percentage = total_price | times: 100 | divided_by: free_shipping_price %}
+
+<div class="daisydrawer daisydrawer-end z-[600]">
+  <input id="cart-drawer" type="checkbox" class="daisydrawer-toggle">
+  <div class="daisydrawer-side z-20">
+    <label for="cart-drawer" aria-label="close sidebar" class="backdrop daisydrawer-overlay"></label>
+    <div class="daisymenu min-h-full w-full max-w-[500px] bg-base-200 p-4 text-base-content">
+      <h2 id="cart-drawer-title" class="sr-only">Shopping Cart</h2>
+      <div class="side-panel relative" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+        <div class="cart-drawer">
+          <div class="bg-trans-white fixed left-0 top-0 z-40 h-full w-full"></div>
+          <div class="focus-trap">
+            <div
+              class="fixed right-0 top-0 z-40 grid h-full w-full max-w-[500px] grid-cols-1 grid-rows-[auto_1fr_auto] bg-white p-4 shadow-[0_1px_3px_rgb(0_0_0_/_20%)] lg:px-4"
+              style=""
+            >
+              <div class="flex items-center gap-4 pb-2">
+                <h3 class="mb-0  font-bold leading-none ">Shopping Bag</h3>
+                <span class="cartDrawer__total-items  text-sm font-medium leading-none">
+                  {{ cart.item_count }}
+                  {{ cart.item_count | pluralize: 'Item', 'Items' }}
+                </span>
+                <button type="button" aria-label="close shopping bag" class="ml-auto">
+                  <label for="cart-drawer" class="cursor-pointer">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                      focusable="false"
+                      role="img"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="w-[24px]"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <line x1="18" y1="6" x2="6" y2="18"></line> <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </label>
+                </button>
+              </div>
+              {% if cart.item_count < 1 %}
+                  <div class="cartDrawer__empty-cart  bg-white p-4">
+                    <div class="cart-drawer__empty text-center grid gap-10">
+                      <div class="grid gap-3">
+                        <p class="text-xl font-bold">Your cart is currently empty.</p>
+                        <div class="rte">
+                          <p>
+                            Not sure where to start? <br>
+                            Try these collections:
+                          </p>
+                        </div>
+                      </div>
+                  
+                       <ul class="recommendation-collection flex flex-col gap-4" role="list">
+                        <li class="recommendation-collection-item blocks-radius flex-grow flex items-center">
+                          <a href="/collections/face" class="w-full flex items-center gap-3">
+                            <div class="recommendation-collection-item__image blocks-radius-sm media-wrapper loaded">
+                              <img src="//www.lagirlusa.com/cdn/shop/files/category_face.jpg?v=1718126651&amp;width=100" alt="" srcset="//www.lagirlusa.com/cdn/shop/files/category_face.jpg?v=1718126651&amp;width=100 100w" width="100" height="100" loading="lazy" sizes="100vw" fetchpriority="auto" class="cursor-pointer rounded-lg">
+                            </div>
+                            <div class="recommendation-collection-item__content flex items-center justify-between flex-grow">
+                              <h3 class="recommendation-collection-item__title h5 font-body-bolder">Face</h3>
+                              <button class="btn btn--icon-circle btn--secondary shrink-0" aria-label="Face">
+                                 {% render 'icon-arrow-go' %}
+                              </button>
+                            </div>
+                          </a>
+                        </li>
+                        <li class="recommendation-collection-item blocks-radius flex-grow flex items-center">
+                          <a href="/collections/eyes" class="w-full flex items-center gap-3">
+                            <div class="recommendation-collection-item__image blocks-radius-sm media-wrapper loaded">
+                             <img src="//www.lagirlusa.com/cdn/shop/files/category_eyes.jpg?v=1718126650&amp;width=100" alt="" srcset="//www.lagirlusa.com/cdn/shop/files/category_eyes.jpg?v=1718126650&amp;width=100 100w" width="100" height="100" loading="lazy" sizes="100vw" fetchpriority="auto" class="cursor-pointer rounded-lg">   </div>
+                            <div class="recommendation-collection-item__content flex items-center justify-between flex-grow">
+                              <h3 class="recommendation-collection-item__title h5 font-body-bolder">Eyes</h3>
+                              <button class="btn btn--icon-circle btn--secondary shrink-0" aria-label="Eyes">
+                                {% render 'icon-arrow-go' %}
+                              </button>
+                            </div>
+                          </a>
+                        </li>
+                        <li class="recommendation-collection-item blocks-radius flex-grow flex items-center">
+                          <a href="/collections/lips" class="w-full flex items-center gap-3">
+                            <div class="recommendation-collection-item__image blocks-radius-sm media-wrapper loaded">
+                              <img src="//www.lagirlusa.com/cdn/shop/files/category_lips.jpg?v=1718126651&amp;width=100" alt="" srcset="//www.lagirlusa.com/cdn/shop/files/category_lips.jpg?v=1718126651&amp;width=100 100w" width="100" height="100" loading="lazy" sizes="100vw" fetchpriority="auto" class="cursor-pointer rounded-lg">
+                            </div>
+                            <div class="recommendation-collection-item__content flex items-center justify-between flex-grow">
+                              <h3 class="recommendation-collection-item__title h5 font-body-bolder">Lips</h3>
+                              <button class="btn btn--icon-circle btn--secondary shrink-0" aria-label="Lips">
+                                 {% render 'icon-arrow-go' %}
+                              </button>
+                            </div>
+                          </a>
+                        </li>
+                        <li class="recommendation-collection-item blocks-radius flex-grow flex items-center">
+                          <a href="/collections/nails" class="w-full flex items-center gap-3">
+                            <div class="recommendation-collection-item__image blocks-radius-sm media-wrapper loaded">
+                              <img src="//www.lagirlusa.com/cdn/shop/files/category_nails.jpg?v=1718126651&amp;width=100" alt="" srcset="//www.lagirlusa.com/cdn/shop/files/category_nails.jpg?v=1718126651&amp;width=100 100w" width="100" height="100" loading="lazy" sizes="100vw" fetchpriority="auto" class="cursor-pointer rounded-lg">                            </div>
+                            <div class="recommendation-collection-item__content flex items-center justify-between flex-grow">
+                              <h3 class="recommendation-collection-item__title h5 font-body-bolder">Nails</h3>
+                              <button class="btn btn--icon-circle btn--secondary shrink-0" aria-label="Nails">
+                                 {% render 'icon-arrow-go' %}
+                              </button>
+                            </div>
+                          </a>
+                        </li>
+
+                      </ul>
+                    </div>
+                  </div>
+              {% endif %}
+              
+              <div class="cartDrawer__cart hide-scrollbar -ml-5 -mr-5 overflow-auto pl-5 pr-5 flex-1 {% if cart.item_count < 1 %}hide{% endif %}">
+                <div class="cartDrawer__free-shipping-counter text-s-2 my-4 text-center font-medium tracking-[0.01em]">
+                  <span class="cartDrawer__free-shipping">
+                    {% if cart.original_total_price < free_shipping_price %}
+                      Add
+                      <span class="free-shipping">
+                        {{- free_shipping_price | minus: cart.original_total_price | money -}}
+                      </span>
+                      more for free shipping
+                    {% else -%}
+                      You qualify for free shipping!
+                    {% endif %}
+                  </span>
+
+                  <div class="cartDrawer__progress-bar-counter h-2.5 w-full rounded-full bg-gray-200">
+                    {% if progress_percentage > 100 %} {% assign progress_percentage == 100 %} {% endif %}
+                    <div
+                      class="cartDrawer__progress-bar h-2.5 rounded-full bg-pink-600"
+                      style="width: {{ progress_percentage }}%"
+                    ></div>
+                  </div>
+                </div>
+               
+                {% comment %} items {% endcomment %}
+                <div class="cartDrawer__cart-items relative z-10 grid grid-cols-1 gap-3 overflow-y-auto">
+{% for item in cart.items %}
+  <div
+    class="cartDrawerItem flex gap-2 rounded-lg border border-gray-200 bg-white p-2 px-4 shadow-sm"
+    sku="{{item.sku}}"
+    data-variant-id="{{ item.variant.id }}"
+  >
+    <div class="cartDrawerItem__img flex shrink-0 flex-col justify-center">
+      <a
+        href="{% unless item.price <= 0 %}{{item.url}}{%endunless%}"
+        class="relative aspect-square h-20 w-20 bg-white"
+        tabindex="-1"
+      >
+        <img
+          alt="{{item.title}}"
+          class="lazyload h-full w-full object-cover object-center text-transparent transition-opacity"
+          data-src="{{ item.image | product_img_url: 'small' }}"
+          src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+          loading="lazy"
+        >
+      </a>
+    </div>
+    <div class="cartDrawerItem__details flex grow">
+      <div class="flex grow flex-col items-baseline justify-between gap-2">
+        <a
+          href="{% unless item.price <= 0 %}{{item.url}}{%endunless%}"
+          class="block"
+        >
+          <span class="block text-base text-xs font-bold">
+            {{- item.product.title | split: '|' | first -}}
+          </span>
+        </a>
+        <span class="block flex items-center gap-2 text-xs font-medium">
+          {{ item.variant.title }}
+        </span>
+        {% if item.product.type == 'polish' or item.product.type == 'treatment' %}
+          <span class="block flex items-center gap-2 text-xs font-medium">
+            Final Sale
+          </span>
+        {% endif %}
+        <div class="flex gap-2">
+          <div class="number-stepper flex rounded border text-[.88rem] font-medium leading-none">
+            <button
+              class="decrement-qty z-10 flex w-8 items-center justify-center"
+              aria-label="Decrement quantity"
+              data-variant-id="{{ item.variant.id }}"
+            >
+              <svg
+                class="flex-shrink-0 p-1"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M5 12h14"></path>
+              </svg>
+            </button>
+            <input
+              type="number"
+              readonly="readonly"
+              tabindex="-1"
+              aria-label="quantity"
+              class="quantity-input w-8 text-center focus:outline-none"
+              value="{{ item.quantity }}"
+              min="1"
+              data-variant-id="{{ item.variant.id }}"
+            >
+            <button
+              class="increment-qty z-10 flex w-8 items-center justify-center"
+              aria-label="Increment quantity"
+              data-variant-id="{{ item.variant.id }}"
+            >
+              <svg
+                class="flex-shrink-0 p-1"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M5 12h14"></path>
+                <path d="M12 5v14"></path>
+              </svg>
+            </button>
+          </div>
+          <button type="button" aria-label="remove from cart" class="underline">
+            <a
+              href="javascript:void(0)"
+              class="btn-remove-item text-right"
+              data-variant-id="{{ item.variant.id }}"
+            >
+              Remove
+            </a>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="cartDrawerItem__price flex w-20 shrink-0 flex-col items-end justify-between gap-2">
+      <div class="flex-col items-end text-right font-medium">
+        <span class="block">
+          <span>{{ item.final_line_price | money }}</span>
+          {% if item.quantity > 1 %}
+            <p class="text-right text-[.8rem]">
+              <span class="unitPrice">{{ item.quantity }} x {{ item.final_price | money }}</span>
+            </p>
+          {% endif %}
+        </span>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+
+                </div>
+                {% comment %} end of items {% endcomment %}
+
+                
+
+              
+              </div>
+              <div class="cartDrawer__cart cartDrawer__cart-total border-trans-grey border-t pt-4 {% if cart.item_count < 1 %}hide{% endif %}">
+                <p class="flex justify-between  text-[.8rem] font-medium">
+                  <span>Subtotal</span>
+                  <span class="cartDrawer__cart-total--price">{{ cart.original_total_price | money }}</span>
+                </p>
+             
+                
+                <form action="/cart" method="post" id="cart-checkout-form">
+          <button class="mt-2 w-full rounded border border-pink-600 bg-pink-600 py-2 font-semibold text-white text-sm" name="checkout">
+            Check out
+          </button>
+        </form>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

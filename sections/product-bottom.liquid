@@ -1,0 +1,161 @@
+<div class="product_detail_section mt-4 container-grid">
+  {% for block in section.blocks %}
+    {% case block.type %}
+      {% when 'promo_images' %}
+        {% if product.metafields.custom.product_additional_promo_images %}
+          <section class="grid gap-y-4">
+            {% assign array_of_images = product.metafields.custom.product_additional_promo_images.value %}
+            {% for images in array_of_images %}
+              {%- capture alt_tag -%}{{ images | split: '/' | last | split: '?' | first | split: '.' | first | replace: '_', ' ' }}{%- endcapture -%}
+              {%- render 'responsive-image', image: images, sizes: '100vw', lazyload: true, alt: alt_tag -%}
+            {% endfor %}
+          </section>
+        {% endif %}
+
+      {% when 'additional_content' %}
+        {% if product.metafields.custom.product_additional_content %}
+          <section class="grid gap-y-4">
+            {% assign content = product.metafields.custom.product_additional_content %}
+            {{ content }}
+          </section>
+        {% endif %}
+
+      {% when 'also_bought' %}
+        <section class="grid gap-y-4 ">
+          <strong class="PDP_heading mt-8 text-3xl md:text-3xl lg:text-4xl font-semibold">We think you'll like</strong>
+          <div id="cbb-also-bought-box" class="overflow-hidden"></div>
+        </section>
+
+        {% render 'bazaarvoice-ugc' %}
+        
+
+      {% when 'reviews' %}
+        <section class="grid gap-y-4  mb-8" id="reviews">
+            {% render 'bv-ratings-reviews' %}
+          {% render 'bv-questions-answers' %}
+        </section>
+    {% endcase %}
+  {% endfor %}
+
+</div>
+
+<script>
+var CRL8_SITENAME = 'lagirlcosmetics-ln3ru9'; 
+!function(){var e=window.crl8=window.crl8||{},n=!1,i=[];e.ready=function(e){n?e():i.push(e)},e.pixel=e.pixel||function(){e.pixel.q.push(arguments)},e.pixel.q=e.pixel.q||[];var t=window.document,o=t.createElement("script"),c=e.debug||-1!==t.location.search.indexOf("crl8-debug=true")?"js":"min.js";o.async=!0,o.src=t.location.protocol+"//edge.curalate.com/sites/"+CRL8_SITENAME+"/site/latest/site."+c,o.onload=function(){n=!0,i.forEach(function(e){e()})};var r=t.getElementsByTagName("script")[0];r.parentNode.insertBefore(o,r.nextSibling)}();
+</script>
+
+<script>
+function modifyReviewElements() {
+  // Throttle function to limit execution frequency
+  function throttle(func, limit) {
+    let inThrottle;
+    return function(...args) {
+      if (!inThrottle) {
+        func.apply(this, args);
+        inThrottle = true;
+        setTimeout(() => inThrottle = false, limit);
+      }
+    };
+  }
+
+  // Combined update function
+  const updateElements = throttle(() => {
+    // Update header text
+    const headerElements = document.querySelectorAll('.bv-action-bar-header, .bv-write-review-container .bv-action-bar-header');
+    headerElements.forEach(element => {
+      element.textContent = 'Tell us why you love it';
+      element.setAttribute('aria-label', 'Tell us why you love it');
+    });
+
+    // Update family summary styles
+    const familyElements = document.querySelectorAll('.bv-product-family-summary, div[data-bv-product-family-summary]');
+    familyElements.forEach(element => {
+      element.style.cssText = 'border: none !important; padding: 0 !important; margin: 0 !important; background: transparent !important;';
+    });
+  }, 250);
+
+  // Add styles once
+  const styleSheet = document.createElement('style');
+  styleSheet.textContent = `
+    .bv-action-bar-header {
+      content: 'Tell us why you love it' !important;
+    }
+    .bv-action-bar button {
+      font-weight: 600 !important;
+    }
+    .bv-product-family-summary,
+    div[data-bv-product-family-summary] {
+      border: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      background: transparent !important;
+    }
+  `;
+  document.head.appendChild(styleSheet);
+
+  // Optimized observer with throttling
+  const observer = new MutationObserver(updateElements);
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+
+  updateElements();
+
+  setTimeout(updateElements, 1200);
+}
+
+// Initialize
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', modifyReviewElements);
+} else {
+  modifyReviewElements();
+}
+</script>
+
+
+   
+{% schema %}
+{
+  "name": "Product Bottom",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "promo_images",
+      "name": "Promotional Images",
+      "limit": 1
+    },
+    {
+      "type": "additional_content",
+      "name": "Additional Content",
+      "limit": 1
+    },
+    {
+      "type": "also_bought",
+      "name": "Customers Also Bought",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Customers Also Bought"
+        }
+      ]
+    },
+    {
+      "type": "reviews",
+      "name": "Reviews",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Reviews"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

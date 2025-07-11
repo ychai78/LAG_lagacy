@@ -1,0 +1,62 @@
+{% comment %}
+  product-form.liquid
+  Enhanced version with quantity selector and add to cart button
+{% endcomment %}
+
+<div class="product-info__form" data-variants="{{ product.variants.size }}">
+  {% form 'product', product %}
+    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+    {% if product.tags contains "bv-exclude" %}
+      <input
+        type="hidden"
+        id="bv-exclude"
+        name="properties[_bv_exclude]"
+        value="true"
+      />
+    {% endif %}
+    {% render 'product-variant-selector' %}
+
+    <div class="flex items-center gap-4 py-4">
+      <div class="quantity-selector shrink-0" {% if product.vendor == 'NotForSale' %}style="display: none;"{% endif %}>
+        <div class="number-stepper flex h-12 w-32 rounded-lg border-2 font-sans text-[.88rem] font-medium leading-none">
+          <button type="button" class="decrement-qty flex w-8 items-center justify-center" aria-label="Decrement quantity">
+            <svg class="flex-shrink-0 p-1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"></path>
+            </svg>
+          </button>
+          <input type="number" readonly tabindex="-1" aria-label="quantity" class="quantity-input w-12 text-center [appearance:textfield] focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" value="1" min="1" style="text-align: center; -moz-appearance: textfield;">
+          <button type="button" class="increment-qty flex w-8 items-center justify-center" aria-label="Increment quantity">
+            <svg class="flex-shrink-0 p-1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"></path>
+              <path d="M12 5v14"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" name="add" class="product-form__submit button button-wide full button__atc button__atc--collection button__atc--add-to-cart font-display center inline-flex items-center justify-center rounded-lg text-base font-bold tracking-wide disabled:cursor-not-allowed disabled:bg-gray-500"
+        {% if product.vendor == 'NotForSale' or product.selected_or_first_available_variant.available == false %}
+          disabled
+        {% endif %}
+      >
+        <span class="text-sm">
+          {% if product.vendor == 'NotForSale' and product.tags contains 'sold-out'%}
+           Sold Out
+          {% elsif product.vendor == 'NotForSale'%}
+             Available In Stores Only
+          {% elsif product.selected_or_first_available_variant.available == false %}
+            {% if product.selected_or_first_available_variant.inventory_quantity < 1 %}
+              Sold Out
+            {% elsif product.tags contains 'coming soon' %}
+              Coming Soon
+            {% else %}
+              Unavailable
+            {% endif %}
+          {% else %}
+            Add to Bag
+          {% endif %}
+        </span>
+      </button>
+    </div>
+  {% endform %}
+</div>

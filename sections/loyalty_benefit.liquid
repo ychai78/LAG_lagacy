@@ -1,0 +1,349 @@
+{{ 'loyalty.css' | asset_url | stylesheet_tag }}
+
+<div class="benefit-section max-w-1200">
+  <div class="benefit-header">
+    <h2 class="benefit-title">BUY MAKEUP. FREE <span class="benefit-title-highlight">BENEFITS.</span></h2>
+    <p class="benefit-subtitle">YOUR GUIDE TO UPGRADING YOUR GLAM</p>
+  </div>
+
+  <div class="benefit-container">
+    <!-- Desktop: All tiers visible -->
+    <div class="benefit-tiers desktop-only">
+      <div class="benefit-card-wrapper">
+        <div class="benefit-tier">
+          <div class="benefit-tier-header">
+            <h3 class="benefit-tier-title">STARTER KIT</h3>
+          </div>
+          <ul class="benefit-list">
+            <li>PRO.Points per $1 spent</li>
+            <li>FREE birthday gift</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="benefit-card-wrapper">
+        <div class="benefit-tier">
+          <div class="benefit-tier-header">
+            <h3 class="benefit-tier-title">CREATOR KIT</h3>
+            
+          </div>
+          <p class="benefit-multiplier">x 1.25</p>
+          <ul class="benefit-list">
+            <li>PRO.Points per $1 spent</li>
+            <li>FREE birthday gift</li>
+            <li>2x points for your birthday month</li>
+            <li>$10 birthday coupon</li>
+            <li>Exclusive deals, gifts + early access</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="benefit-card-wrapper">
+        <div class="benefit-tier">
+          <div class="benefit-tier-header">
+            <h3 class="benefit-tier-title">PRO.KIT</h3>
+            
+          </div>
+          <p class="benefit-multiplier">x 1.5</p>
+          <ul class="benefit-list">
+            <li>PRO.Points per $1 spent</li>
+            <li>FREE birthday gift</li>
+            <li>2x points for your birthday month</li>
+            <li>$10 birthday coupon</li>
+            <li>Exclusive deals, gifts + early access</li>
+            <li>Choice of full-size PRO.Kit product</li>
+            <li>FREE shipping $25+</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile: Carousel -->
+    <div class="benefit-carousel mobile-only">
+      <div class="carousel-container">
+        <div class="carousel-track" id="benefitCarousel">
+          <div class="carousel-slide active">
+            <div class="benefit-tier">
+              <div class="benefit-tier-header">
+                <h3 class="benefit-tier-title">STARTER KIT</h3>
+              </div>
+              <ul class="benefit-list">
+                <li>PRO.Points per $1 spent</li>
+                <li>FREE birthday gift</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="carousel-slide">
+            <div class="benefit-tier">
+              <div class="benefit-tier-header">
+                <h3 class="benefit-tier-title">CREATOR KIT</h3>
+              </div>
+              <p class="benefit-multiplier">x 1.25</p>
+              <ul class="benefit-list">
+                <li>PRO.Points per $1 spent</li>
+                <li>FREE birthday gift</li>
+                <li>2x points for your birthday month</li>
+                <li>$10 birthday coupon</li>
+                <li>Exclusive deals, gifts + early access</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="carousel-slide">
+            <div class="benefit-tier">
+              <div class="benefit-tier-header">
+                <h3 class="benefit-tier-title">PRO.KIT</h3>
+              </div>
+              <p class="benefit-multiplier">x 1.5</p>
+              <ul class="benefit-list">
+                <li>PRO.Points per $1 spent</li>
+                <li>FREE birthday gift</li>
+                <li>2x points for your birthday month</li>
+                <li>$10 birthday coupon</li>
+                <li>Exclusive deals, gifts + early access</li>
+                <li>Choice of full-size PRO.Kit product</li>
+                <li>FREE shipping $25+</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination Indicators -->
+      <div class="carousel-indicators">
+        <button class="indicator active" data-slide="0"></button>
+        <button class="indicator" data-slide="1"></button>
+        <button class="indicator" data-slide="2"></button>
+      </div>
+    </div>
+
+    <!-- Line Graphics -->
+    <div class="benefit-lines">
+      <img src="{{ 'loyalty_line.png' | file_url }}" style="z-index:-1;" alt="Decorative lines" class="benefit-line-left" width="400px" height="200px">
+      <img src="{{ 'loyalty_line.png' | file_url }}" style="z-index:-1;" alt="Decorative lines" class="benefit-line-right" width="400px" height="200px">
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+  
+  // Wait for DOM to be fully loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBenefitCarousel);
+  } else {
+    // DOM is already loaded, run immediately
+    setTimeout(initBenefitCarousel, 100);
+  }
+
+  function initBenefitCarousel() {
+    console.log('Initializing benefit carousel with sliding effect...');
+    
+    // Get carousel elements
+    const carouselTrack = document.getElementById('benefitCarousel');
+    const carouselContainer = document.querySelector('.carousel-container');
+    
+    if (!carouselTrack || !carouselContainer) {
+      console.error('Carousel elements not found');
+      return;
+    }
+
+    // Get slides and indicators
+    const slides = carouselTrack.querySelectorAll('.carousel-slide');
+    const indicators = document.querySelectorAll('.carousel-indicators .indicator');
+    
+    if (slides.length === 0 || indicators.length === 0) {
+      console.error('No slides or indicators found');
+      return;
+    }
+
+    console.log(`Found ${slides.length} slides and ${indicators.length} indicators`);
+
+    // State variables
+    let currentSlide = 0;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let isDragging = false;
+    let startMouseX = 0;
+
+    // Update container height based on current slide
+    function updateContainerHeight() {
+      const currentSlideElement = slides[currentSlide];
+      const slideContent = currentSlideElement.querySelector('.benefit-tier');
+      if (slideContent) {
+        const contentHeight = slideContent.offsetHeight;
+        // Add extra space for the absolutely positioned header
+        carouselContainer.style.height = (contentHeight + 20) + 'px';
+        console.log(`Container height set to ${contentHeight + 20}px`);
+      }
+    }
+
+    // Show a specific slide with sliding animation
+    function showSlide(index) {
+      if (index < 0 || index >= slides.length) return;
+      
+      // Calculate the transform distance
+      const translateX = -(index * 33.333);
+      carouselTrack.style.transform = `translateX(${translateX}%)`;
+      
+      // Update indicators
+      indicators.forEach((ind, i) => {
+        ind.classList.toggle('active', i === index);
+      });
+      
+      currentSlide = index;
+      
+      // Update container height after slide transition
+      setTimeout(updateContainerHeight, 50);
+      
+      console.log(`Showing slide ${index + 1} of ${slides.length}`);
+    }
+
+    // Navigate to next slide
+    function nextSlide() {
+      showSlide((currentSlide + 1) % slides.length);
+    }
+
+    // Navigate to previous slide
+    function prevSlide() {
+      showSlide((currentSlide - 1 + slides.length) % slides.length);
+    }
+
+    // Set up indicator clicks
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log(`Indicator ${index + 1} clicked`);
+        showSlide(index);
+      });
+    });
+
+    // Touch events for swipe
+    carouselTrack.addEventListener('touchstart', function(e) {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      isDragging = true;
+    }, { passive: true });
+
+    carouselTrack.addEventListener('touchmove', function(e) {
+      if (!isDragging) return;
+      
+      const touchX = e.touches[0].clientX;
+      const touchY = e.touches[0].clientY;
+      const diffX = Math.abs(touchX - touchStartX);
+      const diffY = Math.abs(touchY - touchStartY);
+      
+      // Prevent vertical scroll if horizontal swipe
+      if (diffX > diffY && diffX > 10) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    carouselTrack.addEventListener('touchend', function(e) {
+      if (!isDragging) return;
+      
+      isDragging = false;
+      const touchEndX = e.changedTouches[0].clientX;
+      const diffX = touchStartX - touchEndX;
+      
+      if (Math.abs(diffX) > 50) {
+        if (diffX > 0) {
+          nextSlide();
+        } else {
+          prevSlide();
+        }
+      }
+    }, { passive: true });
+
+    // Mouse events for desktop drag
+    let isMouseDragging = false;
+    
+    carouselTrack.addEventListener('mousedown', function(e) {
+      startMouseX = e.clientX;
+      isMouseDragging = true;
+      carouselTrack.style.cursor = 'grabbing';
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', function(e) {
+      if (!isMouseDragging) return;
+      e.preventDefault();
+    });
+
+    document.addEventListener('mouseup', function(e) {
+      if (!isMouseDragging) return;
+      
+      isMouseDragging = false;
+      carouselTrack.style.cursor = 'grab';
+      
+      const endMouseX = e.clientX;
+      const diffX = startMouseX - endMouseX;
+      
+      if (Math.abs(diffX) > 50) {
+        if (diffX > 0) {
+          nextSlide();
+        } else {
+          prevSlide();
+        }
+      }
+    });
+
+    // Mouse wheel horizontal scroll
+    carouselContainer.addEventListener('wheel', function(e) {
+      e.preventDefault();
+      
+      // Normalize wheel delta (different browsers have different values)
+      const delta = Math.sign(e.deltaY || e.deltaX);
+      
+      if (delta > 0) {
+        nextSlide();
+      } else if (delta < 0) {
+        prevSlide();
+      }
+    }, { passive: false });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      const carouselVisible = carouselContainer.offsetParent !== null;
+      if (!carouselVisible) return;
+      
+      if (e.key === 'ArrowLeft') {
+        prevSlide();
+      } else if (e.key === 'ArrowRight') {
+        nextSlide();
+      }
+    });
+
+    // Handle window resize
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(updateContainerHeight, 250);
+    });
+
+    // Initialize carousel
+    showSlide(0);
+    carouselTrack.style.cursor = 'grab';
+    
+    // Initial height setup
+    setTimeout(updateContainerHeight, 100);
+    
+    console.log('Benefit carousel with sliding effect initialized successfully!');
+  }
+})();
+</script>
+
+{% schema %}
+    {
+      "name": "Loyalty_Benefit",
+      "settings": [],
+      "presets": [
+        {
+          "name": "Loyalty Benefit",
+          "category": "Loyalty Page"
+        }
+      ]
+    }
+{% endschema %}

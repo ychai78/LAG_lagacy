@@ -1,0 +1,187 @@
+{{ 'loyalty.css' | asset_url | stylesheet_tag }}
+<div id="faq" class="content-section max-w-1200">
+  <h2>FAQs</h2>
+  <ul class="faq-list">
+    <li class="faq-item">
+      <div class="faq-question">
+        <span>How do I join the loyalty program?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        Create an account on lagirlusa.com to automatically enroll in PRO.Points. Membership is free.
+      </div>
+    </li>
+    <li class="faq-item">
+      <div class="faq-question">
+        <span>How do I earn points?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        Points are earned with every eligible purchase. Additional points may be available through limited-time offers and activities.
+      </div>
+    </li>
+    <li class="faq-item">
+      <div class="faq-question">
+        <span>How do I redeem my rewards points?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        Log into your account, view your rewards under "My Rewards," and click your available reward to include at checkout.
+      </div>
+    </li>
+    <li class="faq-item">
+      <div class="faq-question">
+        <span>How do I check my points balance or tier status?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        After logging into your account, navigate to the "My Rewards" section to view your current points and membership tier.
+      </div>
+    </li>
+    <li class="faq-item">
+      <div class="faq-question">
+        <span>Do my rewards points expire?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        Yes. Points expire 12 months from the date they are issued.
+      </div>
+    </li>
+    <li class="faq-item">
+      <div class="faq-question">
+        <span>Can I use my rewards points with other discounts or promotions?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        Rewards cannot be combined with promotional codes, sitewide sales, or bundled offers.
+      </div>
+    </li>
+    <li class="faq-item">
+      <div class="faq-question">
+        <span>Do I get a birthday reward?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        Yes. A birthday reward is offered based on your current tier. Ensure your birth date is saved in your account profile to qualify.
+      </div>
+    </li>
+    <li class="faq-item">
+      <div class="faq-question">
+        <span>How long does it take for points to appear in my account?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        Points are typically credited within 12-24 hours of purchase. Points from other activities may take longer to process.
+      </div>
+    </li>
+    <li class="faq-item">
+      <div class="faq-question">
+        <span>How much do I have to spend to maintain or upgrade my tier?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        Your tier status is based on your total spend over a 12-month period. Please see our tier breakdown section: From Starter to PRO for more information.
+      </div>
+    </li>
+    <li class="faq-item">
+      <div class="faq-question">
+        <span>How does the referral program work?</span>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        Refer friends through your unique referral link. They receive a discount on their first purchase; you earn rewards after their purchase is complete.
+      </div>
+    </li>
+  </ul>
+  <p style="text-align:center; font-size:1rem; margin-top:5rem; color:#222;">Still haven't found exactly what you're looking for?
+    <a href="https://www.lagirlusa.com/pages/terms-and-conditions" target="_blank" style="color:#F467BC; text-decoration:underline;">You can find more information in our Terms & Conditions.</a></p>
+</div>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Use event delegation for better reliability
+  const faqContainer = document.querySelector('.content-section');
+  
+  if (faqContainer) {
+    faqContainer.addEventListener('click', function(event) {
+      // Find the closest .faq-question element
+      const faqQuestion = event.target.closest('.faq-question');
+      
+      if (faqQuestion) {
+        // Prevent default behavior and stop propagation
+        event.preventDefault();
+        event.stopPropagation();
+        
+        // Get the parent FAQ item and the icon
+        const faqItem = faqQuestion.parentElement;
+        const faqIcon = faqQuestion.querySelector('.faq-icon');
+        
+        // Verify we have the required elements
+        if (!faqItem || !faqIcon) {
+          console.warn('FAQ structure not found');
+          return;
+        }
+        
+        // Check if this item is currently active
+        const isActive = faqItem.classList.contains('active');
+        
+        // Toggle the current item only (no auto-close of other items)
+        if (isActive) {
+          // Close the current item
+          faqItem.classList.remove('active');
+          faqIcon.textContent = '+';
+        } else {
+          // Open the current item
+          faqItem.classList.add('active');
+          faqIcon.textContent = '−';
+        }
+      }
+    });
+  }
+  
+  // Fallback: Direct event listeners for better compatibility
+  setTimeout(function() {
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    
+    faqQuestions.forEach(function(question) {
+      // Remove any existing listeners first to prevent duplicates
+      question.style.cursor = 'pointer';
+      
+      question.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const faqItem = this.parentElement;
+        const faqIcon = this.querySelector('.faq-icon');
+        
+        if (faqItem && faqIcon) {
+          const isActive = faqItem.classList.contains('active');
+          
+          if (isActive) {
+            faqItem.classList.remove('active');
+            faqIcon.textContent = '+';
+          } else {
+            faqItem.classList.add('active');
+            faqIcon.textContent = '−';
+          }
+        }
+      }, { passive: false });
+    });
+  }, 100);
+});
+</script>
+
+{% schema %}
+    {
+      "name": "Loyalty_Faq",
+      "settings": [],
+      "presets": [
+        {
+          "name": "Loyalty Faq",
+          "category": "Loyalty Page"
+        }
+      ]
+    }
+{% endschema %}

@@ -1,0 +1,944 @@
+{%- capture content_for_querystring -%}{{ content_for_header }}{%- endcapture -%}
+{%- assign page_url = content_for_querystring
+  | split: '"pageurl":"'
+  | last
+  | split: '"'
+  | first
+  | split: '.myshopify.com'
+  | last
+  | replace: '\/', '/'
+  | replace: '%20', ' '
+  | replace: '\u0026', '&'
+  | split: '/'
+  | last
+-%}
+{% comment %} 
+{% capture finalurl %}{{ page_url }}{% endcapture %}
+
+{% unless finalurl contains '?=test' %}
+<style>
+  .wf-wishlist-lagirl {
+    display: none !important;
+}
+  div#shopify-block-AUHpPR2U2b1ZMSGVVd__16428855274652595211 {
+    display: none;
+}
+</style>
+{% endunless %}
+{% endcomment %}
+
+{% capture finalurl %}{{ page_url }}{% endcapture %}
+
+{% if finalurl contains 'marketing-resources-home' %}
+<style>
+  .wf-floating-launcher {
+display:flex !important;
+}
+
+</style>
+{% endif %}
+
+<script defer src="{{ 'marketingResources.js' | asset_url }}"></script>
+{{ 'marketingResources.css' | asset_url | stylesheet_tag }}
+
+		{% assign handle = request.path | split: '/' | last %}
+		{% assign displays = shop.metaobjects.display.values %}
+
+
+    <div class="resources-page">
+    	<section class="container-grid category-top " id="collection-header">
+    		
+          <div class="flex items-center justify-between w-full text-sm mt-4">
+            <div class="flex  h-full justify-between category-title ">
+    			<h2 class=
+                  "text-center flex items-center justify-center pl-32 h-full capitalize text-3xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-5xl 2xl:text-5xl"
+                  >{{ handle | replace: '-', ' ' }}</h2>
+    		</div>
+    		<div class="sortByOptions md:flex mx-1 my-2">
+    			<div class="daisydropdown daisydropdown-end daisydropdown-bottom">
+                    <span class="font-bold">Sort by:</span>
+    				<div tabindex="0" role="button" id="sortButton" class=" mx-1 sortByFilter daisybtn">
+    					
+    					<span id="sortText">Featured</span>
+    					<svg width="12" height="7" viewBox="0 0 12 7" xmlns="http://www.w3.org/2000/svg">
+    						<path id="icon-expand" d="M10.95 2.364A1 1 0 109.536.95L6 4.485 2.465.95A1 1 0 001.05 2.364l4.243 4.243a1 1 0 001.414 0v-.001l4.243-4.242z" fill="currentColor" fill-rule="evenodd"></path>
+    					</svg>
+    				</div>
+    				<ul tabindex="0" class="daisymenu daisydropdown-content z-[1] w-52 rounded-box bg-base-100 p-2 shadow">
+    					<li value="newest-to-oldest">
+    						<a href="#" data-sort-by="newest-to-oldest" class="sortOption">Newest to Oldest</a>
+    					</li>
+    					<li value="data-title"><a href="#" data-sort-by="data-title" class="sortOption">Display Name</a></li>
+    					<li value="data-displaynumber">
+    						<a href="#" data-sort-by="data-displaynumber" class="sortOption">Display Number</a>
+    					</li>
+    				</ul>
+    			</div>
+    		</div>
+    	</div>
+          <div class="resources-topbar">
+    				<div class="resources-search">
+                      <input
+                          type="text"
+                          id="display-search"
+                          placeholder="Search displays..."
+                          class="w-full py-3 px-8 focus:outline-none"
+                      >
+                            
+                            
+    						
+      				<div id="search-results" class="search-results"></div>
+    				</div>
+                    <svg
+                  
+                        width="18"
+                        height="18"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="icon icon-search"
+                    >
+                        <path d="M15.8118 14.7765L11.2941 10.2588C12.1412 9.12941 12.7059 7.81176 12.7059 6.30588C12.7059 2.82353 9.88235 0 6.4 0C2.82353 0 0 2.82353 0 6.30588C0 9.78824 2.82353 12.6118 6.30588 12.6118C7.81176 12.6118 9.22353 12.0471 10.2588 11.2L14.7765 15.7176C14.8706 15.8118 15.0588 15.9059 15.2471 15.9059C15.4353 15.9059 15.6235 15.8118 15.7176 15.7176C16.0941 15.5294 16.0941 15.0588 15.8118 14.7765ZM6.30588 11.2941C3.57647 11.2941 1.41176 9.12941 1.41176 6.4C1.41176 3.67059 3.57647 1.50588 6.30588 1.50588C9.03529 1.50588 11.2941 3.57647 11.2941 6.30588C11.2941 9.03529 9.03529 11.2941 6.30588 11.2941Z" fill="black"></path>
+                    </svg>
+    			</div>
+    	
+        
+    	<div class="resources-menu-container">
+          
+    
+    			
+              
+    			<section class="resources-nav">
+           
+          <!-- ================================================================================================================================= -->
+                  
+    				<div class="distributor-sub-nav-container" id="display-nav">
+              
+    					<div class="sub-navx"id="eyes">
+                            <div class="title-container">
+                              <a href="/pages/marketing-resources-home/eyes" id="all" data-main-category="eyes-all">
+                                <span class=" sub-nav-title">EYES</span>
+                              </a>
+                            </div>
+                          <div class="scrollable-items">
+                            <a class="no-left-padding" href="/pages/marketing-resources-home/brow" id="brow" data-main-category="eyes">
+                              Brow
+                            </a>
+                            <a href="/pages/marketing-resources-home/eyeshadow" id="eyeshadow" data-main-category="eyes">
+                              Eyeshadow
+                            </a>
+                            <a href="/pages/marketing-resources-home/eyeliner" id="eyeliner" data-main-category="eyes">
+                              Eyeliner
+                            </a>
+                            <a href="/pages/marketing-resources-home/mascara" id="mascara" data-main-category="eyes">
+                              Mascara
+                            </a>
+                          </div>
+                             <div class="arrow-indicator"></div>
+                        </div>
+          <!-- ================================================================================================================================= -->      
+                          <div class="sub-navx" id="lips">
+                            <div class="title-container"><a href="/pages/marketing-resources-home/lips" id="all" data-main-category="lips-all">
+                              <span class="sub-nav-title">LIPS</span>
+                            </a>
+                            </div>
+                            <div class="scrollable-items">
+                              <a class="no-left-padding" href="/pages/marketing-resources-home/lip-care" id="lip care" data-main-category="lips">
+                              Lip Care
+                            </a>
+                            <a href="/pages/marketing-resources-home/lipgloss" id="lipgloss" data-main-category="lips">
+                              Lip Gloss
+                            </a>
+                            <a href="/pages/marketing-resources-home/lipliner" id="lipliner" data-main-category="lips">
+                              Lipliner
+                            </a>
+                            <a href="/pages/marketing-resources-home/lipstick" id="lipstick" data-main-category="lips">
+                              Lipstick
+                            </a>
+                            </div>
+                            <div class="arrow-indicator"></div>
+                          </div>
+        <!-- ================================================================================================================================= -->
+                          <div class="sub-navx" id="face">
+                            <div class="title-container"><a href="/pages/marketing-resources-home/face" id="all" data-main-category="face-all">
+                              <span class="sub-nav-title">FACE</span>
+                            </a></div>
+                            <div class="scrollable-items">
+                              <a class="sub-navx-item no-left-padding" href="/pages/marketing-resources-home/blush-contour-highlight" id="blush-contour-highlight" data-main-category="face">
+                              Blush, Contour & Highlight
+                            </a>
+                            <a class="sub-navx-item "  href="/pages/marketing-resources-home/concealer" id="concealer" data-main-category="face">
+                              Concealer
+                            </a>
+                            <a class="sub-navx-item"  href="/pages/marketing-resources-home/foundation" id="foundation" data-main-category="face">
+                              Foundation
+                            </a>
+                            <a class="sub-navx-item"  href="/pages/marketing-resources-home/face-body-palette" id="face-body-palette" data-main-category="face">
+                              Face/Body Palette
+                            </a>
+                            <a class="sub-navx-item"  href="/pages/marketing-resources-home/powder" id="powder" data-main-category="face">
+                              Powder
+                            </a>
+                            <a class="sub-navx-item"  href="/pages/marketing-resources-home/prime-and-set" id="prime-set" data-main-category="face">
+                              Prime & Set
+                            </a>
+                            </div>
+                             <div class="arrow-indicator"></div>
+                          </div>
+          <!-- ================================================================================================================================= -->
+                          <div class="sub-navx" id="nails">
+                            <div class="title-container"><a href="/pages/marketing-resources-home/nails" id="all" data-main-category="nails-all">
+                              <span class="sub-nav-title">NAILS</span>
+                            </a>
+                            </div>
+                            <div style="display: flex; flex-wrap: nowrap;">
+                              <a class="no-left-padding" href="/pages/marketing-resources-home/nail-tips" id="nail-tip" data-main-category="nails">
+                              Nail Tips
+                            </a>
+                            <a href="/pages/marketing-resources-home/polish" id="polish" data-main-category="nails">
+                              Polish
+                            </a>
+                            <a href="/pages/marketing-resources-home/treatment" id="treatment" data-main-category="nails">
+                              Treatment
+                            </a>
+                            </div>
+                            <!-- <div class="arrow-indicator"></div> -->
+                          </div>
+          <!-- ================================================================================================================================= -->             
+    				</div>
+                   <!-- ================================================================================================================================= -->
+                  
+    			</section>
+    		
+           <div class="display-sub-nav">
+                          <a href="/pages/marketing-resources-home/new" id="new" data-main-category="new-all">
+                            New Items
+                          </a>
+                          <a href="/pages/marketing-resources-home/limited-items" id="all" data-main-category="limited-items-all">
+                            Limited Items
+                          </a>
+                          <a href="/pages/marketing-resources-home/accessories" id="all" data-main-category="accessories-all">
+                            Accessories
+                          </a>
+                          <a href="/pages/marketing-resources-home/floor-displays" id="all" data-main-category="floor-displays-all">
+                            Floor Displays
+                          </a>
+                          <a href="/pages/marketing-resources-home/beauty-bar-modules" id="all" data-main-category="beauty-bar-modules">
+                            Beauty Bar Modules
+                          </a>
+                          <a href="/pages/marketing-resources-home" id="all" data-main-category="all">
+                            View All
+                          </a>
+                          
+              </div>
+          
+    	</div>
+         </section>
+    </div>
+    
+    <div class="mb-8 container-grid display-grid-wrapper">
+      {% if handle == 'beauty-bar-modules' %}
+        
+        <div class="flex min-w-fit flex-nowrap flex-row md:flex-row items-start md:items-center mb-4  w-full">
+      <p class="flex font-bold items-center mx-2 pr-1 min-w-fit md:py-4 text-lg md:text-xl md:mb-0 md:mr-2 w-fit h-full text-nowrap ">Filter By:</p>
+      <div class=" overflow-x-auto font-bold flex flex-nowrap whitespace-nowrap min-w-fit gap-2 items-center md:gap-2 filter-categories  h-full w-full" 
+          style="scrollbar-width: none; -ms-overflow-style: none;">
+        <button
+          class="filter border border-black px-4 md:px-8 py-1.5 md:py-2 rounded-[28px] transition-all duration-300 ease-in-out flex items-center text-sm md:text-base min-w-[100px] justify-center"
+          type="button"
+          aria-pressed="true"
+          data-filter="*"
+        >
+          <svg
+            class="hidden mr-2 fill-current"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            width="14"
+            height="14"
+          >
+            <path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/>
+          </svg>
+          <span class="Text-ds">All</span>
+        </button>
+        <button
+          class="filter border border-black px-4 md:px-8 py-1.5 md:py-2 rounded-[28px] transition-all duration-300 ease-in-out flex items-center text-sm md:text-base min-w-[100px] justify-center"
+          type="button"
+          aria-pressed="false"
+          data-filter="eyes"
+        >
+          <svg
+            class="hidden mr-2 fill-current"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            width="14"
+            height="14"
+          >
+            <path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/>
+          </svg>
+          <span class="Text-ds">Eyes</span>
+        </button>
+        <button
+          class="filter border border-black px-4 md:px-8 py-1.5 md:py-2 rounded-[28px] transition-all duration-300 ease-in-out flex items-center text-sm md:text-base min-w-[100px] justify-center"
+          type="button"
+          aria-pressed="false"
+          data-filter="lips"
+        >
+          <svg
+            class="hidden mr-2 fill-current"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            width="14"
+            height="14"
+          >
+            <path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/>
+          </svg>
+          <span class="Text-ds">Lips</span>
+        </button>
+        <button
+          class="filter border border-black px-4 md:px-8 py-1.5 md:py-2 rounded-[28px] transition-all duration-300 ease-in-out flex items-center text-sm md:text-base min-w-[100px] justify-center"
+          type="button"
+          aria-pressed="false"
+          data-filter="face"
+        >
+          <svg
+            class="hidden mr-2 fill-current"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            width="14"
+            height="14"
+          >
+            <path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/>
+          </svg>
+          <span class="Text-ds">Face</span>
+        </button>
+        <button
+          class="filter border border-black px-4 md:px-8 py-1.5 md:py-2 rounded-[28px] transition-all duration-300 ease-in-out flex items-center text-sm md:text-base min-w-[100px] justify-center"
+          type="button"
+          aria-pressed="false"
+          data-filter="accessories"
+        >
+          <svg
+            class="hidden mr-2 fill-current"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            width="14"
+            height="14"
+          >
+            <path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/>
+          </svg>
+          <span class="Text-ds">Accessories</span>
+        </button>        
+      </div>
+    </div>
+    
+    
+  {% endif %}
+
+  
+	<div class="grid grid-cols-2 gap-2 display-grid lg:grid-cols-3 lg:gap-4 lg:gap-y-8 " id="displayListing-grid">
+
+		{% paginate displays by 250 %}
+          {% for display in displays %}
+				{% case handle %}
+					{% when 'marketing-resources-home' -%}
+						{% comment %}Show all displays except Beauty Bar Modules {% endcomment %}
+						{% assign display_type = display.type.value %}
+						{% unless display_type == 'Beauty Bar Module' %}
+							{% render 'display-card', display: display %}
+						{% endunless %}
+
+					{%- else %}
+						{% assign display_collections = display.collections.value %}
+						{% for display_collection in display_collections %}
+							{%- comment %}<locksmith:1e34>{% endcomment -%}
+							  {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: display_collection, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+							{%- comment %}</locksmith:1e34>{% endcomment -%}
+							{% assign collection = display_collection.collection | handleize %}
+							{% if collection == handle %}
+								{% render 'display-card', display: display %}
+								{% break %}
+							{% endif %}
+						{% endfor %}
+				{% endcase %}
+			{% endfor %}
+			
+
+			{% if paginate.pages > 1 %}
+				<div class="pagination">
+					{% if paginate.previous %}
+						<a href="{{ paginate.previous.url }}">Previous</a>
+					{% endif %}
+					{% for part in paginate.parts %}
+						{% if part.is_link %}
+							<a href="{{ part.url }}">{{ part.title }}</a>
+						{% else %}
+							<span>{{ part.title }}</span>
+						{% endif %}
+					{% endfor %}
+					{% if paginate.next %}
+						<a href="{{ paginate.next.url }}">Next</a>
+					{% endif %}
+				</div>
+			{% endif %}
+		{% endpaginate %}
+	</div>
+</div>
+
+
+
+<script>
+  //for filters on beauty bar modules
+	document.addEventListener('DOMContentLoaded', function () {
+		const filterButtons = document.querySelectorAll('.filter-categories .filter');
+		const displayCards = document.querySelectorAll('.displayListing');
+
+		filterButtons.forEach((button) => {
+			button.addEventListener('click', function () {
+				filterButtons.forEach((btn) => {
+					btn.setAttribute('aria-pressed', 'false');
+					btn.classList.remove('bg-black', 'text-white');
+					btn.querySelector('svg').classList.add('hidden');
+				});
+				this.setAttribute('aria-pressed', 'true');
+				this.classList.add('bg-black', 'text-white');
+				this.querySelector('svg').classList.remove('hidden');
+
+				const filterValue = this.getAttribute('data-filter');
+
+				displayCards.forEach((card) => {
+					if (filterValue === '*') {
+						card.style.display = '';
+					} else {
+						const categories = card
+							.getAttribute('data-cat')
+							.split(/\s+/)
+							.filter((category) => category.trim() !== '');
+
+						if (categories.includes(filterValue)) {
+							card.style.display = '';
+						} else {
+							card.style.display = 'none';
+						}
+					}
+				});
+			});
+		});
+	});
+</script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const sortOptions = document.querySelectorAll('.sortOption');
+		const sortText = document.getElementById('sortText');
+		const displayGrid = document.getElementById('displayListing-grid');
+
+		function sortByAttribute(attribute, order = 'asc') {
+			const displayCards = Array.from(displayGrid.children);
+			displayCards.sort((a, b) => {
+				const valueA = a.getAttribute(attribute) || '';
+				const valueB = b.getAttribute(attribute) || '';
+
+				// Check if the attribute value is numeric or not
+				if (!isNaN(valueA) && !isNaN(valueB)) {
+					return order === 'asc' ? Number(valueA) - Number(valueB) : Number(valueB) - Number(valueA); // Numeric sorting
+				} else {
+					return order === 'asc' ? valueA.localeCompare(valueB) : valueB.localeCompare(valueA); // Alphabetic sorting
+				}
+			});
+
+			// Reorder the display grid
+			displayGrid.innerHTML = ''; // Clear the current display grid
+			displayCards.forEach((card) => displayGrid.appendChild(card)); // Append sorted cards
+		}
+
+		function sortNewestToOldest() {
+			const displayCards = Array.from(displayGrid.children);
+
+			// Sort by data-callout first, prioritize items with callouts (not 'null'), and then by data-displaynumber
+			displayCards.sort((a, b) => {
+				const calloutA = a.getAttribute('data-callout') || 'null';
+				const calloutB = b.getAttribute('data-callout') || 'null';
+				const displayNumberA = a.getAttribute('data-displaynumber') || '';
+				const displayNumberB = b.getAttribute('data-displaynumber') || '';
+
+				if (calloutA !== 'null' && calloutB === 'null') {
+					return -1; // A should come before B if A has a callout and B doesn't
+				}
+				if (calloutA === 'null' && calloutB !== 'null') {
+					return 1; // B should come before A if B has a callout and A doesn't
+				}
+				// If both have or don't have callouts, sort by display number in descending order
+				return displayNumberB.localeCompare(displayNumberA, undefined, { numeric: true });
+			});
+
+			// Reorder the display grid
+			displayGrid.innerHTML = ''; // Clear the current display grid
+			displayCards.forEach((card) => displayGrid.appendChild(card)); // Append sorted cards
+		}
+
+		// Apply the default sorting on page load (Newest to Oldest)
+		sortNewestToOldest();
+		sortText.textContent = 'Newest to Oldest';
+
+		sortOptions.forEach((option) => {
+			option.addEventListener('click', function (event) {
+				event.preventDefault(); // Prevent the default link behavior
+				const selectedText = this.textContent;
+				sortText.textContent = selectedText;
+
+				const sortBy = this.getAttribute('data-sort-by');
+				switch (sortBy) {
+					case 'newest-to-oldest':
+						sortNewestToOldest();
+						break;
+					case 'data-title':
+						sortByAttribute('data-title');
+						break;
+					case 'data-displaynumber':
+						sortByAttribute('data-displaynumber');
+						break;
+					default:
+						break;
+                    
+				}
+			});
+		});
+	});
+
+  
+</script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		var searchInput = document.getElementById('display-search');
+		var searchResults = document.getElementById('search-results');
+		var displaysData = document.getElementById('displays-data');
+
+		var displays;
+		try {
+			displays = JSON.parse(displaysData.textContent).displays;
+			console.log('Displays loaded:', displays.length);
+		} catch (error) {
+			console.error('Error parsing displays data:', error);
+			return;
+		}
+
+		searchInput.addEventListener('input', function () {
+			var searchTerm = this.value.toLowerCase();
+
+			if (searchTerm.length < 2) {
+				searchResults.innerHTML = '';
+				return;
+			}
+
+			var results = displays.filter(function (display) {
+				return (
+					display.display_number.toLowerCase().includes(searchTerm) || display.name.toLowerCase().includes(searchTerm)
+				);
+			});
+
+			if (results.length === 0) {
+				searchResults.innerHTML = '<p>No results found</p>';
+			} else {
+				var html = '<ul class="search-results-list">';
+				for (var i = 0; i < results.length; i++) {
+					html +=
+						'<li class="p-4 border-b search-result-item border-gray">' +
+						'<a href="/pages/marketing-resources/' +
+						results[i].handle +
+						'" class="flex items-center gap-4">' +
+						'<img src="' +
+						results[i].image +
+						'" alt="' +
+						results[i].name +
+						'" class="search-result-image">' +
+						'<div class="search-result-details">' +
+						'<span class="search-result-number">' +
+						results[i].display_number +
+						'</span>' +
+						'<span class="search-result-name">' +
+						results[i].name +
+						'</span>' +
+						'</div>' +
+						'</a></li>';
+				}
+				html += '</ul>';
+				searchResults.innerHTML = html;
+			}
+
+			// Add blur event listener to close search results
+			searchInput.addEventListener('blur', function () {
+				// Use setTimeout to delay the closing of results
+				// This allows time for a click on the results to register
+				setTimeout(function () {
+					searchResults.innerHTML = '';
+				}, 100);
+			});
+
+			// Prevent results from closing when clicking inside the results container
+			searchResults.addEventListener('mousedown', function (e) {
+				e.preventDefault();
+			});
+		});
+	});
+</script>
+<script type="application/json" id="displays-data">
+	{
+	  "displays": [
+	{% assign displays = shop.metaobjects.display.values %}
+	    {% paginate displays by 250 %}
+
+
+	    {% for display in displays %}
+	      {% assign url_handle = display.display_number | append: '-' | append: display.name | handleize %}
+	       {% assign display_image = display.image.value %}
+	      {
+	        "display_number": "{{ display.display_number }}",
+	        "name": "{{ display.name }}",
+	        "handle": "{{ url_handle }}",
+	        "image": "{{ display_image.src | image_url: width: 75 }}"
+
+	      }{% unless forloop.last %},{% endunless %}
+	    {% endfor %}
+	{% endpaginate %}
+	  ]
+	}
+</script>
+
+<script>
+
+  
+  
+// Define the function ChingeHale
+function ChingeHale() {
+  const dispalylists = document.querySelectorAll('.displayListing');
+
+  dispalylists.forEach((dispalylist) => {
+    // Find the relevant product id and handle
+    let productId = dispalylist.querySelector('.wf-wishlist').getAttribute('product-id');
+    console.log(productId,'productId');
+    let productHandle = dispalylist.querySelector('.wf-wishlist').getAttribute('product-url-link');
+
+    // Check if productId and productHandle are found
+    if (productId && productHandle) {
+      $.ajax({
+        url: `${productHandle}`, // Custom route for the product page or related content
+        type: 'GET',
+        dataType: 'html', // Expecting HTML content
+        success: function(htmlContent) {
+          // Log the raw HTML content for debugging
+         // console.log('HTML Content:', htmlContent);
+
+          // Parse the HTML to find the element with the data-bv-product-id attribute
+          const $html = $(htmlContent); // Wrap the HTML content in jQuery object
+          const redirectUrl = $html.find(`[data-bv-product-id="${productId}"]`).attr('data-bv-redirect-url');
+
+          // Check if redirectUrl was found and log the result
+          if (redirectUrl) {
+            //console.log('Extracted Redirect URL:', redirectUrl);
+             let splitUrl = redirectUrl.split("/products/");
+              console.log(splitUrl[1]);
+            // Construct the product URL using the extracted redirect URL
+            const productUrl = `https://lagirlusa.com${redirectUrl}`;
+
+            // Update the product-handle attribute with the redirectUrl
+            dispalylist.querySelector('.wf-wishlist').setAttribute('product-handle', splitUrl[1]);
+
+            // Log the constructed product URL
+            console.log('Product URL:', productUrl);
+          } else {
+            console.log('Product ID not found in the HTML content.');
+          }
+        },
+        error: function(xhr, status, error) {
+          console.error('Error fetching content:', error);
+        }
+      });
+    } else {
+      console.log('Missing productId or productHandle');
+    }
+  });
+}
+ChingeHale();
+
+
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get all navigation links
+      const navLinks = document.querySelectorAll('.display-sub-nav a');
+      
+      // Get current path to set initial active state
+      const currentPath = window.location.pathname;
+      
+      // Add click event listeners to each link
+      navLinks.forEach(link => {
+        // Set initial active state based on current URL
+        if (link.getAttribute('href') === currentPath) {
+          link.classList.add('active');
+        }
+        
+        link.addEventListener('click', function(e) {
+          // Remove active class from all links
+          navLinks.forEach(link => link.classList.remove('active'));
+          
+          // Add active class to clicked link
+          this.classList.add('active');
+          
+          // If you're using this in a single page application where you want to prevent default navigation:
+          // e.preventDefault();
+        });
+      });
+    });
+</script>
+
+{% comment %} {% endcomment %}
+<style>
+	.grid-product__highlight img {
+		width: 10vw;
+		max-width: 70px;
+	}
+	.resources-search {
+		align-items: center;
+		display: flex;
+	}
+	.InputField__formControls {
+		display: flex;
+		flex-grow: 1;
+		border-bottom: 1px solid #c2cbcd;
+		background: transparent;
+	}
+	.InputField__leftIcon {
+		padding-top: 10px;
+		padding-left: 9px;
+	}
+
+	.resources-utilityLinks {
+		align-items: center;
+		grid-column: 4/7;
+	}
+	.resources-utilityLinks ul {
+		display: flex;
+		justify-content: flex-end;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		height: 100%;
+	}
+	.resources-utilityLinks ul > li {
+		align-items: center;
+		cursor: pointer;
+		display: flex;
+		height: 100%;
+		margin-left: 2rem;
+		position: relative;
+	}
+
+	
+	.text-lg font-bold mb-2.5 {
+		font-size: 1.25rem;
+		font-weight: 800;
+		margin-bottom: 0.65rem;
+	}
+	. nav-lv2-sub flex gap-4 mx-5 text-nowrap flex-wrap md:text-balance md:block md:mx-0 > a {
+		font-size: 15px;
+		margin-bottom: 0.25rem;
+		clear: left;
+		display: block;
+		float: left;
+		padding: 5px 0;
+		line-height: 24px;
+		color: #333;
+		letter-spacing: 0.75px;
+		max-width: 145px;
+	}
+	. nav-lv2-sub flex gap-4 mx-5 text-nowrap flex-wrap md:text-balance md:block md:mx-0 > a:first-line {
+		line-height: 17px;
+	}
+
+	a.link.order-form {
+		display: flex;
+		justify-content: center;
+	}
+	a.link.order-form span {
+		line-height: 22px;
+		margin-left: 1rem;
+	}
+
+	a.display-container {
+		display: flex;
+		flex-direction: column;
+	}
+	.page-width.creators {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+	}
+</style>
+<style>
+	input#display-search {
+		background: #eee;
+		border-radius: 30px;
+	}
+	input#display-search::placeholder {
+		color: #6e6e6e;
+	}
+	.search-container {
+		position: relative;
+		background: #eee;
+		border-radius: 30px;
+	}
+
+	.search-results {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		width: 100%;
+		background: white;
+		border: 1px solid #ccc;
+		max-height: 300px;
+		overflow-y: auto;
+		z-index: 10;
+		opacity: 1;
+		visibility: visible;
+		transition: opacity 0.3s ease, visibility 0.3s ease, max-height 0.3s ease;
+	}
+	.search-result-name {
+		margin-left: 0.5rem;
+	}
+	.search-results:empty {
+		opacity: 0;
+		visibility: hidden;
+		max-height: 0;
+		overflow: hidden;
+		border: none;
+	}
+
+	.search-results ul {
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.search-results li {
+		padding: 10px;
+		border-bottom: 1px solid #eee;
+	}
+
+	.search-results li:last-child {
+		border-bottom: none;
+	}
+
+  
+.displayListing {
+  background-color: #fff;
+  border: 1px solid #E5E5E5;
+  transition: all 0.3s;
+}
+
+.displayListing:hover {
+  border: 1px solid black;
+  transform: translateY(-1px);
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 8px 20px 0px;
+}
+
+/* Add scaling effect for content */
+.displayListing .display-image,
+.displayListing .display-title,
+.displayListing .display-number,
+#displayListing-grid > div > a > div.mx-auto.font-bold.text-center.display-details.card__title.basis-16 > div.text-sm.display-name.text-balance,
+  #displayListing-grid > div:nth-child(57) > a > img{
+  transition: transform 0.3s;
+}
+
+.displayListing:hover .display-image {
+  transform: scale(1.15);
+}
+
+  /* #displayListing-grid .responsive-image:hover{
+    transform: scale(1.04);
+    transition: transform 0.3s;
+  } */
+
+.displayListing:hover .display-title,
+.displayListing:hover .display-number,
+.displayListing:hover .display-name {
+  transform: scale(1.15);
+}
+#sortButton{
+  border:1px solid #EDEDED; 
+  z-index:-1;
+}
+
+.display-sub-nav {
+  display: flex;
+}
+
+.display-sub-nav a {
+  padding: 8px 16px;
+  text-decoration: none;
+  color: #333;
+  
+  transition: all 0.3s ease;
+  background-color: white;
+}
+
+.display-sub-nav a:hover {
+  background-color: rgba(236, 0, 139, 0.1);
+  border-color: #EC008B;
+}
+
+.display-sub-nav a.active {
+  background-color: #EC008B;
+  border-color: #EC008B;
+  color: white;
+}
+
+  /* Update the scrollable items styles to apply to all sections */
+.scrollable-items {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 2.5rem;
+  position: relative;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollable-items::-webkit-scrollbar {
+  display: none;
+}
+
+/* Update arrow indicator styles to apply to all sections */
+.arrow-indicator {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0.3em;
+  align-items: center;
+  background: linear-gradient(to left, rgba(255,255,255,0) 30%, rgba(255,255,255,0));
+  padding: 0 0.1rem;
+  z-index: 3;
+}
+
+.arrow-indicator::after {
+  content: '›';
+  font-size: 2rem;
+  color: #535558;
+  place-content: center;
+}
+
+.scrollable-items.is-scrollable + .arrow-indicator {
+  display: flex;
+}
+
+/* Add media query for smaller screens */
+@media screen and (max-width: 890px) {
+  .arrow-indicator {
+    display: flex;
+  }
+}
+  
+</style>

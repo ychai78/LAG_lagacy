@@ -1,0 +1,245 @@
+{% assign total_blocks = section.blocks.size %}
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<div class="w-full relative">
+  <div class="relative w-full mb-4">
+    {%- if section.settings.title != blank -%}
+      <div class="text-center px-8 animate--slide-in">
+        <h3 class="text-5xl font-bold mb-2 font-display {{ section.settings.heading_alignment }}">
+          {{ section.settings.title }}
+        </h3>
+      </div>
+    {%- endif -%}
+    {%- if section.settings.description != blank
+      or section.settings.show_description
+      and section.settings.collection.description != empty
+    -%}
+      <div class="collection__description">
+        {{ section.settings.description }}
+      </div>
+    {%- endif -%}
+
+    <div
+      id="swiper-{{ section.id }}"
+      class="swiper multiple-slide-carousel swiper-container relative"
+      data-slide-count="{{ total_blocks }}"
+    >
+      <div class="flex items-center gap-8 lg:justify-start justify-center">
+        <button
+          id="swiper-{{ section.id }}-slider-button-left"
+          class="slider-button-left slider-btn swiper-button-prev group !p-2 flex justify-center items-center border border-solid border-pink-600 !w-12 !h-12 transition-all duration-500 rounded-full !top-2/4 !-translate-y-8 !left-5 hover:bg-pink-600 "
+          data-carousel-prev
+        >
+          <svg
+            class="h-5 w-5 text-pink-600 group-hover:text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+          >
+            <path d="M10.0002 11.9999L6 7.99971L10.0025 3.99719" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></path>
+          </svg>
+        </button>
+        <button
+          id="swiper-{{ section.id }}-slider-button-right"
+          class="slider-button-right  slider-btn swiper-button-next group !p-2 flex justify-center items-center border border-solid border-pink-600 !w-12 !h-12 transition-all duration-500 rounded-full !top-2/4 !-translate-y-8  !right-5 hover:bg-pink-600"
+          data-carousel-next
+        >
+          <svg
+            class="h-5 w-5 text-pink-600 group-hover:text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+          >
+            <path d="M5.99984 4.00012L10 8.00029L5.99748 12.0028" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></path>
+          </svg>
+        </button>
+      </div>
+      <div class="swiper-wrapper">
+        {% assign current_date = 'now' | date: '%Y/%m/%d %H:%M' | remove: '/' | remove: ':' | remove: ' ' %}
+        {%- for block in section.blocks -%}
+          {% assign publish_date = block.settings.publish_time | remove: '/' | remove: ':' | remove: ' ' %}
+          {% assign within_release_date = false %}
+          {% if current_date >= publish_date %}
+            {% assign within_release_date = true %}
+          {% endif %}
+          {% if within_release_date %}
+            <div class="swiper-slide">
+              <a href="{{ block.settings.url_link }}">
+                <picture>
+                  <source
+                    media="(max-width: 1024px)"
+                    srcset="
+                      {% assign mobile_widths = '240 336 480 720 816 960' | split: ' ' %}
+                      {% for width in mobile_widths %}
+                        {{ block.settings.mobile_banner | image_url: width: width }} {{ width }}w{% unless forloop.last %},{% endunless %}
+                      {% endfor %}
+                    "
+                  >
+                  <source
+                    srcset="
+                      {% assign desktop_widths = '500 700 1000 1500 1700 2000 2400' | split: ' ' %}
+                      {% for width in desktop_widths %}
+                        {{ block.settings.desktop_banner | image_url: width: width }} {{ width }}w{% unless forloop.last %},{% endunless %}
+                      {% endfor %}
+                    "
+                  >
+                  {%- liquid
+                    assign loading = 'lazy'
+                    assign fetchpriority = 'auto'
+                    if forloop.first
+                      assign fetchpriority = 'high'
+                      assign loading = 'eager'
+                    endif
+                    
+                    assign image_url = block.settings.desktop_banner | image_url: width: 1080
+                    assign image_filename = image_url | split: '/' | last | split: '.' | first
+                    assign image_filename = image_filename | remove_first: 'LAG_' | replace: '_', ' '
+                  -%}
+
+                  <img
+                    src="{{ image_url }}"
+                    alt="{{ image_filename | escape }}"
+                    height="355"
+                    loading="{{ loading }}"
+                    fetchpriority="{{ fetchpriority }}"
+                  >
+                </picture>
+              </a>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  #swiper-{{ section.id }} .swiper-button-next:after, #swiper-{{ section.id }} .swiper-button-prev:after{content:none;}
+   .swiper-wrapper {
+           width: 100%;
+           height: max-content !important;
+           -webkit-transition-timing-function: linear !important;
+           transition-timing-function: linear !important;
+           position: relative;
+         }
+</style>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var slideCounterElement = document.getElementById("swiper-{{ section.id }}");
+
+
+    var swiperConfig = {
+      loop: true,
+      grabCursor: true,
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+        },
+      navigation: {
+        nextEl: "#swiper-{{ section.id }}-slider-button-right",
+        prevEl: "#swiper-{{ section.id }}-slider-button-left",
+      }
+    };
+
+
+      swiperConfig.slidesPerView = 1;
+      swiperConfig.spaceBetween = 0;
+
+
+
+    new Swiper("#swiper-{{ section.id }}", swiperConfig);
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Carousel",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "Title",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Header Alignment"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Carousel",
+        "settings": [
+    {
+      "type": "header",
+      "content": "Carousel"
+    },
+      {
+      "type": "text",
+      "id": "publish_time",
+      "label": "publish Date",
+      "default": "2023/03/28 23:00",
+      "info": "Format: yyyy/mm/dd hh:mm"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_banner",
+      "label": "Desktop Banner"
+      },
+    {
+      "type": "image_picker",
+      "id": "mobile_banner",
+      "label": "Mobile Banner"
+      },
+
+    {
+      "type": "url",
+      "id": "url_link",
+      "label": "Banner Link"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    }
+  ],
+    }
+  ],
+  "presets": [
+    {
+      "name": "Carousel"
+    }
+  ]
+}
+{% endschema %}

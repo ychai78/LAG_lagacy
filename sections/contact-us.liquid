@@ -1,0 +1,535 @@
+{% assign timer_start_date = '2024/12/18 09:00' | remove: '/' | remove: ':' | remove: ' ' %}
+{% assign timer_end_date = '2025/01/01 23:59' | remove: '/' | remove: ':' | remove: ' ' %}
+{% assign current_date = 'now' | date: '%Y/%m/%d %H:%M' | remove: '/' | remove: ':' | remove: ' ' %}
+
+{% assign within_release_date = false %}
+{% if current_date >= timer_start_date and current_date <= timer_end_date %}
+  {% assign within_release_date = true %}
+{% endif %}
+
+
+{% if within_release_date %}
+
+    <div class="custom-liquid-section">
+    <div class="container-grid ">
+        <div class="custom-liquid-container max-w-screen-lg mx-auto">
+            <p class="holidayNotice" style="color: red;">{{ section.settings.holiday_notice }}</p>
+        </div>
+    </div>
+</div>
+
+          {% comment %}
+            <div class="holidayNotice">
+              <p style="color:red;">
+               {{ section.settings.holiday_notice }}
+              </p>
+            </div>
+          {% endcomment %}
+            
+{% endif %}
+
+<main class="main-content" role="main">
+<div class="mb-[20vh] container-grid">
+  
+  <article id="{{page.handle}}" class="max-w-screen-lg mx-auto info">
+    {% form 'contact' %}
+      {% if form.posted_successfully? %}
+        <p class="note form-success w-full">
+          <span>{{ section.settings.success_message }}</span>
+        </p>
+        
+
+        <script>
+            $(document).ready(function(e) {
+             $('#contactFormWrapper').hide();
+          });
+        </script>
+      {% endif %}
+
+      {{ form.errors | default_errors }}
+      <div class="container-item">
+        <div class="grid gap-4 mt-8 contact-method md:grid-cols-2">
+          <div class="grid [grid-template-columns:min-content_1fr] gap-4 bg-slate-50 p-4 min-h-[165px]">
+            <div class="content-center p-4 contact-icon">
+              <svg class="w-16 h-16 black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
+            </div>
+            <div class="content-center text-left contact-details">
+              <span class="text-xl font-bold md:text-2xl">{{ section.settings.phone_title }}</span>
+              <div class="mt-2">
+                <p class="text-balance">
+                  <span class="block text-sm">{{ section.settings.phone_availability }}</span>
+                  <span class="phone-no">{{ section.settings.phone_number_1 }}<br>
+                  {{ section.settings.phone_number_2 }}</span><br>
+                </p>
+                <span class="phone-no">{{ section.settings.fax_number }} <span class="text-sm">{{ section.settings.fax_label }}</span></span>
+              </div>
+            </div>
+          </div>
+          <div class="grid [grid-template-columns:min-content_1fr] gap-4 bg-slate-50 p-4 min-h-[165px]">
+            <div class="content-center p-4 contact-icon">
+              <svg class="w-16 h-16 black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13" />  <polygon points="22 2 15 22 11 13 2 9 22 2" /></polygon>
+              </svg>
+            </div>
+            <div class="content-center text-left contact-details">
+              <span class="text-xl font-bold md:text-2xl">{{ section.settings.mail_title }}</span>
+              <address class="mt-2">
+                <strong>{{ section.settings.company_name }}</strong><br>
+                {{ section.settings.company_address }}<br>
+                {{ section.settings.company_city_state_zip }}<br>
+              </address>
+            </div>
+          </div>
+          <div class="grid [grid-template-columns:min-content_1fr] gap-4 bg-slate-50 p-4 min-h-[165px]">
+            <div class="content-center p-4 contact-icon">
+              <svg class="w-16 h-16 black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <div class="content-center text-left contact-details">
+              <span class="text-xl font-bold md:text-2xl">{{ section.settings.faq_title }}</span>
+              <div class="mt-2">
+                <p class="text-balance">
+                  {{ section.settings.faq_description }}
+                  <a class="block" href="{{ section.settings.faq_link }}">
+                    <span class="inline mt-1 text-sm border-b border-black border-solid bold">{{ section.settings.faq_link_text }}</span>
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="grid [grid-template-columns:min-content_1fr] gap-4 bg-slate-50 p-4 min-h-[165px]">
+            <div class="content-center p-4 contact-icon">
+              <svg class="w-16 h-16 black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <div class="content-center text-left contact-details">
+              <span class="text-xl font-bold md:text-2xl">{{ section.settings.email_title }}</span>
+              <div class="mt-2">
+                <p class="text-balance">
+                  {{ section.settings.email_description }}<br>
+                  <span class="inline mt-1 text-sm border-b border-black border-solid bold">{{ section.settings.email_cta }}</span>
+                </p>
+              </div>
+            </div>
+          </div>    
+        </div>
+      </div>
+
+      <div id="contactFormWrapper" class="mt-4">
+        <div class="w-full p-8 mx-auto bg-white rounded-lg shadow-lg">
+          <svg class="w-16 h-16 mx-auto black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76"/>
+          </svg>
+          <span class="block mx-auto mt-1 text-xl font-bold text-center">{{ section.settings.form_title }}</span>
+          <p class="mb-6 mb-8 text-center text-balance">{{ section.settings.form_description }}</p>
+          
+          
+          
+          <div class="mx-auto ">
+            <p style="font-size: 85%;">{{ section.settings.required_fields_notice }}</p>
+            
+            <div class="flex flex-wrap -m-2 contactForm-fill">
+              <div class="w-full p-2 md:w-1/2">
+                <div class="relative">
+                  <label for="firstName" class="block text-sm font-medium text-gray-700">{{ section.settings.first_name_label }}</label>
+                  <input type="text" class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" id="contactFormFirstName" name="contact[first name]" autocapitalize="words" required>
+                </div>
+              </div>
+              <div class="w-full p-2 md:w-1/2">
+                <div class="relative">
+                  <label for="lastName" class="block text-sm font-medium text-gray-700">{{ section.settings.last_name_label }}</label>
+                  <input type="text" class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" id="contactFormLastName" name="contact[last name]" autocapitalize="words" required>
+                </div>
+              </div>
+              <div class="w-full p-2 md:w-1/2">
+                <div class="relative">
+                  <label for="email" class="block text-sm font-medium text-gray-700">{{ section.settings.email_label }}</label>
+                  <input type="email" class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" name="contact[email]" id="contactFormEmail" autocorrect="off" autocapitalize="off" required>
+                </div>
+              </div>
+              <div class="w-full p-2 md:w-1/2">
+                <div class="relative">
+                  <label for="phone" class="block text-sm font-medium text-gray-700">{{ section.settings.phone_label }}</label>
+                  <input type="tel" class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" name="contact[phone]" id="contactFormPhone" pattern="[0-9]*">
+                </div>
+              </div>
+            </div>
+            
+            <p style="font-size: 85%;">{{ section.settings.location_notice }}</p>
+            
+            <div class="flex flex-wrap -m-2 contactForm-fill-address">
+              <div class="w-full p-2 md:w-1/2">
+                <div class="relative">
+                  <label for="city" class="block text-sm font-medium text-gray-700">{{ section.settings.city_label }}</label>
+                  <input type="text" name="contact[city]" id="contactFormCity" class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" required>
+                </div>
+              </div>
+              <div class="w-full p-2 md:w-1/2">
+                <div class="relative">
+                  <label for="state" class="block text-sm font-medium text-gray-700">{{ section.settings.state_label }}</label>
+                  <input type="text" name="contact[state]" id="contactFormState" class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" required>
+                </div>
+              </div>
+              <div class="w-full p-2 md:w-1/2">
+                <div class="relative">
+                  <label for="zipcode" class="block text-sm font-medium text-gray-700">{{ section.settings.zip_label }}</label>
+                  <input type="text" name="contact[zip]" id="contactFormZip" class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" required>
+                </div>
+              </div>
+              <div class="w-full p-2 md:w-1/2">
+                <div class="relative">
+                  <label for="country" class="block text-sm font-medium text-gray-700">{{ section.settings.country_label }}</label>
+                  <input type="text" name="contact[country]" id="contactFormCountry" class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" required>
+                </div>
+              </div>
+              <div class="w-full p-2 md:w-1/2">
+                <div class="relative">
+                  <label for="subject" class="block text-sm font-medium text-gray-700">{{ section.settings.topic_label }}</label>
+                  <select id="contactFormQuestionType" name="contact[question type]" 
+                    class="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
+                    required>
+                    <option value="">{{ section.settings.topic_default_option }}</option>
+                    {% assign options = section.settings.topic_options | split: ',' %}
+                    {% for option in options %}
+                      <option value="{{ option | strip }}">{{ option | strip }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="w-full p-2 md:w-1/2">
+                <div class="relative">
+                  <label for="orderId" class="block text-sm font-medium text-gray-700">{{ section.settings.order_number_label }}</label>
+                  <input type="text" name="contact[order number]" id="contactFormOrderNo" class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm">
+                </div>
+              </div>
+              <div class="w-full p-2 mb-8">
+                <div class="relative">
+                  <label for="comments" class="block text-sm font-medium text-gray-700">{{ section.settings.message_label }}</label>
+                  <textarea id="contactFormMessage" name="contact[body]" rows="4" class="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm" required></textarea>
+                </div>
+              </div>
+            </div>
+          
+            <button type="submit" name="submit_message" id="submit_message" class="w-full px-4 py-2 text-sm font-medium text-white bg-black border border-transparent rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">
+              {{ section.settings.submit_button_text }}
+            </button>
+          </div>
+        </div>
+      </div>
+    {% endform %}
+
+    {{ page.content }}
+  </article>
+
+  <div id="btn_confirmation_window" style="display:none">
+    <button id="accept" value="true">accept</button>
+    <button id="go_back" value="false">go back</button>
+  </div>
+</div>
+
+<script>
+  $(function () {
+    'use strict';
+
+    function confirmDialog(title, message, success) {
+      var confirmdialog = $('<div></div>').appendTo('body')
+        .html('<div><h6>' + message + '</h6></div>')
+        .dialog({
+          modal: true,
+          title: title,
+          zIndex: 10000,
+          autoOpen: false,
+          width: 'auto',
+          resizable: false,
+          buttons: {
+            Yes: function () {
+              success();
+              $(this).dialog("close");
+            },
+            No: function () {
+              $(this).dialog("close");
+            }
+          },
+          close: function() {
+            $(this).remove();
+          }
+        });
+
+      return confirmdialog.dialog("open");
+    }
+
+    $('form').on('submit', function (e) {
+      e.preventDefault();
+      var form = this;
+
+      confirmDialog('{{ section.settings.confirmation_title }}', '{{ section.settings.confirmation_message | replace: "'", "\\'" }}', function () {
+        form.submit();
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Contact Us",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success Message",
+      "default": "Thank you for contacting us. We'll get back to you within 2 business days."
+    },
+    {
+      "type": "text",
+      "id": "phone_title",
+      "label": "Phone Title",
+      "default": "By Phone"
+    },
+    {
+      "type": "text",
+      "id": "phone_availability",
+      "label": "Phone Availability",
+      "default": "Available Mon-Fri, 8AM to 5PM PST"
+    },
+    {
+      "type": "text",
+      "id": "phone_number_1",
+      "label": "Phone Number 1",
+      "default": "1-909-945-2220"
+    },
+    {
+      "type": "text",
+      "id": "phone_number_2",
+      "label": "Phone Number 2",
+      "default": "1-800-776-2221"
+    },
+    {
+      "type": "text",
+      "id": "fax_number",
+      "label": "Fax Number",
+      "default": "1-909-945-2262"
+    },
+    {
+      "type": "text",
+      "id": "fax_label",
+      "label": "Fax Label",
+      "default": "Fax"
+    },
+    {
+      "type": "text",
+      "id": "mail_title",
+      "label": "Mail Title",
+      "default": "By Mail"
+    },
+    {
+      "type": "text",
+      "id": "company_name",
+      "label": "Company Name",
+      "default": "L.A. Girl Cosmetics"
+    },
+    {
+      "type": "text",
+      "id": "company_address",
+      "label": "Company Address",
+      "default": "2021 S Archibald Ave"
+    },
+    {
+      "type": "text",
+      "id": "company_city_state_zip",
+      "label": "Company City, State, ZIP",
+      "default": "Ontario, CA 91761 USA"
+    },
+    {
+      "type": "text",
+      "id": "faq_title",
+      "label": "FAQ Title",
+      "default": "FAQ"
+    },
+    {
+      "type": "text",
+      "id": "faq_description",
+      "label": "FAQ Description",
+      "default": "Find the answer to your questions."
+    },
+    {
+      "type": "url",
+      "id": "faq_link",
+      "label": "FAQ Link"
+    },
+    {
+      "type": "text",
+      "id": "faq_link_text",
+      "label": "FAQ Link Text",
+      "default": "Visit FAQ page"
+    },
+    {
+      "type": "text",
+      "id": "email_title",
+      "label": "Email Title",
+      "default": "By Email"
+    },
+    {
+      "type": "text",
+      "id": "email_description",
+      "label": "Email Description",
+      "default": "Have a question?"
+    },
+    {
+      "type": "text",
+      "id": "email_cta",
+      "label": "Email CTA",
+      "default": "Email us"
+    },
+    {
+      "type": "text",
+      "id": "form_title",
+      "label": "Form Title",
+      "default": "Email Us"
+    },
+    {
+      "type": "textarea",
+      "id": "form_description",
+      "label": "Form Description",
+      "default": "We will love to hear from you! Just complete the form below and we'll get back to you within 2 business days."
+    },
+    {
+      "type": "textarea",
+      "id": "holiday_notice",
+      "label": "Holiday Notice",
+      "default": "L.A. Girl will be closed from December 23, 2024, to January 1, 2025, in observance of the holidays. Any orders placed after 9:30 AM PST on Friday, December 20, 2024, will be processed starting Thursday, January 2, 2025. Please note that credit cards will be charged for orders placed during the closure period."
+    },
+    {
+      "type": "text",
+      "id": "required_fields_notice",
+      "label": "Required Fields Notice",
+      "default": "All fields required unless marked optional."
+    },
+    {
+      "type": "text",
+      "id": "first_name_label",
+      "label": "First Name Label",
+      "default": "First Name"
+    },
+    {
+      "type": "text",
+      "id": "last_name_label",
+      "label": "Last Name Label",
+      "default": "Last Name"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email Label",
+      "default": "Email Address"
+    },
+    {
+      "type": "text",
+      "id": "phone_label",
+      "label": "Phone Label",
+      "default": "Phone Number (optional)"
+    },
+    {
+      "type": "text",
+      "id": "location_notice",
+      "label": "Location Notice",
+      "default": "To expedite the response time, please let us know where you are located."
+    },
+    {
+      "type": "text",
+      "id": "city_label",
+      "label": "City Label",
+      "default": "City"
+    },
+    {
+      "type": "text",
+      "id": "state_label",
+      "label": "State Label",
+      "default": "State"
+    },
+    {
+      "type": "text",
+      "id": "zip_label",
+      "label": "Zip Code Label",
+      "default": "Zip Code"
+    },
+    {
+      "type": "text",
+      "id": "country_label",
+      "label": "Country Label",
+      "default": "Country"
+    },
+    {
+      "type": "text",
+      "id": "topic_label",
+      "label": "Topic Label",
+      "default": "Choose a Topic"
+    },
+    {
+      "type": "text",
+      "id": "topic_default_option",
+      "label": "Topic Default Option",
+      "default": "Choose a Topic"
+    },
+    {
+      "type": "text",
+      "id": "order_number_label",
+      "label": "Order Number Label",
+      "default": "Order Number (optional)"
+    },
+    {
+      "type": "text",
+      "id": "message_label",
+      "label": "Message Label",
+      "default": "Tell Us More"
+    },
+    {
+      "type": "text",
+      "id": "submit_button_text",
+      "label": "Submit Button Text",
+      "default": "SUBMIT"
+    },
+    {
+      "type": "text",
+      "id": "confirmation_title",
+      "label": "Confirmation Dialog Title",
+      "default": "Confirm"
+    },
+    {
+      "type": "textarea",
+      "id": "confirmation_message",
+      "label": "Confirmation Dialog Message",
+      "default": "Are you sure you want to continue with submitting your message?<br>You may find the answer to your question(s) on our <a href=\"https://lagirlusa.com/pages/faq\" target=\"_blank\" style=\"text-decoration: underline;\">FAQ page</a>."
+    },
+    {
+      "type": "text",
+      "id": "confirmation_yes",
+      "label": "Confirmation Yes Button",
+      "default": "Yes"
+    },
+    {
+      "type": "text",
+      "id": "confirmation_no",
+      "label": "Confirmation No Button",
+      "default": "No"
+    },
+    {
+      "type": "textarea",
+      "id": "topic_options",
+      "label": "Topic Options",
+      "default": "Product Question, Order Placement, Where is my order/return?, General Questions, International Inquiries",
+      "info": "Comma-separated list of options"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Us"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,52 @@
+{% comment %}
+  Accepts:
+  - card_product: {Object} Product Liquid object (optional)
+
+Choose a Shade
+Shop Now
+Add to Bag
+Out of Stock
+
+  Usage:
+  {% render 'card-product', show_vendor: section.settings.show_vendor %}
+{% endcomment %}
+{% assign purchasable = true %}
+
+{%- capture cta_text -%}
+  {%- render 'product-availability-logic', product: product, variant: variant, text: "cta_text" -%}
+{%- endcapture -%}
+
+{% assign cta_text = cta_text | strip %} 
+
+{% if product.vendor contains "NotForSale" %}
+  {% assign purchasable = false %}
+{% endif %}
+
+{% if purchasable %}
+  {% assign button_text = cta_text %}
+   {% assign button_classes = 'justify-center items-center flex border-pink-500 brightness-110 font-bold text-pink-700 w-full border bg-white p-0 py-3 text-xs uppercase tracking-[2px] hover:text-white hover:bg-pink-700 transition-none js_AddToCart ' %}
+{% else %}
+  {% assign button_text = "Learn More" %}
+   {% assign button_classes = 'justify-center items-center flex border-pink-500 brightness-110 font-bold text-pink-700 w-full border bg-white p-0 py-3 text-xs uppercase tracking-[2px] hover:text-white hover:bg-pink-700 transition-none' %}
+{% endif %}
+
+{% if product.available == false %}
+  {% assign button_text = "Sold Out" %}
+   {% assign button_classes = 'justify-center items-center flex border-gray-500 brightness-110  font-bold text-gray-700 w-full border bg-white p-0 py-3 text-xs uppercase tracking-[2px] hover:text-white lg:hover:block hover:text-gray-700 transition-none' %}
+
+{% endif %}
+
+
+
+ {% if purchasable %}
+
+  <button class="{{ button_classes }}" data-submit-button-text="{{ button_text }}">
+    <span class="submit-btn-txt">{{ button_text }}</span>
+  </button>
+
+  {% else %}
+   <button class="{{ button_classes }} --{{- button_text  | replace: ' ', '-' -}}" data-submit-button-text="{{ button_text }}">
+     <a href="{{ product.url }}">{{ button_text }}</a>
+   </button>
+  {% endif %}
+  

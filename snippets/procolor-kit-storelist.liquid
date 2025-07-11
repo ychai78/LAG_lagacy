@@ -1,0 +1,187 @@
+<script>
+$(document).ready(function(e) {
+
+$( ".hauteHeat-storeList .row" ).each(function() {
+  
+  var state= $(this).find("li:nth-child(1)").text();
+  var zip= $(this).find("li:nth-child(2)").text();
+  var city= $(this).find("li:nth-child(3)").text();
+  var address= $(this).find("li:nth-child(4)").text();
+  var full_address= address+ " "+city+ ", "+state+" "+zip
+  $(this).find("li:nth-child(1)").addClass("state"); 
+  $(this).find("li:nth-child(2)").addClass("zip"); 
+  $(this).find("li:nth-child(3)").addClass("city"); 
+  $(this).find("li:nth-child(4)").addClass("address");
+ 
+  
+  
+  $(this).find("li:nth-child(4)").attr("full-address",full_address);
+  
+});
+  $( ".hauteHeat-storeList .row-head" ).each(function() {
+
+  
+});
+  $(".cvs-locations").removeClass("hide"); 
+  
+
+});
+</script>
+<script>
+  $(document).ready(function(){
+
+
+(function($) {
+  $('a[href*=#]:not([href=#])').click(function() 
+  {
+    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') 
+        || location.hostname == this.hostname) 
+    {
+      
+      var target = $(this.hash),
+      headerHeight = $(".site-header").height() + 5; // Get fixed header height
+            
+      target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+              
+      if (target.length) 
+      {
+        $('html,body').animate({
+          scrollTop: target.offset().top - headerHeight
+        }, 500);
+        return false;
+      }
+    }
+  });
+})(jQuery);
+    
+    
+});
+</script>
+<h1 style="margin-top: 3rem;">CVS Stores with our PRO.color Pigment Kit</h1>
+
+<a class="" href="https://www.lagirlusa.com/products/pro-color-foundation-mixing-pigment-kit">
+<picture>
+                    <source media="(max-width: 639px)" srcset="//cdn.shopify.com/s/files/1/0944/0398/products/G30417_prod_img_350x350.jpg,
+                                    //cdn.shopify.com/s/files/1/0944/0398/products/G30417_prod_img_350x350@2x.jpg 2x">
+                    <source media="(min-width: 640px)" srcset="//cdn.shopify.com/s/files/1/0944/0398/products/G30417_prod_img_640x640.jpg,
+                                    //cdn.shopify.com/s/files/1/0944/0398/products/G30417_prod_img_500x500@2x.jpg 2x">
+                    
+
+                   <img data-image-id="6505870655534" src="//cdn.shopify.com/s/files/1/0944/0398/products/G30417_prod_img_350x.jpg" srcset="//cdn.shopify.com/s/files/1/0944/0398/products/G30417_prod_img_640x@2x.jpg 2x, //cdn.shopify.com/s/files/1/0944/0398/products/G30417_prod_img_800x@2x.jpg 2x" alt="PRO.color Foundation Mixing Pigment Kit" class="unselectable">
+                    </picture>
+</a>
+<div class="cvs-locations hide">
+<div class="state-list">
+  <h2 style="
+    font-weight: 700;
+">Select your Location</h2>
+<li><a href='#AL'>Alabama</a></li>
+<li><a href='#AZ'>Alaska</a></li>
+<li><a href='#CA'>California</a></li>
+<li><a href='#CO'>Colorado</a></li>
+<li><a href='#CT'>Connecticut</a></li>
+<li><a href='#DC'>Washington D.C</a></li>
+<li><a href='#DE'>Delaware</a></li>
+<li><a href='#FL'>Florida</a></li>
+<li><a href='#GA'>Georgia</a></li>
+<li><a href='#IL'>Illinois</a></li>
+<li><a href='#IN'>Indiana</a></li>
+<li><a href='#KY'>Kentucky</a></li>
+<li><a href='#LA'>Louisiana</a></li>
+<li><a href='#MA'>Massachusetts</a></li>
+<li><a href='#MD'>Maryland</a></li>
+<li><a href='#ME'>Maine</a></li>
+<li><a href='#MI'>Michigan</a></li>
+<li><a href='#MN'>Minnesota</a></li>
+<li><a href='#MS'>Mississippi</a></li>
+<li><a href='#MT'>Montana</a></li>
+<li><a href='#NC'>North Carolina</a></li>
+<li><a href='#ND'>North Dakota</a></li>
+<li><a href='#NH'>New Hampshire</a></li>
+<li><a href='#NJ'>New Jersey</a></li>
+<li><a href='#NM'>New Mexico</a></li>
+<li><a href='#NV'>Nevada</a></li>
+<li><a href='#NY'>New York</a></li>
+<li><a href='#OH'>Ohio</a></li>
+<li><a href='#OK'>Oklahoma</a></li>
+<li><a href='#PA'>Pennsylvania</a></li>
+<li><a href='#RI'>Rhode Island</a></li>
+<li><a href='#TN'>Tennessee</a></li>
+<li><a href='#TX'>Texas</a></li>
+<li><a href='#UT'>Utah</a></li>
+<li><a href='#VA'>Virginia</a></li>
+<li><a href='#VT'>Vermont</a></li>
+<li><a href='#WA'>Washington</a></li>
+<li><a href='#WI'>Wisconsin</a></li>
+<li><a href='#WV'>West Virginia</a></li>
+</div>
+
+
+{% include 'haute-store-list-table' %}
+</div>
+
+<style>
+  .row-head a {
+    color: #eb008b;
+}
+  .row-head a:hover {
+    text-decoration: none;
+    cursor: default;
+}
+.state-list li {
+    display: inline-block;
+    width: 200px;
+    font-size: 1.2rem;
+}
+  .state-list {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 2rem;
+}
+   .hauteHeat-storeList li {
+    display: inline-block;
+    padding-left: 20px;
+    font-weight: 500;
+    font-size: 1.2rem;
+}
+   .hauteHeat-storeList .row-head {
+    color: #eb008b;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+}
+  .hauteHeat-storeList li.city {
+    min-width: 200px;
+}
+  @media (max-width: 500px){
+  
+   .hauteHeat-storeList li.city {
+    min-width: 0px;
+} 
+  .hauteHeat-storeList li.state {
+    display: none;
+}
+.hauteHeat-storeList li {
+    display: inline-block;
+    padding-left: 20px;
+    font-weight: 500;
+    font-size: 1rem;
+}
+    .state-list li {
+    display: inline-block;
+    width: 150px;
+    font-size: 1.2rem;
+}
+  
+  
+  
+  
+  
+  
+  
+  
+  } 
+  
+  
+  
+</style>

@@ -1,0 +1,54 @@
+{% assign handle = page.handle %}
+{% assign words = handle | split: '-' %}
+
+{% assign capitalized_words = '' %}
+{% for word in words %}
+  {% assign capitalized_word = word | capitalize %}
+  {% assign capitalized_words = capitalized_words | append: capitalized_word | append: ' ' %}
+{% endfor %}
+
+{% assign capitalized_handle = capitalized_words | strip %}
+
+
+
+
+
+{%comment%}	Displays the side menu on desktop	{%endcomment%}
+<div class="daisydropdown daisydropdown-bottom daisydropdown-end w-full lg:hidden">
+  <div tabindex="0" role="button" id="sortButton" class="sortByFilter daisybtn m-1 w-full">
+   {% if  page_title == "Account" %} My Dashboard{% endif %}{{ capitalized_handle  }}
+    <svg width="12" height="7" viewBox="0 0 12 7" xmlns="http://www.w3.org/2000/svg"><path id="icon-expand" d="M10.95 2.364A1 1 0 109.536.95L6 4.485 2.465.95A1 1 0 001.05 2.364l4.243 4.243a1 1 0 001.414 0v-.001l4.243-4.242z" fill="currentColor" fill-rule="evenodd"></path></svg>
+  </div>
+  <ul tabindex="0" class="daisydropdown-content z-[1] daisymenu p-2 shadow bg-base-100 rounded-box w-full">
+     {% for link in linklists.my-account.links %}
+        {%- comment %}<locksmith:f560>{% endcomment -%}
+          {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists.my-account, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+        {%- comment %}</locksmith:f560>{% endcomment -%}
+        <li value="{{ link.title }}" {% if page.handle == link.handle %}class="selected font-bold"{% endif %}>
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        </li>
+    {% endfor %}
+  </ul>
+</div>
+
+
+
+{%comment%}	Displays the side menu on mobile devices.	{%endcomment%}
+ <aside class="customer-service__nav-panel hidden lg:block">
+    
+          <ul tabindex="0" class="daisydropdown-content z-[1] daisymenu p-2 shadow bg-base-100 rounded-box w-[11rem]">
+            <h5 class="p-4 underline">My Account</h5> 
+            {% for link in linklists.my-account.links %}
+                {%- comment %}<locksmith:4cb3>{% endcomment -%}
+                  {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists.my-account, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+                {%- comment %}</locksmith:4cb3>{% endcomment -%}
+                <li value="{{ link.title }}" {% if page.handle == link.handle %}class="selected font-bold"{% endif %}>
+                  <a href="{{ link.url }}">{{ link.title }}</a>
+                </li>
+            {% endfor %}
+           
+          </ul>  
+    <div class="mt-6 p-4 bg-pink-100">
+             <span class="font-bold block">NEED HELP?</span>If you have any questions or need help please contact us at <a href="mailto:info@lagirlusa.com"><span class = "color">info@lagirlusa.com</span></a> or give us a call at <br><a href="tel:1-866-999-5283"><span class = "color">1-800-776-2221</span></a>.
+            </div>
+        </aside>

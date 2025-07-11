@@ -1,0 +1,40 @@
+<!-- Card -->
+
+<div class="rounded-xl sm:flex">
+
+    <div class="flex h-full flex-col items-center justify-center gap-4 p-4 sm:p-6 ">
+
+
+      <div class="grid  [grid-template-columns:200px_1fr] gap-4 lg:gap-8">
+      <div class="relative w-[200px] flex-shrink-0 overflow-hidden rounded-xl justify-self-end">
+        {%- liquid
+          assign height = article.image.width | divided_by: article.image.aspect_ratio | round
+          assign sizes = '400px'
+          assign widths = '375, 550, 750'
+          assign class = 'size-full object-cover'
+        -%}
+        {{
+          article.image
+          | image_url: width: 400
+          | image_tag: height: auto, width: 400, sizes: sizes, widths: widths, alt: article.image.alt, class: class
+        }}
+      </div>
+      <div class="details">
+        <div class="inline-flex items-center gap-1.5 rounded-md bg-pink-100 px-3 py-1.5 text-xs font-medium text-gray-800 mb-2">
+          News
+        </div>
+        <div class="text-xs text-gray-500 mb-4" >{{ article.published_at | date: '%b %d, %Y' }}</div>
+          <h3 class="max-w-[30ch] text-lg font-semibold text-gray-800 sm:text-2xl">
+            {{ article.title }}
+          </h3>
+           <p class="mt-2 text-gray-800 mb-3 max-w-prose">{{ article.content | strip_html | truncatewords: 20 }}</p>
+       <button type="button" class="mb me-2 rounded-lg border border-pink-700 px-3 py-2 text-center text-sm font-bold text-pink-700 hover:bg-pink-700 hover:text-white focus:outline-none focus:ring-4 focus:ring-pink-300">
+          <a href="{{article.url}}">Read More</a>
+        </button>
+       </div>
+      </div>
+    </div>
+
+</div>
+
+<!-- End Card -->

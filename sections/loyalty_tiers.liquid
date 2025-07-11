@@ -1,0 +1,63 @@
+{{ 'loyalty.css' | asset_url | stylesheet_tag }}
+
+<div class="tiers-section max-w-1200">
+  <div class="tiers-container">
+    <!-- Left side: Background image with text overlay -->
+    <div class="tiers-left">
+      <div class="tiers-background" style="background-image: url('{{ 'tiers-bg.png' | file_url }}');">
+        <div class="tiers-content">
+          <h2 class="tiers-title">FROM STARTER TO PRO</h2>
+          <p class="tiers-subtitle">EARN POINTS WHILE UPGRADING YOUR BEAUTY ROUTINE</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right side: Tier cards -->
+    <div class="tiers-right">
+      <div class="tiers-cards">
+        <div class="tier-card">
+          <div class="tier-header">
+            <div class="tier-icon">
+              <img src="{{ 'checkmark.png' | file_url }}" alt="Checkmark" width="24" height="24">
+            </div>
+            <h3 class="tier-name">STARTER KIT: 0-499 PTS</h3>
+          </div>
+          <p class="tier-description">building your kit, finding your style, and racking up PRO.Points as you go</p>
+        </div>
+
+        <div class="tier-card">
+          <div class="tier-header">
+            <div class="tier-icon">
+              <img src="{{ 'checkmark.png' | file_url }}" alt="Checkmark" width="24" height="24">
+            </div>
+            <h3 class="tier-name">CREATOR KIT: 500-999 PTS</h3>
+          </div>
+          <p class="tier-description">your artistry's dialed in and so are your perks</p>
+        </div>
+
+        <div class="tier-card">
+          <div class="tier-header">
+            <div class="tier-icon">
+              <img src="{{ 'checkmark.png' | file_url }}" alt="Checkmark" width="24" height="24">
+            </div>
+            <h3 class="tier-name">PRO KIT: 1000+ PTS</h3>
+          </div>
+          <p class="tier-description">running the show with next-level skills and VIP rewards to match</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+    {
+      "name": "Loyalty_Tiers",
+      "settings": [],
+      "presets": [
+        {
+          "name": "Loyalty Tiers",
+          "category": "Loyalty Page"
+        }
+      ]
+    }
+{% endschema %}

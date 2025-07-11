@@ -1,0 +1,449 @@
+{% assign timer_start_date = '2023/12/20 09:00' | remove: '/' | remove: ':' | remove: ' ' %}
+{% assign timer_end_date = '2024/01/01 23:59' | remove: '/' | remove: ':' | remove: ' ' %}
+{% assign current_date = 'now' | date: '%Y/%m/%d %H:%M' | remove: '/' | remove: ':' | remove: ' ' -%}
+{% comment %} <!-- 2019/12/25 13:17 -->{% endcomment %}
+
+{% assign CONTACT_NOTICE = "L.A. Girl will be closed for the holidays from December 22, 2023, to January 1, 2024. Orders placed after December 21, 2023, 9:30 AM PST, will be processed and shipped upon the company's return. Credit contact-methods will be charged for orders made during the closure. Inquiries will be addressed when operations resume on January 2, 2024, at 8:00 AM PST." %}
+
+{% assign within_release_date = false %}
+{% if current_date >= timer_start_date and current_date <= timer_end_date %}
+  {% assign within_release_date = true %}
+{% endif %}
+<main class="main-content" role="main">
+<div class="container-grid mb-8">
+  <div class="contact-form__wrapper flex flex-col md:flex-row blocks-radius mt-4 relative text-xxl">
+    <h1 class="absolute uppercase text-white right-4 bottom-4" style="font-size: clamp(2.5rem,5vw,5rem);">
+      {{ page.title | split: '|' | first }}
+    </h1>
+    <img
+      alt="Beauty21 Building"
+      class="unselectable hs-lazyload hs-id-7b5d2392 lazyload"
+      data-src="https://cdn.shopify.com/s/files/1/0944/0398/files/b21_models.jpg?v=1729209886"
+      src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+      style="    width: 100%;"
+    >
+  </div>
+
+  
+  <article id="{{page.handle}}" class="info max-w-screen-lg mx-auto">
+    {% form 'contact' %}
+      {% if form.posted_successfully? %}
+        <p class="note form-success">
+          <span>Thank you for contacting us. We'll get back to you within 2 business days.</span>
+        </p>
+
+        <script>
+            $(document).ready(function(e) {
+
+             $('#contactFormWrapper').hide();
+
+          });
+        </script>
+      {% endif %}
+
+      {{ form.errors | default_errors }}
+      <div class="container-item">
+  <div class="contact-method grid md:grid-cols-2 gap-4 mt-8">
+    <div class="grid [grid-template-columns:min-content_1fr] gap-4 bg-slate-50 p-4 min-h-[165px]">
+                <div class="contact-icon p-4 content-center">
+                  <svg
+                    class="h-16 w-16 black"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></path>
+                  </svg>
+                </div>
+                <div class="contact-details text-left content-center">
+                  <span class="text-xl font-bold md:text-2xl">By Phone</span>
+                  <div class="mt-2">
+                    <p class="text-balance">
+                      <span class="text-sm block">Available Mon-Fri, 8AM to 5PM PST</span>
+                      <span class="phone-no"
+                        >1-909-945-2220<br>
+                        1-800-776-2221</span
+                      ><br>
+                     
+                    </p>
+                    <span class="phone-no">1-909-945-2262 <span class="text-sm">Fax</span></span>
+                  </div>
+                </div>
+    </div>
+    <div class="grid [grid-template-columns:min-content_1fr] gap-4 bg-slate-50 p-4 min-h-[165px]">
+                <div class="contact-icon p-4 content-center">
+                  <svg
+                    class="h-16 w-16 black"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                     <line x1="22" y1="2" x2="11" y2="13" />  <polygon points="22 2 15 22 11 13 2 9 22 2" /></polygon></line>
+                  </svg>
+                </div>
+     
+                <div class="contact-details text-left content-center">
+                  <span class="text-xl font-bold md:text-2xl">By Mail</span>
+                  <address class="mt-2">
+                    <strong>L.A. Girl Cosmetics</strong><br>
+                    2021 S Archibald Ave<br>
+                    Ontario, CA 91761 USA<br>
+                  </address>
+                </div>
+    </div>
+    <div class="grid [grid-template-columns:min-content_1fr] gap-4 bg-slate-50 p-4 min-h-[165px]">
+                <div class="contact-icon p-4 content-center">
+                  <svg
+                    class="h-16 w-16 black"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></path>                  </svg>
+                </div>
+                <div class="contact-details text-left content-center">
+                  <span class="text-xl font-bold md:text-2xl">FAQ</span>
+                  <div class="mt-2">
+                    <p class="text-balance">
+                     Find the answer to your questions. 
+                     
+                        <a class="block"
+                        href="https://lagirlusa.com/pages/faq"
+                        > <span class="inline border-b border-black border-solid bold mt-1 text-sm">Visit FAQ page</span></a>
+                    </p>
+                    
+                  </div>
+                </div>
+    </div>
+    <div class="grid [grid-template-columns:min-content_1fr] gap-4 bg-slate-50 p-4 min-h-[165px]">
+                <div class="contact-icon p-4 content-center">
+                  <svg
+                    class="h-16 w-16 black"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></path>                  </svg>
+                </div>
+                <div class="contact-details text-left content-center">
+                  <span class="text-xl font-bold md:text-2xl">By Email</span>
+                  <div class="mt-2">
+                    <p class="text-balance">
+                      Have a question?<br><span class="inline border-b border-black border-solid bold mt-1 text-sm">Email us</span>
+                    </p>
+            
+                  </div>
+                </div>
+    </div>    
+  </div>
+</div>
+<style>
+  
+        /* Set containment on parent */
+.container-item {
+  container: inline-size;
+  width: 100%;
+  margin: 0 auto;
+}
+
+
+
+.contact-method {
+  padding: 0.5rem;
+}
+
+/* Responsive styles */
+
+/* 2-column grid layout at >=350px */
+@container (min-width: 350px) {
+  .contact-method {
+    display: grid;
+    grid-template-columns: 40% 1fr;
+    align-items: center;
+    gap: 1rem;
+    text-align: left;
+  }
+}
+
+/* Display description at >=500px */
+@container (min-width: 500px) {
+.contact-method {
+    display: grid;
+    grid-template-columns: 100% 1fr;
+    align-items: center;
+    gap: 1rem;
+    text-align: left;
+  }
+}
+        
+</style> 
+      
+
+
+        <div id="contactFormWrapper" class="mt-4">
+            <div class="bg-white p-8 rounded-lg shadow-lg w-full  mx-auto">
+               <svg class="h-16 w-16 black  mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76"/></path>
+            </svg>
+    <span class="text-xl font-bold  block mx-auto text-center mt-1">Email Us</span>
+    <p class="text-center mb-6 text-balance mb-8">We will love to hear from you! <br>Just complete the form below and we’ll get back to you within 2 business days.</p>
+          {% if within_release_date %}
+            <div
+              class="color"
+              style="
+                color: #eb008b;
+                text-align: center;
+              "
+            >
+              {{ CONTACT_NOTICE }}
+            </div>
+          {% endif %}
+          <div class=" mx-auto">
+            
+    
+
+            <p style="font-size: 85%;">All fields required unless marked optional.</p>
+            <div class="contactForm-fill flex flex-wrap -m-2">
+              <div class="p-2 w-full md:w-1/2">
+                <div class="relative">
+                 
+                  <label for="firstName" class="block text-sm font-medium text-gray-700">First Name</label>
+                  <input
+                    type="text"
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
+                    id="contactFormFirstName"
+                    name="contact[first name]"
+                    autocapitalize="words"
+                    required
+                  >
+                </div>
+              </div>
+              <div class="p-2 w-full md:w-1/2">
+                <div class="relative">
+                 <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name</label>
+
+                  <input
+                    type="text"
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
+                    id="contactFormLastName"
+                    name="contact[last name]"
+                    autocapitalize="words"
+                    
+                    required
+                  >
+                </div>
+              </div>
+              <div class="p-2 w-full md:w-1/2">
+                <div class="relative">
+                 <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+
+                  <input
+                    type="email"
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
+                    name="contact[email]"
+                    id="contactFormEmail"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    
+                    required
+                  >
+                </div>
+              </div>
+              <div class="p-2 w-full md:w-1/2">
+                <div class="relative">
+                 <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number(optional)</label>
+
+                  <input
+                    type="tel"
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
+                    name="contact[phone]"
+                    id="contactFormPhone"
+                    pattern="[0-9]*"
+                  
+                  >
+                </div>
+              </div>
+            </div>
+            <p style="font-size: 85%;">To expedite the response time, please let us know where you are located.</p>
+            <div class="contactForm-fill-address flex flex-wrap -m-2">
+             
+              <div class="p-2 w-full md:w-1/2">
+                <div class="relative">
+                  <label for="city" class="block text-sm font-medium text-gray-700">City</label>
+
+                  <input
+                    type="text"
+                    name="contact[city]"
+                    id="contactFormCity"
+                   
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
+                    required
+                  >
+                </div>
+              </div>
+              <div class="p-2 w-full md:w-1/2">
+                <div class="relative">
+                  <label for="state" class="block text-sm font-medium text-gray-700">State</label>
+
+                  <input
+                    type="text"
+                    name="contact[state]"
+                    id="contactFormState"
+                    
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
+                    required
+                  >
+                </div>
+              </div>
+              <div class="p-2 w-full md:w-1/2">
+                <div class="relative">
+                  <label for="zipcode" class="block text-sm font-medium text-gray-700">Zip Code</label>
+
+                  <input
+                    type="text"
+                    name="contact[zip]"
+                    id="contactFormZip"
+                  
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
+                    required
+                  >
+                </div>
+              </div>
+              <div class="p-2 w-full md:w-1/2">
+                <div class="relative">
+                  <label for="country" class="block text-sm font-medium text-gray-700">Country</label>
+
+                  <input
+                    type="text"
+                    name="contact[country]"
+                    id="contactFormCountry"
+                    
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
+                    required
+                  >
+                </div>
+              </div>
+
+              <div class="p-2 w-full md:w-1/2">
+                <div class="relative">
+                  <label for="subject" class="block text-sm font-medium text-gray-700">Choose a Topic</label>
+               
+                  <select id="contactFormQuestionType" name="contact[question type]" 
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
+                    required>
+                    <option value="">Choose a Topic</option>
+                    <option value="Product Question">Product Question</option>
+                    <option value="Order Placement">Order Placement</option>
+                    <option value="Where is my order/return?">Where is my order/return?</option>
+                    <option value="General Questions">General Questions</option>
+                    <option value="International Inquiries">International Inquiries</option>
+                  </select>
+                </div>
+              </div>
+              <div class="p-2 w-full md:w-1/2">
+                <div class="relative">
+                 <label for="orderId" class="block text-sm font-medium text-gray-700">Order Number(optional)</label>
+                  <input
+                    type="text"
+                    name="contact[order number]"
+                    id="contactFormOrderNo"
+                   
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
+                  >
+                </div>
+              </div>
+                <div class="p-2 w-full mb-8">
+              <div class="relative">
+                 <label for="comments" class="block text-sm font-medium text-gray-700">Tell Us More</label>
+                <textarea 
+                 id="contactFormMessage"
+                 name="contact[body]"
+                  rows="4" 
+                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
+                  required>
+                  
+                  </textarea>
+               
+              </div>
+            </div>
+
+            </div>
+          
+            <button 
+              type="submit"
+               name="submit_message"
+              id="submit_message"
+              class="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500">
+            
+              SUBMIT
+            </button>
+          </div>
+            </div>
+        </div>
+     
+    {% endform %}
+
+    {{ page.content }}
+  </article>
+
+  <div id="btn_confirmation_window" style="display:none">
+    <button id="accept" value="true">accept</button>
+    <button id="go_back" value="false">go back</button>
+  </div>
+</div>
+<script>
+  $(function () {
+      'use strict';
+
+      function confirmDialog(title, message, success) {
+          var confirmdialog = $('<div></div>').appendTo('body')
+              .html('<div><h6>' + message + '</h6></div>')
+              .dialog({
+                  modal: true,
+                  title: title,
+                  zIndex: 10000,
+                  autoOpen: false,
+                  width: 'auto',
+                  resizable: false,
+                  buttons: {
+                      Yes: function () {
+                          success();
+                          $(this).dialog("close");
+                      },
+                      No: function () {
+                          $(this).dialog("close");
+                      }
+                  },
+                  close: function() {
+                      $(this).remove();
+                  }
+              });
+
+          return confirmdialog.dialog("open");
+      }
+
+      $('form').on('submit', function (e) {
+          e.preventDefault();
+          var form = this;
+
+          confirmDialog('Confirm', 'Are you sure you want to continue with submitting your message?<br>You may find the answer to your question(s) on our <a href="https://lagirlusa.com/pages/faq" target="_blank" style="text-decoration: underline;">FAQ page</a>. ', function () {
+              form.submit();
+          });
+      });
+  });
+</script>
+
+ 
+</main>

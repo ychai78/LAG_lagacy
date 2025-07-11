@@ -1,0 +1,20 @@
+{% comment %}
+  This template is used for infinite scroll loading
+  It should only return the product cards without any layout
+{% endcomment %}
+
+{% assign offset = request.params.offset | plus: 0 %}
+{% assign limit = request.params.limit | plus: 0 %}
+{% assign end_offset = offset | plus: limit %}
+
+{% for product in collection.products offset: offset limit: limit %}
+  {%- comment %}<locksmith:665b>{% endcomment -%}
+    {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: collection, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+  {%- comment %}</locksmith:665b>{% endcomment -%}
+  {% unless product.tags contains 'coming soon' %}
+    {% render 'card-product-3',
+      card_product: product,
+      eager_load: false
+    %}
+  {% endunless %}
+{% endfor %}

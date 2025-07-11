@@ -1,0 +1,219 @@
+{% comment %}This is the banner.liquid file{% endcomment %}
+{% assign current_datetime = 'now' | date: '%Y%m%d%H%M' | plus: 0 %}
+{% assign show_scheduled_banner = false %}
+
+
+{% comment %}
+  Check if the 'test' parameter is present in the URL query string.
+  If so, set 'show_scheduled_banner' to true to display the scheduled banner.
+{% endcomment %}
+{%- capture content_for_querystring -%}{{ content_for_header }}{%- endcapture -%}
+{%- assign page_url = content_for_querystring
+  | split: '"pageurl":"'
+  | last
+  | split: '"'
+  | first
+  | split: '.myshopify.com'
+  | last
+  | replace: '\/', '/'
+  | replace: '%20', ' '
+  | replace: '\u0026', '&'
+  | split: '/'
+  | last
+-%}
+{% capture finalurl %}{{ page_url }}{% endcapture %}
+
+{% if finalurl contains '?=test' %}
+  {% assign show_scheduled_banner = true %}
+{% endif %}
+
+<div class="w-full relative"
+    style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+  
+  <div class="relative w-full mb-4">
+    {%- if section.settings.title != blank -%}
+      <div class="text-center px-8 animate--slide-in">
+        <h3 class="text-5xl font-bold mb-2 font-display {{ section.settings.heading_alignment }}">
+          {{ section.settings.title }}
+        </h3>
+      </div>
+    {%- endif -%}
+    {%- if section.settings.description != blank
+      or section.settings.show_description
+      and section.settings.collection.description != empty
+    -%}
+      <div class="collection__description">
+        {{ section.settings.description }}
+      </div>
+    {%- endif -%}
+
+    {% for block in section.blocks %}
+      {% assign show_banner = true %}
+
+      {% if block.settings.enable_schedule %}
+        {% assign schedule_datetime = block.settings.schedule_datetime | date: '%Y%m%d%H%M' | plus: 0 %}
+        {% assign removal_datetime = block.settings.removal_datetime | date: '%Y%m%d%H%M' | plus: 0 %}
+
+        {% if block.settings.removal_datetime != blank %}
+          {% unless current_datetime >= schedule_datetime and current_datetime < removal_datetime %}
+            {% assign show_banner = false %}
+          {% endunless %}
+        {% else %}
+          {% unless current_datetime >= schedule_datetime %}
+            {% assign show_banner = false %}
+          {% endunless %}
+        {% endif %}
+      {% endif %}
+
+
+    {% if show_banner or show_scheduled_banner %}
+      {% if block.settings.banner_image != blank %}
+        <a href="{{ block.settings.url_link }}" class="block">
+          {% render 'responsive-picture',
+            mobile_image: block.settings.mobile_banner,
+            desktop_image: block.settings.banner_image,
+            alt: block.settings.banner_image.alt | default: block.settings.title,
+            class: 'responsive-image mx-auto w-dvw',
+            eager_load: section.settings.loading_behavior == 'eager',
+            sizes: '100vw'
+          %}
+        </a>
+        {% break %}
+      {% endif %}
+    {% endif %}
+      
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Banner",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "default": "Title",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Header Alignment"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 0
+    },
+        {
+      "type": "select",
+      "id": "loading_behavior",
+      "options": [
+        {
+          "value": "eager",
+          "label": "Load Immediately (Above fold)"
+        },
+        {
+          "value": "lazy",
+          "label": "Lazy Load (Below fold)"
+        }
+      ],
+      "default": "lazy",
+      "label": "Loading Behavior",
+      "info": "Choose 'Load Immediately' for banners visible when page loads"
+    },
+  ],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Banner Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "banner_image",
+          "label": "Desktop Banner"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_banner",
+          "label": "Mobile Banner"
+        },
+        {
+          "type": "url",
+          "id": "url_link",
+          "label": "Banner Link"
+        },
+        {
+          "type": "header",
+          "content": "Scheduling",
+          "info": "When enabled, the banner will only be visible between the start and end dates"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_schedule",
+          "label": "Enable Scheduling",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "schedule_datetime",
+          "label": "Start Date and Time",
+          "info": "Format: YYYY-MM-DD HH:MM (e.g., 2024-03-15 09:00). Leave empty to show immediately"
+        },
+        {
+          "type": "text",
+          "id": "removal_datetime",
+          "label": "End Date and Time",
+          "info": "Format: YYYY-MM-DD HH:MM (e.g., 2024-03-20 23:59). Leave empty for no end date"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Banner"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,145 @@
+li#errorLi {
+  font-size: 11px;
+}
+form#form5 {
+  max-width: 700px;
+}
+.greyed-out {
+  pointer-events: none;
+}
+.greyed-out input {
+  background: #ccc;
+  pointer-events: none;
+}
+input.medium,
+select.medium {
+  width: 300px;
+}
+
+select {
+  height: 30px;
+}
+.wufoo input.text,
+.wufoo textarea.textarea,
+.wufoo input.file {
+  font-family: inherit;
+  padding: 5px 10px;
+  max-width: 300px;
+  margin-right: 10px;
+  min-width: 132px;
+}
+.address-form,
+.name-line {
+  max-width: 680px;
+}
+.name-line input {
+  width: 133px;
+}
+:focus {
+  outline-color: #ffc9e9;
+}
+input#saveForm {
+  cursor: pointer;
+  display: inline-block;
+  box-sizing: border-box;
+  font-size: 12px;
+  letter-spacing: 1.2px;
+  border-radius: 0;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  color: #fff;
+  background-color: #eb008b;
+  border: 2px solid #eb008b;
+  line-height: 12px;
+  padding: 12px 50px;
+  height: 40px;
+  font-weight: 700;
+  font-family: lato;
+  width: 320px;
+}
+input#saveForm:hover {
+  color: #eb008b;
+  background-color: #fff;
+  border-color: #eb008b;
+}
+.sales-person-id select {
+  width: 320px;
+}
+.phone span.symbol {
+  margin-right: 10px;
+}
+#errorMsgLbl {
+  color: #eb008b !important;
+}
+#errorLi,
+.error-container {
+  border: 1px solid #eb008b;
+}
+#errorMsg b {
+  background-color: #ffe3f4 !important;
+  color: #eb008b !important;
+}
+form li.error {
+  background-color: transparent !important;
+}
+form li.error .desc {
+  color: #eb008b !important;
+}
+form p.error {
+  color: #eb008b !important;
+}
+header#header a {
+  color: #eb008b;
+}
+.wufoo li.focused {
+  background-color: transparent !important;
+}
+textarea {
+  min-width: 300px !important;
+}
+
+.order-form-header section h3 {
+  font-weight: 900 !important;
+  font-size: 2.5rem !important;
+}
+
+@media only screen and (max-width: 600px) {
+  form li.complex div span.left,
+  form li.complex div span.right {
+    margin: 0;
+    display: block;
+    width: 100%;
+  }
+  .country select {
+    width: 320px !important;
+  }
+  .company input {
+    width: 300px;
+  }
+}
+.wufoo input {
+    height: 1.5rem;
+    width: 100%;
+    border-radius: 5px;
+}
+select.select {
+    height: 32px;
+    padding: 0px 0 0 5px;
+    border-radius: 5px;
+}
+input#Field2, input#Field3 {
+    width: 10em;
+}
+.recaptcha-text {
+    font-family: National\ 2, sans-serif;
+    color: #7e7e7e;
+    padding: 0;
+    font-size: 1em;
+    margin-top: -1rem;
+}
+input#saveForm {
+    height: 2rem;
+}
+

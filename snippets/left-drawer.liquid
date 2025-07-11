@@ -1,0 +1,147 @@
+<div class="daisydrawer z-[600]" id="mobile-daisydrawer">
+  <input id="mobile-drawer" type="checkbox" class="daisydrawer-toggle">
+  <div class="daisydrawer-side">
+    <div class="daisymenu min-h-full w-full max-w-[500px] bg-base-200 text-base-content z-[600]">
+      <!-- <h2 id="slide-over-title" class="sr-only">Mobile Menu</h2> -->
+      <div class="mobile__drawer relative" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+        <div
+          class="fixed right-0 top-0 grid h-full w-full max-w-[500px] grid-cols-1 grid-rows-[auto_1fr_auto] bg-white shadow-[0_1px_3px_rgb(0_0_0_/_20%)]"
+        >
+          <div class="hide-scrollbar overflow-auto">
+            <div class="flex min-h-10 w-full items-center bg-black mb-4">              
+              <div class="mobile__drawer-close w-[36px] shrink-0">
+                <button type="button" aria-label="close mobile sidebar" class="w-[36px] shrink-0 pl-4 ">
+                  <label for="mobile-drawer" class="cursor-pointer text-white">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                      focusable="false"
+                      role="img"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      fill="none"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="w-[24px]"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <line x1="18" y1="6" x2="6" y2="18"></line> <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </label>
+                </button>
+              </div>
+            </div>
+
+            <div class="flex min-h-16 w-full items-center">
+              <ul class="menu w-full text-xl">
+                <li>
+                    <details close>
+                        <summary class="px-4 py-3 pr-6 font-bold">What's New</summary>
+                        <ul>
+                          <li class="overflow-x-auto grid grid-flow-col  gap-2 no-scrollbar">
+                           {% render 'promotional-images' %}
+                           {% comment %} {% render 'mega-menu' %} {% endcomment %} 
+                          </li>
+                          {% for link in linklists.featured.links %}
+                            {%- comment %}<locksmith:593c>{% endcomment -%}
+                              {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists.featured, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+                            {%- comment %}</locksmith:593c>{% endcomment -%}
+                            <li>
+                              <a class="px-4 py-3 text-sm font-bold" href="{{ link.url }}">{{ link.title }}</a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </details>
+                  </li>
+                
+                {% for link in linklists.main-menu.links %}
+                  {%- comment %}<locksmith:de06>{% endcomment -%}
+                    {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists.main-menu, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+                  {%- comment %}</locksmith:de06>{% endcomment -%}
+                  <li>
+                    {% unless linklists[link.handle] == empty %}
+                      <details close>
+                        <summary class="px-4 py-3 pr-6 font-bold">{{ link.title }}</summary>
+                        <ul>
+                           <li>
+                              <a class="px-4 py-3 text-sm font-bold" href="{{ link.url }}">Shop All {{ link.title }}</a>
+                            </li>
+                          {% for link in linklists[link.handle].links %}
+                            {%- comment %}<locksmith:ef49>{% endcomment -%}
+                              {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists[link.handle], variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+                            {%- comment %}</locksmith:ef49>{% endcomment -%}
+                            <li>
+                              <a class="px-4 py-3 text-sm font-bold" href="{{ link.url }}">{{ link.title }}</a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </details>
+                    {% endunless %}
+                  </li>
+                  {% if linklists[link.handle] == empty %}
+                    <li>
+                      <a class="font-bold" href="{{ link.url }}">{{ link.title }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+                <li>
+                    <details close>
+                        <summary class="px-4 py-3 pr-6 font-bold">Trending</summary>
+                        <ul>
+                          {% for link in linklists.trending.links %}
+                            {%- comment %}<locksmith:c034>{% endcomment -%}
+                              {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: link, subject_parent: linklists.trending, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+                            {%- comment %}</locksmith:c034>{% endcomment -%}
+                            <li>
+                              <a class="px-4 py-3 text-sm font-bold" href="{{ link.url }}">{{ link.title }}</a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </details>
+                  </li>
+                
+                
+                </ul>
+            </div>
+            <div class="daisydivider"></div>
+            
+            <ul class="menu w-full text-md font-bold">
+              <li><a href="/pages/store-locator">Store Locator</a></li>
+              {% if shop.customer_accounts_enabled %}
+                {% if customer %}
+                  <li><a href="/account">Your Account</a></li>
+                {% else %}
+                  <li>{{ 'Login / Create Account' | customer_login_link }}</li>
+                {% endif %}
+              {% endif %}
+            </ul>
+
+          
+ 
+            <div class="mt-8">
+            {% render 'social' %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <label for="mobile-drawer" aria-label="close sidebar" class="backdrop daisydrawer-overlay"></label>
+
+  </div>
+</div>
+<style>
+  div#mobile-daisydrawer .daisymenu :where(li ul):before{display:none;}
+  .daisydrawer-toggle:checked~.daisydrawer-side>.daisydrawer-overlay.backdrop {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, .5);
+    visibility: visible;
+    opacity: 1;
+    transition: visibility .01s linear, opacity .3s linear .01s;
+}
+</style>

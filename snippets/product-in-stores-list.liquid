@@ -1,0 +1,47 @@
+{% comment %}
+This section of the code is to show the retailer logos that this product available in. 
+1. grab all the logos from product.metafields["custom"]["available_at_select_stores"] 
+2. create a counter to loop through the retailer logos for this product. 
+3. if there are no logos then do not display the section 
+{% endcomment %}
+
+{% if product.metafields.custom.also_available_to_purchase_at_retail_link %}
+  <div style="margin: 12px 0;display: flex;">
+      {{  product.metafields.custom.also_available_to_purchase_at_retail_link }}
+  </div> 
+
+ 
+{% endif %}
+
+{% if product.metafields["custom"]["available_at_select_stores"] %}
+  {% assign stores = product.metafields.custom.available_at_select_stores.value %} 
+  <div class="available-in-stores-section"> 
+    <div class="availability-container-header">
+      <span class="availability__store-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-label=" Available in select stores" role="img" focusable="false">
+    <path d="m21.358 6.3-1.204-4.094a.401.401 0 0 0-.32-.24H4.178a.24.24 0 0 0-.24.24L2.653 6.22c0 .08-.08.16-.08.241v15.252a.321.321 0 0 0 .32.321h2.81a.321.321 0 0 0 .322-.32v-7.466h3.853v7.465a.321.321 0 0 0 .32.321h10.918c.161 0 .241-.16.241-.32V6.54zm-18.142.482h2.97v1.365A1.445 1.445 0 0 1 4.824 9.67l-.083.002a1.445 1.445 0 0 1-1.525-1.525zm4.736-4.174h2.73L9.879 6.14h-2.89zm8.028 0 1.124 3.532h-3.05l-.723-3.532zM13.41 6.14h-2.89l.803-3.532h1.364zm-6.583.642h3.05v1.365a1.525 1.525 0 1 1-3.05 0zm3.693 0h2.97v1.365a1.487 1.487 0 0 1-2.972.082l.002-.082zm3.612 0h2.97v1.365A1.445 1.445 0 0 1 15.74 9.67l-.082.002a1.445 1.445 0 0 1-1.526-1.525zm3.613 0h3.05v1.365a1.525 1.525 0 1 1-3.05.002V6.782zm2.89-.642h-2.89l-1.124-3.532h2.97zM4.42 2.608h2.89L6.266 6.14h-2.89zm6.101 18.784v-7.465a.321.321 0 0 0-.321-.321H5.704a.321.321 0 0 0-.32.32v7.466H3.215V9.672a2.087 2.087 0 0 0 1.525.642 2.007 2.007 0 0 0 1.766-1.043 2.167 2.167 0 0 0 3.693 0 2.007 2.007 0 0 0 1.766 1.043 2.087 2.087 0 0 0 1.846-1.043 2.087 2.087 0 0 0 1.847 1.043 2.007 2.007 0 0 0 1.766-1.043 2.087 2.087 0 0 0 1.846 1.043 2.167 2.167 0 0 0 1.525-.642v11.72z"></path><path d="M18.684 11.498h-5.853a.334.334 0 0 0-.335.335v4.432a.334.334 0 0 0 .335.334h5.853c.251 0 .335-.083.335-.334v-4.432a.334.334 0 0 0-.335-.335zm-.334 4.432h-5.185v-3.763h5.185z"></path>
+  </svg></span>
+      <span class="available-in-stores-header"> Available in select stores</span>
+    </div>
+    <div class="availability-container">
+      
+      <div class="available-store-list">
+        <div class="store-name-alt"> 
+          {% for store in stores %}
+            <div class="store-name">{{ store.name | escape }}</div>
+            {% endfor %}
+        </div>
+        <div class="availability-notice-message-wrapper">
+          <span class="availability-notice-message"> Please call individual stores for availability of product as product selection may vary by store.</span>
+        </div>
+      </div>
+    </div>
+  </div> 
+{% endif %}
+
+
+
+
+
+
+
+

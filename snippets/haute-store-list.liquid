@@ -1,0 +1,203 @@
+<script>
+$(document).ready(function(e) {
+
+$( ".hauteHeat-storeList .row" ).each(function() {
+  
+  var state= $(this).find("li:nth-child(1)").text();
+  var zip= $(this).find("li:nth-child(2)").text();
+  var city= $(this).find("li:nth-child(3)").text();
+  var address= $(this).find("li:nth-child(4)").text();
+  var full_address= address+ " "+city+ ", "+state+" "+zip
+  $(this).find("li:nth-child(1)").addClass("state"); 
+  $(this).find("li:nth-child(2)").addClass("zip"); 
+  $(this).find("li:nth-child(3)").addClass("city"); 
+  $(this).find("li:nth-child(4)").addClass("address");
+ 
+  
+  
+  $(this).find("li:nth-child(4)").attr("full-address",full_address);
+  
+});
+  $( ".hauteHeat-storeList .row-head" ).each(function() {
+    var stateName = $(this).text();
+    var stateNameShort = $(this).next().find("li.state").text();
+    $(this).empty();
+    $(this).append('<a name ="'+stateNameShort+'">'+stateName+'</a>')
+
+  
+});
+  $(".cvs-locations").removeClass("hide"); 
+  
+
+});
+</script>
+<script>
+  $(document).ready(function(){
+
+
+(function($) {
+  $('a[href*=#]:not([href=#])').click(function() 
+  {
+    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') 
+        || location.hostname == this.hostname) 
+    {
+      
+      var target = $(this.hash),
+      headerHeight = $(".site-header").height() + 5; // Get fixed header height
+            
+      target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+              
+      if (target.length) 
+      {
+        $('html,body').animate({
+          scrollTop: target.offset().top - headerHeight
+        }, 500);
+        return false;
+      }
+    }
+  });
+})(jQuery);
+    
+    
+});
+</script>
+<h1 style="margin-top: 3rem;">CVS Stores with our Limited Edition Haute Haute Heat Palettes</h1>
+
+<a class="product-store-list-banner" href="/collections/eyes/products/haute-haute-heat-eyeshadow-palette">
+
+
+      <picture class="first grid-product__image unselectable"> 
+        <source 
+          media="(min-width: 1025px)" 
+          srcset="{{"haute_haute_heat_cvs_banner.jpg" | file_img_url: '1025x' | split:'?' | first}},
+                   {{"haute_haute_heat_cvs_banner.jpg" | file_img_url: '1025x' , scale: 2  | split:'?' | first }} 2x">
+        <source 
+          media="(min-width: 0px)" 
+          srcset="{{ "haute_haute_heat_cvs_banner.jpg"  | file_img_url: '700x' | split:'?' | first}},
+                  {{"haute_haute_heat_cvs_banner.jpg" | file_img_url: '700x' , scale: 2  | split:'?' | first }} 2x">
+
+        <img alt="Haute Haute Heat Eyeshadow Palette" src="{{ 'G42405_G42406_prod_img_main.jpg' | file_img_url: '400x' | split:'?' | first}}" v=""/>
+      </picture>
+
+</a>
+<div class="cvs-locations hide">
+<div class="state-list">
+  <h2 style="
+    font-weight: 700;
+">Select your Location</h2>
+<li><a href='#AL'>Alabama</a></li>
+<li><a href='#AK'>Arkansas</a></li>
+<li><a href='#AZ'>Arizona</a></li>
+<li><a href='#CA'>California</a></li>
+<li><a href='#CO'>Colorado</a></li>
+<li><a href='#CT'>Connecticut</a></li>
+<li><a href='#DC'>Washington D.C</a></li>
+<li><a href='#DE'>Delaware</a></li>
+<li><a href='#FL'>Florida</a></li>
+<li><a href='#GA'>Georgia</a></li>
+<li><a href='#IL'>Illinois</a></li>
+<li><a href='#IN'>Indiana</a></li>
+<li><a href='#IO'>Iowa</a></li>
+<li><a href='#KS'>Kansas</a></li>
+<li><a href='#KY'>Kentucky</a></li>
+<li><a href='#LA'>Louisiana</a></li>
+<li><a href='#MA'>Massachusetts</a></li>
+<li><a href='#MD'>Maryland</a></li>
+<li><a href='#MI'>Missouri</a></li>
+<li><a href='#ME'>Maine</a></li>
+<li><a href='#MI'>Michigan</a></li>
+<li><a href='#MN'>Minnesota</a></li>
+<li><a href='#MS'>Mississippi</a></li>
+<li><a href='#MT'>Montana</a></li>
+<li><a href='#NC'>North Carolina</a></li>
+<li><a href='#ND'>North Dakota</a></li>
+<li><a href='#NE'>Nebraska</a></li>
+<li><a href='#NH'>New Hampshire</a></li>
+<li><a href='#NJ'>New Jersey</a></li>
+<li><a href='#NM'>New Mexico</a></li>
+<li><a href='#NV'>Nevada</a></li>
+<li><a href='#NY'>New Jersey</a></li>
+<li><a href='#OH'>Ohio</a></li>
+<li><a href='#OK'>Oklahoma</a></li>
+<li><a href='#PA'>Pennsylvania</a></li>
+<li><a href='#RI'>Rhode Island</a></li>
+<li><a href='#SC'>South Carolina</a></li>
+<li><a href='#TN'>Tennessee</a></li>
+<li><a href='#TX'>Texas</a></li>
+<li><a href='#UT'>Utah</a></li>
+<li><a href='#VA'>Virginia</a></li>
+<li><a href='#VT'>Vermont</a></li>
+<li><a href='#WA'>Washington</a></li>
+<li><a href='#WI'>Wisconsin</a></li>
+<li><a href='#WV'>West Virginia</a></li>
+</div>
+
+
+{% include 'haute-store-list-table' %}
+</div>
+
+<style>
+  .row-head a {
+    color: #eb008b;
+}
+  .row-head a:hover {
+    text-decoration: none;
+    cursor: default;
+}
+.state-list li {
+    display: inline-block;
+    width: 200px;
+    font-size: 1.2rem;
+}
+  .state-list {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 2rem;
+}
+   .hauteHeat-storeList li {
+    display: inline-block;
+    padding-left: 20px;
+    font-weight: 500;
+    font-size: 1.2rem;
+}
+   .hauteHeat-storeList .row-head {
+    color: #eb008b;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+}
+  .hauteHeat-storeList li.city {
+    min-width: 200px;
+}
+  @media (max-width: 500px){
+  
+   .hauteHeat-storeList li.city {
+    min-width: 0px;
+} 
+  .hauteHeat-storeList li.state {
+    display: none;
+}
+.hauteHeat-storeList li {
+    display: inline-block;
+    padding-left: 20px;
+    font-weight: 500;
+    font-size: 1rem;
+}
+    .state-list li {
+    display: inline-block;
+    width: 150px;
+    font-size: 1.2rem;
+}
+  
+  
+  
+  
+  
+  
+  
+  
+  } 
+  
+  
+  
+</style>

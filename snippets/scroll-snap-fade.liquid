@@ -1,0 +1,70 @@
+{% comment %}
+  Renders a gradient transition at the end of scroll snap
+
+  Accepts:
+  - fade-color: {String} color used for fade. Default is "black" (optional)
+  - arrow-color: {String} arrow color used. Default is "white" (optional)
+  - fade: {boolean} true false (optional)
+
+  Usage:
+  {% render 'scroll-snap-fade', 
+     fade-color: black, 
+     arrow-color: white
+     fade: false
+  %}             
+  
+{% endcomment %}
+
+
+{%- liquid
+  if fade-color == blank
+    assign fade-color = 'black'
+  else
+    assign fade-color = fade-color
+  endif
+
+  if arrow-color == blank
+    assign arrow-color = 'white'
+  else
+    assign arrow-color = arrow-color
+  endif
+
+if fade == blank or fade == false
+    assign fade_enabled = false
+  else
+    assign fade_enabled = true
+  endif
+-%}
+
+{%- style -%}
+.scroll-snap-fade {
+  background: linear-gradient(270deg, var(--fade-color) 22.22%, rgba(62, 43, 46, 0) 100%);
+}
+  .scroll-snap-fade--left {
+  background: linear-gradient(90deg, var(--fade-color) 22.22%, rgba(62, 43, 46, 0) 100%);
+}
+{%- endstyle -%}
+
+
+
+
+
+        <div class="{% if fade_enabled %}scroll-snap-fade--left{% endif %} absolute left-[-10px] top-0 flex h-full items-center pl-6"  style="--fade-color: {{ fade-color }}">
+            <button class="scroll-arrow scroll-arrow-left absolute left-0" aria-label="Scroll left" style="pointer-events: all;">
+                <svg class="scroll-arrow cursor-pointer" width="6" height="11" viewBox="0 0 6 11" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: {{ arrow-color }}; opacity: .75;">
+                    <rect width="1.06068" height="7.42477" transform="matrix(0.707107 0.707107 -0.707107 0.707107 5.25 0)" fill="currentColor"></rect>
+                    <rect width="1.06068" height="7.42477" transform="matrix(-0.707107 0.707107 -0.707107 -0.707107 6 9.75)" fill="currentColor"></rect>
+                </svg>
+            </button>
+        </div>          
+        <div class="{% if fade_enabled %}scroll-snap-fade{% endif %} absolute right-[-10px] top-0 flex h-full items-center pl-6"  style="--fade-color: {{ fade-color }}">
+
+            <button class="scroll-arrow scroll-arrow-right absolute right-0" aria-label="Scroll right" style="pointer-events: all;">
+                <svg class="scroll-arrow cursor-pointer" width="6" height="11" viewBox="0 0 6 11" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: {{ arrow-color }}; opacity: .75;">
+                    <rect width="1.06068" height="7.42477" transform="matrix(-0.707107 0.707107 0.707107 0.707107 0.75 0)" fill="currentColor"></rect>
+                    <rect width="1.06068" height="7.42477" transform="matrix(0.707107 0.707107 0.707107 -0.707107 0 9.75)" fill="currentColor"></rect>
+                </svg>
+            </button>
+        </div>          
+
+   

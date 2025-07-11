@@ -1,0 +1,47 @@
+{%- liquid   
+  assign hide_price = false
+
+  if product.tags contains 'hide-price'
+    assign hide_price = true
+    assign pricing = ''
+  endif    
+    
+-%}
+<div id="slide-carousel-system__item-{{ forloop.index0 }}" 
+  class="slide-carousel-system__item slide-carousel-system__item--medium" role="listitem">
+
+
+  <div class="product-card">
+    <section class="product-card-assets">
+      <a class="product-card-assets__media" href="{{ product.url | within: collection }}">
+        
+        <img 
+          src="{{ product |  img_url: '175x' }}"
+          srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+          data-srcset="
+          {% assign widths = '100 175 300' | split: ' ' %}
+          {%- for width in widths -%}
+            {{ product |  img_url: '100x' | split:'?' | first  | replace: '100', width }} {{ width }}w{%- unless forloop.last -%},{% else %}"{%- endunless -%}
+          {%- endfor -%}
+          data-sizes="auto"
+          alt="{{ product.featured_image.alt | escape }}" 
+          class="grid-product__image lazyload">
+      </a>
+    </section>
+    <section class="product-card-details">    
+      <div class="product-card-details__name">
+        <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
+      </div>
+      <div class="product-card-details__price">
+           {% if hide_price %}
+                    
+                    {% else %}
+                     {{ product.price | money }}
+                    {% endif %} 
+      </div>
+    </section>
+  </div>
+
+  
+</div>
+

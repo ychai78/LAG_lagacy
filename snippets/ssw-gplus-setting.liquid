@@ -1,0 +1,154 @@
+        window.addEventListener('sswoauthcallback', function (e) {
+            if (e.detail && e.detail.service == 'gplus') {
+ssw.ajax({
+      type: 'POST',
+      url: sswProxyUrl + '/lite2/auth/gcallback',
+      data: {'_sid': ssw.cookie('hesid'), 'hash_key': ssw.cookie('hash_key'), 'verify_token': ssw.cookie('ssw_verify_token')},
+      success: function (response) {
+        sswSocialLogin = 1;
+        if(typeof response.service_id !== 'undefined'){
+           service_id = response.service_id;
+        }
+        if (ssw.isEmptyObject(response)) {
+          onOpenForm();
+        }else if(response.termsSignup || response.acceptMarketing){
+          showAcceptTermsForm(response);
+        } else if (response.state != 'enabled') {
+          if (response.password && response.email) {
+            var shopifyLogin = new ShopifyLogin();
+            shopifyLogin.preLogin(response.email, response.password);
+            if (response.account_activation_token) {
+              shopifyLogin.login({
+                customer_id: response.customer_id,
+                token: response.account_activation_token,
+                verified: response.verified,
+        				service: 'gplus',
+                customer: {
+                  'password': response.password,
+                  'password_confirmation': response.password
+                }
+              });
+            } else {
+              shopifyLogin.login({
+                verified: response.verified,
+                service: 'gplus'
+              });
+            }
+          } else {
+            targetSEMModal(response, 'gplus');
+          }
+        } else {
+          if (!response.password && response.email) {
+            targetSEMModal(response, 'gplus');
+          } else {
+            if (response.password) {
+              var shopifyLogin = new ShopifyLogin();
+              shopifyLogin.preLogin(response.email, response.password);
+              shopifyLogin.login({
+                verified: response.verified,
+                service: 'gplus'
+              });
+            } else {
+              addMessage('#login_modal .login-failed', "sswLangs.t('already_registered_to_social_service2', [response.email])", 'warning');
+              ssw('#login_modal').sswModal();
+            }
+          }
+        }
+      },
+      dataType: 'json'
+    });
+                }
+        });
+        var gplusData = {};
+        var gplusClicked = false;
+          gapi.load('auth2', function(){
+  // Retrieve the singleton for the GoogleAuth library and set up the client.
+  var iid = setInterval(function () {
+    if (document.querySelector('.ssw-gconnect')) {
+      clearInterval(iid);
+      var auth2 = gapi.auth2.init({
+        cookiepolicy: 'single_host_origin',
+      });
+      var loginBtns = document.querySelectorAll('.ssw-gconnect');
+      var len = loginBtns.length;
+      var cbLoginSuccess = function (googleUser) {
+        onOpenForm();
+        if (googleUser && googleUser.isSignedIn()) {
+          gplusData =  {'access_token': googleUser.getAuthResponse().access_token};
+          profile = googleUser.getBasicProfile();
+          var data = {
+            'first_name' : profile.getGivenName(),
+            'last_name' : profile.getFamilyName(),
+            'about' : profile.aboutMe,
+            'image' : profile.getImageUrl(),
+            'url' : '',
+            'email': profile.getEmail(),
+            'user_id' : profile.getId(),
+            'service' : 'gplus'
+          };
+
+          gplusData = ssw.extend(gplusData, data);
+          ssw.ajax({
+            type: 'POST',
+            url: sswProxyUrl + '/lite2/auth/service',
+            data: {'user_id': gplusData.user_id, 'email': gplusData.email, 'service': 'gplus', 'access_token': gplusData.access_token, '_sid': ssw.cookie("hesid"), 'hash_key': ssw.cookie('hash_key')},
+            success: function (json) {
+              var shopifyLogin = new ShopifyLogin();
+              if(typeof json.service_id !== 'undefined'){
+                service_id = json.service_id;
+              }
+              if (json.status) {
+                if (json.state == 'enabled' && json.password) {
+                  shopifyLogin.preLogin(json.email, json.password);
+                  shopifyLogin.login({
+                    verified: json.verified,
+                    service: 'gplus'
+                  });
+                } else if (json.state != 'enabled') {
+                  if (json.password && json.email) {
+                    shopifyLogin.preLogin(json.email, json.password);
+                    if (json.account_activation_token) {
+                      shopifyLogin.login({
+                        customer_id: json.customer_id,
+                        token: json.account_activation_token,
+                        verified: json.verified,
+                        service: 'gplus',
+                        customer: {
+                          'password': json.password,
+                          'password_confirmation': json.password
+                        }
+                      });
+                    } else {
+                      shopifyLogin.login({
+                        verified: json.verified,
+                        service: 'gplus'
+                      });
+                    }
+                  } else {
+                    targetSEMModal(json, 'gplus');
+                  }
+                } else {
+                  targetSEMModal(json, 'gplus');
+                }
+              }else if(json.termsSignup || json.acceptMarketing){
+                showAcceptTermsForm(json, 'gplus', {gplusData: gplusData, json: json});
+              } else {
+                shopifyLogin.setServiceUser({gplusData: gplusData, json: json}, 'gplus');
+              }
+            },
+            dataType: 'json'
+          });
+        } else {
+          onOpenForm();
+        }
+      };
+      var cbLoginFail = function (error) {
+        onOpenForm();
+      };
+      for (let i = 0; i < len; i++) {
+        var loginBtn = loginBtns[i];
+        auth2.attachClickHandler(loginBtn, {}, cbLoginSuccess, cbLoginFail);
+      }
+    }
+  }, 500);
+});

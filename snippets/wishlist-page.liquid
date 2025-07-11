@@ -1,0 +1,150 @@
+{% if customer %}
+
+<div class="main-wrapper">
+
+ {% include 'customer_account_side_menu' %}   
+<div class="customer-service-main col-xs-12 col-md-9">  
+  <div class="col-xs-12">
+    <div class="grid">
+       <div class="page-title">
+    <header class="page-header">
+      <h2>MY WISHLIST</h2>
+    </header>
+    
+  </div>
+      
+
+  <ul class="wishlist">
+            <table class="full">
+<colgroup>
+					<col class="image">
+					<col class="info">
+					
+					<col class="price">
+				</colgroup>
+				<thead>
+					<tr>
+						<th class="product" colspan="2" scope="col">Product</th>
+						<th scope="col" class="price-col visible-sm visible-md visible-lg">Price</th>
+						<th scope="col" class="price-col visible-sm visible-md visible-lg"></th>
+					</tr>
+				</thead>
+          <tbody>
+    {% assign wish_list_active = false %}
+    {% for tag in customer.tags %}
+      {% assign the_test = 'nutthin' %}
+      {% capture tag_id %}{{ tag }}{% endcapture %}
+      {% assign tag_size = tag_id.size %}
+      {% for tag in customer.tags %}
+        {% capture cur_tag %}{{ tag }}{% endcapture %}
+        {% if cur_tag contains tag_id %}
+          {% assign difference = tag_size | minus:cur_tag.size %}
+          {% if difference == 0 %}
+            {% assign the_test = tag_id %}
+          {% else %}
+            {% assign the_test = 'nutthin' %}
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+
+      {% for collection in collections %}
+        {%- comment %}<locksmith:1113>{% endcomment -%}
+          {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: collection, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+        {%- comment %}</locksmith:1113>{% endcomment -%}
+        {% paginate collection.products by collection.all_products_count %}
+          {% for product in collection.products %}
+            {%- comment %}<locksmith:8448>{% endcomment -%}
+              {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: collection, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+            {%- comment %}</locksmith:8448>{% endcomment -%}
+            {% for variant in product.variants %}
+              {% capture variant_id %}{{ variant.id }}{% endcapture %}
+              {% unless used contains variant_id %}
+                {% capture diff %}{{ tag_size | minus:variant_id.size | money_without_currency | times:100 | divided_by:2 }}{% endcapture %}
+                {% assign check = diff | split:'.' %}
+                {% if check[1] contains '5' %}{% assign display = false %}{% else %}{% assign display = true %}{% endif %}
+                {% if display and the_test contains variant_id %}
+                  {% assign wish_list_active = true %}
+    
+
+
+        <tr id="x{{ tag_id }}">
+          <td class="image cart__item--image" width="150">
+            <a class="product-img" href="{{ variant.url }}">
+              <img alt="{{ product.title | escape }}" class="cart__item--image" src="{{ variant | img_url: 'compact' }}"/>
+            </a>
+          </td>
+          <td class="iteminfo">
+           
+            <a href="{{ variant.url }}" class="product-name">{{ product.title }}</a>
+            <br>
+            <span>{{ variant.title }}</span>
+            <br>
+            <span class="price visible-xs">{{ variant.price | money }}</span>
+            <div class="wishlist-button-section visible-xs">
+            <a class="js-add-to-cart wishlist-button" href='#0' data-id="{{ variant_id }}">Add to Cart</a>
+            <a class="js-remove-button"href="#0" >Remove</a>
+            </div>
+          </td>
+          <td class="visible-sm visible-md visible-lg"><span class="price">{{ variant.price | money }}</span></td>
+          <td class="visible-sm visible-md visible-lg">
+            <a class="js-add-to-cart wishlist-button" href='#0' data-id="{{ variant_id }}">Add to Cart</a>
+            <a class="js-remove-button"href="#0" >Remove</a>
+          </td>
+         </tr>
+
+    
+    
+
+
+                  {% capture used %}{{ variant_id }} {{ used }}{% endcapture %}
+                {% endif %}
+              {% endunless %}
+            {% endfor %}
+          {% endfor %}
+        {% endpaginate %}
+      {% endfor %}
+                    
+ 
+    
+    {% endfor %}
+                 </tbody>
+    </table>
+  </ul>
+
+  <form method='post' action='/contact' id='remove' accept-charset='UTF-8'>
+    <input name='form_type' type='hidden' value='customer'/>
+    <input name='utf8' type='hidden' value='✓'>
+    <input type='hidden' name='contact[email]' value='{{ customer.email }}'/>
+    <input type='hidden' name='contact[tags]' id='remove-value' value='' />
+  </form>
+
+  <form action='/cart/add' id='add-variant' method='post'>
+    <input type='hidden' name='id' id='product-select' value='' />
+  </form>
+
+  {% capture subject %}My%20{{ shop.name | replace: ' ','%20' }}%20Wish%20List{% endcapture %}
+  {% capture body %}I&rsquo;ve%20added%20the%20following%20items%20to%20my%20wish%20list%20at%20{{ shop.name | replace: ' ','%20' }}{% endcapture %}
+  {% capture body %}{{ body }}{% for tag in customer.tags %}{% assign the_test = 'nutthin' %}{% capture tag_id %}{{ tag }}{% endcapture %}{% assign tag_count = 0 %}{% assign tag_size = tag_id | size %}{% for tag in customer.tags %}{% capture cur_tag %}{{ tag }}{% endcapture %}{% if cur_tag contains tag_id %}{% assign cur_tag_size = cur_tag | size %}{% assign difference = tag_size | minus: cur_tag_size %}{% if difference == 0 %}{% assign the_test = tag_id %}{% else %}{% assign the_test = 'nutthin' %}{% endif %}{% endif %}{% endfor %}{% for collection in collections %}{%- comment %}<locksmith:4187>{% endcomment -%}{%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: collection, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}{%- comment %}</locksmith:4187>{% endcomment -%}{% paginate collection.products by collection.all_products_count %}{% for product in collection.products %}{%- comment %}<locksmith:a844>{% endcomment -%}{%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: product, subject_parent: collection, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}{%- comment %}</locksmith:a844>{% endcomment -%}{% for variant in product.variants %}{% capture variant_id %}{{ variant.id }}{% endcapture %}{% unless email_used contains variant_id %}{% capture diff %}{{ tag_size | minus:variant_id.size | money_without_currency | times:100 | divided_by:2 }}{% endcapture %}{% assign check = diff | split:'.' %}{% if check[1] contains '5' %}{% assign display = false %}{% else %}{% assign display = true %}{% endif %}{% if display and the_test contains variant_id %}%0A%0A{{ product.title | replace: ' ','%20' }}%20-%20{{ variant.title | replace: ' ','%20' }}%3A%20%20{{ shop.url }}{{ variant.url }}{% capture email_used %}{{ variant_id }} {{ email_used }}{% endcapture %}{% endif %}{% endunless %}{% endfor %}{% endfor %}{% endpaginate %}{% endfor %}{% endfor %}{% endcapture %}
+
+  <div id="wishlist-email-link">
+    {% if wish_list_active %}
+      <a href='mailto:?subject={{ subject }}&amp;body={{ body }}'>Share my wish list via email</a>
+    {% else %}
+      <p>Your wish list is currently empty.</p>
+    {% endif %}
+  </div>
+
+
+
+
+
+      
+    </div>
+  </div>
+  </div>
+  
+</div>
+{% else %}
+  <p>To create a wish list you must <a href='/account/login'>sign in</a> or <a href='/account/register'>create an account</a>.</p>
+{% endif %}  
+<script src="{{ 'wish-list.js' | asset_url }}"></script>

@@ -1,0 +1,90 @@
+{% comment %}
+  Variant List Row
+
+  Accepts:
+  - variant: {Object} Variant
+  - position:  {String} used as a counter for the for loop (optional)
+  Usage:
+
+     {%- render 'card-product-swatches-2',
+              variant: variant,
+              product: card_product
+          -%}
+{% endcomment %}
+
+<quickbuy-variant class="variant-carousel">
+  <div class="collection-product-swatch w-full">
+    <div class="swipe-product-swatches" data-total-swatches="{{product.variants.size }}">
+
+{% capture slides_content %}
+      {%- for variant in product.variants -%}
+        
+        {%- capture product_availability -%}
+        {%- render 'product-availability-logic', product: product, variant: variant, text: "product_availability" -%}
+        {% endcapture%}
+        
+        {%- capture cta_text -%}
+        {%- render 'product-availability-logic', product: product, variant: variant, text: "cta_text" -%}
+        {% endcapture%}
+        
+        {% assign product_availability = product_availability | strip %} 
+        {% assign cta_text = cta_text | strip %}         
+        
+        {% assign hex_code = variant.metafields.custom.hex_code.value %}
+        {% assign hex_image = variant.metafields.custom.hex_image.value %}
+
+        
+          <label
+             class="product-tile__swatch shrink-0 {% if forloop.first %}active{% endif %}"
+            data-swatch-color="{{ variant.title | handleize }}"
+            data-variant-id="{{ variant.id }}"
+            data-sku="{{ variant.sku }}"
+            data-variant-image="{{variant.image | image_url: width: 1024 }}"
+            data-url="{{ product.url }}?variant={{ variant.id }}"
+            data-available="{{ product_availability }}"
+            data-cta-text="{{ cta_text }}"
+            data-title="{{ variant.title}}"
+            data-price="{{ variant.price | money }}"
+            data-compare-price="{{ variant.compare_at_price | money }}"
+            {% if hex_code %}
+              data-hex-code="{{ hex_code }}"
+              style="--swatch-color: {{ hex_code }};"
+            {% endif %}
+          >
+            {% if hex_image %}
+              <img src=" {{ hex_image | image_url: width: 60 }}" width="30" height="30" loading="lazy"
+                alt="{{  variant.title }} swatch"
+                class="rounded-full object-cover">
+            {% endif %}
+            {% if product_availability == "true" %}{% else %}<span class="crossed-out"></span>{% endif %}
+          </label>
+        
+      {%- endfor -%}
+{% endcapture %}
+ {% render 'scroll-slider', slides: slides_content,  id:'collection-shade-selector', class: 'mb-2' , spacing: 'gap-2' %}
+  
+    </div>
+  </div>
+</quickbuy-variant>
+<style>
+  .swipe-product-swatches .scroll-slider__button--next, 
+  .swipe-product-swatches .scroll-slider__button--prev {
+    border: none;
+    padding: 0;
+    background: white;
+    width: 1rem;
+    height: 2rem;
+}
+  .swipe-product-swatches .scroll-slider__button--prev{
+    left:-.5rem;
+  }
+  .swipe-product-swatches .scroll-slider__button--next{
+    right:-.5rem;
+  }
+  
+  #collection-shade-selector .scroll-slider__wrapper {
+    height: 40px;
+    align-items: center;
+    padding: 0.5rem;
+}
+</style>

@@ -1,0 +1,70 @@
+{{ 'blog.css' | asset_url | stylesheet_tag }}
+{% comment %}
+This template is also used for listing out articles of a specific tag.
+You can change layouts or styles by checking if current_tags is true.
+{% endcomment %}
+<div class="container-grid">
+  <h1 class="text-center mt-4">Lets hit the spotlight.</h1>
+  <h3 class="text-center mt-4">View where we've been featured in magazines.</h3>
+
+
+
+  <div class="px-8 mx-auto xl:px-5 py-5 lg:py-8">
+
+    <div class="mt-10 grid gap-10 md:grid-cols-2 lg:gap-10 xl:grid-cols-3 ">
+
+      {% for article in blog.articles %}
+   {%- comment %}<locksmith:cf78>{% endcomment -%}
+     {%- capture var %}{% render 'locksmith-variables', scope: 'subject', subject: article, subject_parent: blog, variable: 'transparent' %}{% endcapture %}{% if var == "true" %}{% else %}{% continue %}{% endif -%}
+   {%- comment %}</locksmith:cf78>{% endcomment -%}
+   {% assign article_title_split =  article.title | split: "- " %}
+   {% assign article_publisher =  article_title_split[0] %}  
+   {% assign article_date =  article_title_split[2] %}  
+   {% assign article_title =  article_title_split[0] | append: ' - ' | append: article_title_split[1]  %}  
+   {% assign article_year =  article_date| slice: 0, 4 %}  
+   {% assign magazine_publisher =  article_publisher | remove: " " | remove: "'"| downcase %}  
+
+          <div class="group cursor-pointer post type-post" data-date="{{article_date}}"  data-year="{{article_year}}" id="{{article.id}}"
+          >
+            <div class=" overflow-hidden rounded-md bg-gray-100 transition-all hover:scale-105">
+              <a class="relative block" href="{{ article.url }}">
+                {% render 'image',
+                  images: article.image,
+                  class: 'object-cover transition-all',
+                  widths: '375, 550, 750',
+                  width: '750',
+                  sizes: '(max-width: 768px) 30vw, 33vw',
+                  alt_tag: article.title
+                %}
+              </a>
+            </div>
+            <div class="">
+              <div>
+                <div class="flex gap-3">
+                  <a href="{{ article.url }}"
+                    ><span class="inline-block text-xs font-bold tracking-wider uppercase mt-5 text-pink-600">
+                     {{ article_title_split[1]  }}
+                    </span></a
+                  >
+                </div>
+                <h2 class="text-lg font-semibold leading-snug tracking-tight mt-2">
+                  <a href="{{ article.url }}"
+                    ><span class="bg-gradient-to-r from-pink-200 to-pink-100 bg-[length:0px_10px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500 hover:bg-[length:100%_3px] group-hover:bg-[length:100%_10px] ">
+                     {{ article_title_split[0]  }}
+             
+                    </span></a
+                  >
+                </h2>
+
+               
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+
+    </div>
+   
+  </div>
+
+  
+</div>

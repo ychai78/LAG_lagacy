@@ -1,0 +1,87 @@
+{{ 'loyalty.css' | asset_url | stylesheet_tag }}
+
+<div class="earn-section max-w-1200">
+  <div class="earn-header">
+    <h2 class="earn-title">WANT TO EARN MORE <span class="earn-title-highlight">PRO.POINTS?</span></h2>
+    <p class="earn-subtitle">SPOILER: IT'S SUPER EASY</p>
+  </div>
+
+  <div class="earn-container">
+    <div class="earn-item">
+      <div class="earn-icon">
+        <img src="{{ 'ICONS-01_Instagram.svg' | file_url }}" alt="Instagram" width="60" height="60">
+      </div>
+      <div class="earn-points">10 PTS</div>
+      <div class="earn-description">follow us on Instagram</div>
+    </div>
+
+    <div class="earn-item">
+      <div class="earn-icon">
+        <img src="{{ 'ICONS-02_Tik_Tok.svg' | file_url }}" alt="TikTok" width="60" height="60">
+      </div>
+      <div class="earn-points">10 PTS</div>
+      <div class="earn-description">follow us on TikTok</div>
+    </div>
+
+    <div class="earn-item">
+      <div class="earn-icon">
+        <img src="{{ 'ICONS-03_Facebook.svg' | file_url }}" alt="Facebook" width="60" height="60">
+      </div>
+      <div class="earn-points">10 PTS</div>
+      <div class="earn-description">like us on Facebook</div>
+    </div>
+
+    <div class="earn-item">
+      <div class="earn-icon">
+        <img src="{{ 'ICONS-04_Birthday.svg' | file_url }}" alt="Birthday" width="60" height="60">
+      </div>
+      <div class="earn-points">10 PTS</div>
+      <div class="earn-description">add your birthday</div>
+    </div>
+
+    <div class="earn-item">
+      <div class="earn-icon">
+        <img src="{{ 'ICONS-05_Email.svg' | file_url }}" alt="Email" width="60" height="60">
+      </div>
+      <div class="earn-points">25 PTS</div>
+      <div class="earn-description">sign up for emails</div>
+    </div>
+
+    <div class="earn-item">
+      <div class="earn-icon">
+        <img src="{{ 'ICONS-06_Review.svg' | file_url }}" alt="Review" width="60" height="60">
+      </div>
+      <div class="earn-points">25 PTS</div>
+      <div class="earn-description">leave a review</div>
+    </div>
+
+    <div class="earn-item">
+      <div class="earn-icon">
+        <img src="{{ 'ICONS-07_Channel.svg' | file_url }}" alt="Broadcast" width="60" height="60">
+      </div>
+      <div class="earn-points">50 PTS</div>
+      <div class="earn-description">join our instagram broadcast channel</div>
+    </div>
+
+    <div class="earn-item">
+      <div class="earn-icon">
+        <img src="{{ 'ICONS-08_Youtube.svg' | file_url }}" alt="Video Review" width="60" height="60">
+      </div>
+      <div class="earn-points">50 PTS</div>
+      <div class="earn-description">leave a video review</div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+    {
+      "name": "Loyalty_Earn",
+      "settings": [],
+      "presets": [
+        {
+          "name": "Loyalty Earn",
+          "category": "Loyalty Page"
+        }
+      ]
+    }
+{% endschema %}
